@@ -16,7 +16,7 @@
   📑 <a href="PlannerForge_EMNLP.pdf">Paper (camera-ready)</a> &nbsp;|&nbsp;
   🌐 Project page: <code>index.html</code> (GitHub Pages pending) &nbsp;|&nbsp;
   📝 <a href="https://openreview.net/forum?id=nXasXrTafl">OpenReview</a> &nbsp;|&nbsp;
-  🤗 <a href="https://huggingface.co/datasets/Yuan-avs/PlannerForge-Scenarios">Scenario dataset (582 scenarios)</a>
+  🤗 <a href="https://huggingface.co/datasets/TUM-AVS/PlannerForge-Scenarios">Scenario dataset (582 scenarios)</a>
 </p>
 
 Welcome to the GitHub repository of PlannerForge. Here you can find the paper, the project
