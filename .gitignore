@@ -1,2 +1,6 @@
 stage1_gallery/
 assets/gallery.json
+# local provenance scripts (absolute paths into the private paper repo)
+parse_tables.py
+parse_small.py
+__pycache__/
