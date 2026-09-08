@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlannerForge: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving</title>
+<meta name="description" content="PlannerForge is an LLM-agent framework that unifies the full scenario-based testing pipeline for motion planners in autonomous driving.">
+<meta property="og:title" content="PlannerForge: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving">
+<meta property="og:description" content="An LLM-agent framework that unifies all eight scenario-based-testing stages for autonomous-driving motion planners under a single chatbot-driven interface.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --panel:#f4f7f9;
+    --panel-line:#e7eef3;
+    --fg:#16232b;
+    --muted:#5c6b74;
+    --line:#dce5eb;
+    --line-strong:#b9c8d1;
+    --accent:#0f5c74;
+    --accent-2:#127491;
+    --accent-soft:#e4eff3;
+    --steel:#213f4f;
+    --card:#f7fafb;
+    --radius:20px;
+    --shadow:0 22px 55px rgba(18,44,60,.10);
+    --shadow-sm:0 8px 24px rgba(18,44,60,.08);
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--fg);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* ---- Sticky nav ---- */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:saturate(1.6) blur(9px);border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:20px;letter-spacing:-.01em}
+  .brand b{color:var(--accent)}
+  .nlinks{display:flex;gap:26px;align-items:center}
+  .nlinks a{font-size:14.5px;color:var(--muted);font-weight:500}
+  .nlinks a:hover{color:var(--accent);text-decoration:none}
+  .ncode{display:inline-flex;align-items:center;gap:7px;background:var(--steel);color:#fff;padding:8px 15px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:.9;cursor:not-allowed}
+  .ncode svg{width:15px;height:15px;fill:currentColor}
+  @media(max-width:860px){.nlinks a{display:none}}
+
+  /* ---- Hero (two-column) ---- */
+  .hero{padding:58px 0 34px}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:46px;align-items:center}
+  .venue{display:inline-block;font-size:12.5px;letter-spacing:.05em;font-weight:600;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:6px 13px;border-radius:999px;border:1px solid #cfe1e8}
+  h1.title{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:clamp(29px,3.7vw,46px);line-height:1.12;letter-spacing:-.015em;margin:18px 0 16px}
+  h1.title .pf{color:var(--accent)}
+  .lead{font-size:17.5px;color:#3c4a52;margin:0 0 22px;max-width:560px}
+  .authors{font-size:15.5px;color:var(--steel);margin:0 0 7px;line-height:1.55;max-width:585px}
+  .authors sup,.affil sup{color:var(--accent);font-weight:600}
+  .affil{font-size:12.8px;color:var(--muted);margin:0 0 22px;line-height:1.6;max-width:585px}
+  .btns{display:flex;gap:11px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:11px 19px;border-radius:999px;font-size:14.5px;font-weight:600;border:1px solid var(--accent);transition:.15s}
+  .btn:hover{background:var(--accent-2);border-color:var(--accent-2);text-decoration:none;transform:translateY(-1px)}
+  .btn.alt{background:#fff;color:var(--steel);border-color:var(--line-strong)}
+  .btn.alt:hover{background:var(--panel);color:var(--accent);transform:translateY(-1px)}
+  .btn.ghost{background:#fff;color:var(--muted);border-color:var(--line);cursor:not-allowed}
+  .btn.ghost:hover{background:#fff;transform:none;color:var(--muted)}
+  .btn svg{width:16px;height:16px;fill:currentColor}
+  .hero-teaser{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .hero-teaser img{width:100%;height:auto;display:block;border-radius:12px}
+  .hero-teaser figcaption{font-size:12.5px;color:var(--muted);margin-top:11px;padding:0 4px;line-height:1.5}
+  .hero-teaser figcaption b{color:var(--fg)}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:30px}.hero{padding:40px 0 26px}}
+
+  /* ---- Pipeline strip ---- */
+  .pipe{padding:6px 0 40px}
+  .pipe-inner{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:22px 22px 20px}
+  .stages{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+  .stage{font-size:13.5px;font-weight:500;padding:7px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;gap:8px}
+  .stage .i{width:19px;height:19px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .stage.new{background:var(--accent-soft);border-color:#cfe1e8}
+  .stage.new .i{background:var(--accent);color:#fff}
+  .legend{text-align:center;font-size:12.5px;color:var(--muted);margin:13px 0 0}
+  .legend b{color:var(--accent)}
+
+  /* ---- Sections ---- */
+  section{padding:30px 0}
+  .kicker{display:block;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--accent);margin-bottom:6px}
+  h2{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:30px;margin:0 0 22px;text-align:center;letter-spacing:-.01em}
+  .panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:34px 34px}
+  @media(max-width:560px){.panel{padding:24px 18px}}
+  figure{margin:0}
+  figure img{max-width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff}
+  figure.bare img{border:none}
+  figcaption{font-size:13.5px;color:var(--muted);margin-top:12px;max-width:800px;margin-left:auto;margin-right:auto;text-align:center}
+  .abstract p{font-size:17px;color:#33404a;margin:0 auto;max-width:860px;text-align:justify}
+
+  /* ---- Stat cards ---- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm)}
+  .stat .num{font-family:"Newsreader",serif;font-size:32px;font-weight:600;color:var(--accent);line-height:1.05}
+  .stat .lab{font-size:13px;color:var(--muted);margin-top:7px}
+
+  /* ---- Model chips ---- */
+  .models{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line-strong);display:flex;flex-direction:column;gap:9px}
+  .mrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+  .mlab{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+  .mchip{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--steel);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 11px}
+  .mchip.open{background:var(--accent-soft);border-color:#cfe1e8;color:var(--accent)}
+
+  /* ---- highlight list ---- */
+  .findings{max-width:860px;margin:0 auto;padding:0;list-style:none}
+  .findings li{padding:14px 0 14px 30px;border-bottom:1px solid var(--line);position:relative;font-size:16px;color:#33404a}
+  .findings li:last-child{border-bottom:none}
+  .findings li::before{content:"";position:absolute;left:4px;top:22px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .findings b{color:var(--fg)}
+  .findings code{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:1px 5px}
+
+  /* ---- Figure lightbox (click to enlarge) ---- */
+  figure img.zoomable,.hero-teaser img{cursor:zoom-in}
+  .lb{position:fixed;inset:0;background:rgba(14,22,28,.88);display:none;align-items:center;justify-content:center;z-index:100;padding:26px;cursor:zoom-out}
+  .lb.open{display:flex}
+  .lb img{max-width:94vw;max-height:92vh;border-radius:10px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lb-hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);color:#cfe1e8;font-size:13px;opacity:.85}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:8px}
+
+  /* ---- Video demo ---- */
+  .vdemo-intro{max-width:820px;margin:0 auto 22px;text-align:center;color:#33404a;font-size:16px}
+  .vdemo{max-width:920px;margin:0 auto}
+  .vdemo-steps{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:18px}
+  .vdemo-step{font-family:"Inter",sans-serif;font-size:14px;font-weight:500;color:var(--fg);padding:8px 15px;border-radius:999px;background:#fff;border:1px solid var(--line);display:inline-flex;align-items:center;gap:9px;cursor:pointer;transition:.15s}
+  .vdemo-step:hover{border-color:#cfe1e8;background:var(--panel)}
+  .vdemo-step .i{width:21px;height:21px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:.15s}
+  .vdemo-step.active{background:var(--accent-soft);border-color:#cfe1e8;color:var(--accent)}
+  .vdemo-step.active .i{background:var(--accent);color:#fff}
+  .vdemo-stage{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0e1116;aspect-ratio:16/9;box-shadow:var(--shadow)}
+  .vdemo-stage video{width:100%;height:100%;object-fit:contain;display:block;background:#0e1116}
+  .vdemo-cap{max-width:820px;margin:16px auto 0;text-align:center;font-size:14.5px;color:#33404a;line-height:1.6}
+  .vdemo-cap b{color:var(--fg)}
+  @media(max-width:560px){.vdemo-step{font-size:13px;padding:7px 12px}}
+
+  /* ---- Workflow diagram ---- */
+  .wf-wrap{max-width:1000px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px}
+  .wf-wrap svg{width:100%;height:auto;display:block}
+  .wf-legend{display:flex;gap:22px;justify-content:center;align-items:center;font-size:13px;color:var(--muted);margin-top:14px;flex-wrap:wrap}
+  .wf-legend span{display:inline-flex;align-items:center}
+  .pe-subh{text-align:center;font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:22px;margin:8px 0 16px;color:var(--fg)}
+
+  /* ---- Prompt Explorer ---- */
+  .pe-intro{max-width:840px;margin:0 auto 20px;text-align:center;color:#33404a;font-size:16px}
+  .pe-intro code,.pe-intro b code{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:1px 5px}
+  .pe-gloss{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:940px;margin:0 auto 26px}
+  .pe-gloss .g{flex:1 1 250px;max-width:300px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-align:left;box-shadow:var(--shadow-sm)}
+  .pe-gloss .g .t{font-weight:600;font-size:14px;color:var(--fg);display:block}
+  .pe-gloss .g .t b{color:var(--accent);font-family:"JetBrains Mono",monospace;font-size:13px}
+  .pe-gloss .g p{margin:5px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+  .pe-gloss .g code{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent)}
+  .pe-tcap{text-align:center;font-size:13px;color:var(--muted);margin:0 auto 10px;max-width:800px}
+  .pe-table-wrap{max-width:920px;margin:0 auto 30px;overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+  table.pe-table{width:100%;border-collapse:collapse;font-size:14px}
+  .pe-table th,.pe-table td{padding:9px 14px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+  .pe-table thead th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--panel)}
+  .pe-table th.num,.pe-table td.num{text-align:center;font-variant-numeric:tabular-nums}
+  .pe-table td.comp{white-space:normal}
+  .pe-table .comp code{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:#4a5860;background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+  .pe-table tr.grp td:first-child{color:var(--accent)}
+  .pe-table .badge-n{display:inline-block;min-width:18px;text-align:center;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 6px;font-weight:700;font-size:12px;margin-left:4px}
+  .pe-table tbody tr:last-child td{border-bottom:none}
+  .pe-table tfoot td{font-weight:700;background:var(--accent-soft);border-top:2px solid #cfe1e8;color:var(--fg)}
+  .pe-controls{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-end;max-width:940px;margin:0 auto 18px}
+  .pe-field{display:flex;flex-direction:column;gap:5px;text-align:left}
+  .pe-field label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .pe-field select{font-family:"Inter",sans-serif;font-size:14px;font-weight:500;color:var(--fg);background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 12px;min-width:150px;cursor:pointer}
+  .pe-field select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .pe-legend{display:flex;gap:18px;justify-content:center;align-items:center;font-size:13px;color:var(--muted);margin-bottom:14px;flex-wrap:wrap}
+  .pe-legend .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px}
+  .sw-add{background:#cdeccd;border:1px solid #9bd29b}
+  .sw-del{background:#f3cfcf;border:1px solid #e0a3a3}
+  .pe-diff{max-width:1080px;margin:0 auto;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .pe-heads{display:grid;grid-template-columns:1fr 1fr}
+  .pe-colhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--line);border-right:1px solid var(--line);font-size:13px;font-weight:600;color:var(--fg)}
+  .pe-colhead:last-child{border-right:none}
+  .pe-colhead .ck{font-weight:400;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:12px}
+  .pe-copy{font-size:12px;font-weight:600;color:var(--accent);background:#fff;border:1px solid #cfe1e8;padding:4px 10px;border-radius:7px;cursor:pointer}
+  .pe-copy:hover{background:var(--accent-soft)}
+  .pe-body{max-height:560px;overflow:auto;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.55}
+  .pe-rows{display:grid;grid-template-columns:1fr 1fr}
+  .pe-cell{display:flex;white-space:pre-wrap;word-break:break-word;min-width:0;border-right:1px solid var(--line)}
+  .pe-cell:nth-child(even){border-right:none}
+  .pe-cell .ln{flex:0 0 34px;text-align:right;padding-right:8px;color:#a3b0b9;user-select:none;background:var(--panel);border-right:1px solid var(--panel-line)}
+  .pe-cell .tx{flex:1 1 auto;padding:0 10px;min-width:0}
+  .pe-add{background:#e7f7e7}
+  .pe-del{background:#fbe9e9}
+  .pe-blank{background:#f9fbfc}
+  .pe-meta{text-align:center;font-size:13px;color:var(--muted);margin-top:12px}
+
+  /* ---- BibTeX ---- */
+  pre{background:#152028;color:#dfe7ec;border-radius:14px;padding:22px;overflow-x:auto;font-family:"JetBrains Mono",monospace;font-size:13px;line-height:1.6;border:1px solid #223541}
+  footer{padding:36px 0 50px;text-align:center;color:var(--muted);font-size:14px}
+  .anon-note{font-size:13px;color:var(--muted);max-width:760px;margin:18px auto 0;text-align:center}
+
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- Sticky nav -->
+<nav class="nav">
+  <div class="wrap">
+    <span class="brand"><b>PlannerForge</b></span>
+    <span class="nlinks">
+      <a href="#abstract">Abstract</a>
+      <a href="#demo">Demo</a>
+      <a href="#results">Results</a>
+      <a href="#prompts">Prompts</a>
+      <a href="#bibtex">BibTeX</a>
+      <a class="ncode" title="Code release coming soon" aria-disabled="true">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        Code (soon)
+      </a>
+    </span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="venue">EMNLP 2026 &middot; Main Conference &middot; Budapest</span>
+        <h1 class="title"><span class="pf">PlannerForge</span>: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving</h1>
+        <p class="lead">An LLM-agent framework that unifies all eight scenario-based-testing stages for autonomous-driving motion planners under a single chatbot-driven interface.</p>
+        <p class="authors">
+          Yuan Gao<sup>1</sup>, Sebastian M&uuml;ller<sup>1</sup>, Mattia Piccinini<sup>1</sup>, Marc Kaufeld<sup>1</sup>, Yuchen Zhang<sup>1</sup>, Finn Rasmus Sch&auml;fer<sup>1</sup>, Qunying Song<sup>2</sup>, Johannes Betz<sup>1</sup>
+        </p>
+        <p class="affil">
+          <sup>1</sup>Professorship of Autonomous Vehicle Systems, TUM School of Engineering and Design, Technical University of Munich, 85748 Garching, Germany; Munich Institute of Robotics and Machine Intelligence (MIRMI)<br>
+          <sup>2</sup>University College London, London, United Kingdom
+        </p>
+        <div class="btns">
+          <a class="btn" href="#demo" title="Watch the demo">
+            <svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm-1.6 4.4 5 3.6-5 3.6V4.4Z"/></svg>
+            Watch Demo
+          </a>
+          <a class="btn alt" href="#prompts" title="Browse all prompts">
+            <svg viewBox="0 0 16 16"><path d="M3 0h7l3 3v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1Zm6 1.5V4h2.5L9 1.5ZM4.5 7h7v1.2h-7V7Zm0 2.6h7v1.2h-7V9.6Zm0 2.6h4.5v1.2H4.5v-1.2Z"/></svg>
+            Prompts
+          </a>
+          <a class="btn ghost" title="Code release coming soon" aria-disabled="true">Code (coming soon)</a>
+        </div>
+      </div>
+      <figure class="hero-teaser">
+        <img src="assets/framework.png" alt="PlannerForge framework: eight scenario-based-testing stages driven by LLM agents.">
+        <figcaption><b>The PlannerForge framework.</b> A chatbot-driven interface routes user intent across the full testing pipeline, unifying the six Riedmaier stages with two LLM-era stages. <i>Click the figure to enlarge.</i></figcaption>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<!-- Pipeline strip -->
+<section class="pipe" id="framework">
+  <div class="wrap">
+    <div class="pipe-inner">
+      <div class="stages">
+        <div class="stage"><span class="i">1</span>Scenario Source</div>
+        <div class="stage"><span class="i">2</span>Generation</div>
+        <div class="stage"><span class="i">3</span>Database</div>
+        <div class="stage"><span class="i">4</span>Selection</div>
+        <div class="stage"><span class="i">5</span>Test Execution</div>
+        <div class="stage"><span class="i">6</span>ADS Assessment</div>
+        <div class="stage new"><span class="i">+</span>ADS Enhancement</div>
+        <div class="stage new"><span class="i">+</span>ADS Benchmarking</div>
+      </div>
+      <p class="legend">Stages&nbsp;1&ndash;6 follow the Riedmaier scenario-based-testing taxonomy; <b>+</b>&nbsp;marks the two LLM-era stages introduced by PlannerForge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contributions -->
+<section id="contributions">
+  <div class="wrap">
+    <span class="kicker">What's New</span>
+    <h2>Key Contributions</h2>
+    <ul class="findings">
+      <li><b>End-to-end LLM framework.</b> To our knowledge the first framework to unify all six Riedmaier scenario-based-testing stages together with two LLM-era stages (ADS Enhancement, ADS Benchmarking) in a single chatbot-driven pipeline.</li>
+      <li><b>Empirical evaluation.</b> Ten off-the-shelf LLM backends (five commercial, five open-source; reasoning and non-reasoning) across the five core framework tasks under five prompt conditions &mdash; without any domain-specific fine-tuning.</li>
+      <li><b>Cross-planner benchmark.</b> A multi-planner interface (Frenetix and MP-RBFN) for comparative evaluation on framework-generated and -modified scenarios.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Abstract -->
+<section class="abstract" id="abstract">
+  <div class="wrap">
+    <span class="kicker">Overview</span>
+    <h2>Abstract</h2>
+    <p>
+      Ensuring autonomous-driving safety is a critical challenge. Scenario-based testing is the systematic process used to validate autonomous-driving systems (ADS), but it remains a fragmented modular pipeline in which scenario generation, retrieval, modification, ADS execution, and result analysis are performed by separate tools with little interaction. LLM agents have shown promise across ADS sub-systems such as perception, planning, and control; however, to our knowledge no prior work covers this scenario-based testing pipeline for ADS as a single LLM-agent framework. We present <b>PlannerForge</b>, an LLM-agent framework that extends all six scenario-based-testing stages (Scenario Generation through ADS Assessment) with two further LLM-era stages, ADS Enhancement and ADS Benchmarking, and integrates two open-source motion planners (Frenetix and MP-RBFN) under a unified interface. We evaluate PlannerForge with ten off-the-shelf LLMs across the five framework tasks under five prompt conditions; best-per-task scores reach 0.88&ndash;1.00, with open-source 20&ndash;35B backends matching commercial APIs on most tasks. Three chatbot-driven qualitative workflows further demonstrate end-to-end coverage: an LLM-driven scenario modification with a measurable safety-criticality shift, a cost-tuning loop that lifts a motion planner's success rate from 38.0% to 63.2%, and a single-prompt cross-planner batch comparison; together they show that PlannerForge can be driven by off-the-shelf LLM agents without domain-specific fine-tuning.
+    </p>
+  </div>
+</section>
+
+<!-- Highlights -->
+<section id="highlights">
+  <div class="wrap">
+    <div class="panel">
+      <div class="stats">
+        <div class="stat"><div class="num">8</div><div class="lab">unified pipeline stages</div></div>
+        <div class="stat"><div class="num">10</div><div class="lab">off-the-shelf LLMs<br>(5 open &middot; 5 commercial)</div></div>
+        <div class="stat"><div class="num">0.88&ndash;1.00</div><div class="lab">best-per-task scores</div></div>
+        <div class="stat"><div class="num">2</div><div class="lab">integrated motion planners</div></div>
+      </div>
+      <div class="models">
+        <div class="mrow">
+          <span class="mlab">Cloud APIs</span>
+          <span class="mchip">Qwen3.6-plus</span>
+          <span class="mchip">DeepSeek-v3.2</span>
+          <span class="mchip">GLM-5</span>
+          <span class="mchip">Gemini-3-flash</span>
+          <span class="mchip">GPT-5.4-mini</span>
+        </div>
+        <div class="mrow">
+          <span class="mlab">Open-source (Ollama)</span>
+          <span class="mchip open">Qwen3.6:35B</span>
+          <span class="mchip open">Gemma4:31B</span>
+          <span class="mchip open">GPT-oss:20B</span>
+          <span class="mlab" style="text-transform:none;letter-spacing:0">think / no-think variants</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Chatbot Demo -->
+<section id="demo">
+  <div class="wrap">
+    <span class="kicker">Live Walkthrough</span>
+    <h2>Chatbot Demo</h2>
+    <p class="vdemo-intro">Seven natural-language workflows, driven end to end through the PlannerForge chatbot. Follow the pipeline in order &mdash; <b>generate</b> a scenario from a text query or from a map input, <b>select</b> one from the database, <b>modify</b> it, <b>execute</b> it in the motion planner under test, <b>assess</b> the results, then <b>enhance</b> the planner &mdash; or jump to any step.</p>
+    <div class="vdemo">
+      <div class="vdemo-steps" role="tablist" aria-label="Demo steps">
+        <button class="vdemo-step active" role="tab" data-i="0"><span class="i">1</span>Scenario Generation (Text)</button>
+        <button class="vdemo-step" role="tab" data-i="1"><span class="i">2</span>Scenario Generation (Map)</button>
+        <button class="vdemo-step" role="tab" data-i="2"><span class="i">3</span>Scenario Selection</button>
+        <button class="vdemo-step" role="tab" data-i="3"><span class="i">4</span>Scenario Modification</button>
+        <button class="vdemo-step" role="tab" data-i="4"><span class="i">5</span>Test Execution</button>
+        <button class="vdemo-step" role="tab" data-i="5"><span class="i">6</span>ADS Assessment</button>
+        <button class="vdemo-step" role="tab" data-i="6"><span class="i">7</span>ADS Enhancement</button>
+      </div>
+      <div class="vdemo-stage">
+        <video id="vdemo-video" playsinline muted controls preload="metadata" aria-label="PlannerForge demo video">
+          <source id="vdemo-src" src="Generation_text.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <p class="vdemo-cap" id="vdemo-cap"></p>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var V=[
+    {file:"Generation_text.mp4",       cap:"<b>1 &middot; Scenario Generation (Text).</b> From a single natural-language text query &mdash; a place, the desired traffic, and the ego role &mdash; PlannerForge geocodes the location, builds the road network, populates traffic, and renders a runnable CommonRoad scenario."},
+    {file:"Generation_map.mp4",        cap:"<b>2 &middot; Scenario Generation (Map).</b> Driven by a map input instead of a place name &mdash; the user supplies the map, and PlannerForge builds the road network from it, populates the traffic and ego role described in the prompt, and renders a runnable CommonRoad scenario."},
+    {file:"Selection.mp4",             cap:"<b>3 &middot; Scenario Selection.</b> The chatbot retrieves a matching scenario from the database by description &mdash; location, road type, obstacles, and dynamics &mdash; and returns the best-ranked candidates."},
+    {file:"Scenario_Modification.mp4", cap:"<b>4 &middot; Scenario Modification.</b> A natural-language edit &mdash; rerouting a vehicle, adding or removing traffic, changing driving behavior, or moving the ego goal &mdash; is applied to a selected scenario and re-simulated. The clip also shows single-scenario motion-planner testing, comparing the planner's result before and after the ego-goal modification."},
+    {file:"Test_Execution.mp4",        cap:"<b>5 &middot; Test Execution.</b> The chatbot runs a scenario through an integrated motion planner (Frenetix or MP-RBFN) and plays back the resulting ego trajectory, surfacing the planner's behavior and outcome for the scenario under test."},
+    {file:"ADS_Assessment.mp4",        cap:"<b>6 &middot; ADS Assessment.</b> The chatbot assesses the motion planner's results &mdash; batch simulations over scenario sets, success and collision statistics, and failure-reason breakdowns &mdash; and answers questions about the planner's performance in natural language."},
+    {file:"ADS_Enhancement.mp4",       cap:"<b>7 &middot; ADS Enhancement.</b> The chatbot improves the motion planner itself &mdash; an LLM-driven cost- and parameter-tuning loop that iterates on the planner's configuration and re-runs the scenarios, lifting its success rate on the set."}
+  ];
+  var vid=document.getElementById('vdemo-video'),
+      src=document.getElementById('vdemo-src'),
+      cap=document.getElementById('vdemo-cap'),
+      steps=Array.prototype.slice.call(document.querySelectorAll('.vdemo-step')),
+      cur=-1, programmatic=false, userPaused=false;
+
+  function load(i, play){
+    if(i!==cur){
+      cur=i;
+      steps.forEach(function(s,k){ s.classList.toggle('active', k===i); });
+      src.setAttribute('src', V[i].file);
+      cap.innerHTML=V[i].cap;
+      vid.load();
+    }
+    if(play){ userPaused=false; vid.muted=true; var p=vid.play(); if(p&&p.catch){ p.catch(function(){}); } }
+  }
+
+  steps.forEach(function(s){
+    s.addEventListener('click', function(){ load(parseInt(s.getAttribute('data-i'),10), true); });
+  });
+
+  // play/pause bookkeeping so we don't fight a user who deliberately paused
+  vid.addEventListener('pause', function(){ if(!programmatic && !vid.ended) userPaused=true; });
+  vid.addEventListener('play',  function(){ userPaused=false; });
+
+  // auto-advance through the pipeline
+  vid.addEventListener('ended', function(){ load((cur+1)%V.length, true); });
+
+  // only play while the demo is on screen
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){ if(!userPaused && vid.paused){ vid.muted=true; vid.play().catch(function(){}); } }
+        else if(!vid.paused){ programmatic=true; vid.pause(); programmatic=false; }
+      });
+    }, {threshold:.35}).observe(document.querySelector('.vdemo-stage'));
+  }
+
+  load(0, false); // preload step 1; playback starts when scrolled into view
+})();
+</script>
+
+<!-- Results -->
+<section id="results">
+  <div class="wrap">
+    <span class="kicker">Evaluation</span>
+    <h2>Results</h2>
+    <figure>
+      <img src="assets/results_tasks.png" alt="Per-task performance of ten LLM backends across the five framework tasks.">
+      <figcaption><b>Per-task performance.</b> Best-per-task scores reach 0.88&ndash;1.00, with open-source 20&ndash;35B backends matching commercial APIs on most tasks.</figcaption>
+    </figure>
+    <ul class="findings" style="margin-top:30px">
+      <li><b>Generation.</b> GLM-5 with <code>cp&middot;cot</code> reaches <b>0.957</b> (+0.174 over its bare baseline) &mdash; context prompting plus chain-of-thought nearly saturates intent parsing.</li>
+      <li><b>Selection &mdash; the hardest task.</b> Qwen3.6-plus with <code>cp&middot;cot</code> achieves <b>0.880</b> joint slot satisfaction, up from a 0.180 baseline (+0.700); the strict five-stage filter fails if any extracted slot is wrong.</li>
+      <li><b>Modification.</b> Qwen3.6-plus with <code>cp&middot;icl&middot;cot</code> reaches <b>&asymp;100%</b> on the headline checks of all four sub-tasks (Trajectory, Behaviour, Population, Goal).</li>
+      <li><b>Open beats expectations.</b> Open-source 20&ndash;35B models match commercial APIs on most tasks &mdash; Qwen3.6:35B matches them on three of the five.</li>
+      <li><b>Cost-tuning loop.</b> An LLM-driven cost-tuning workflow lifts Frenetix's success rate from <b>38.0%&nbsp;&rarr;&nbsp;63.2%</b> on the same scenario set.</li>
+      <li><b>Safety-criticality shift.</b> LLM-driven scenario modification produces a measurable shift in scenario safety-criticality (behaviour-task edit).</li>
+      <li><b>Single-prompt batch comparison.</b> One prompt drives a full cross-planner batch: Frenetix <b>67%</b> success at 8.4&nbsp;s/scenario vs MP-RBFN <b>50%</b> at 7.6&nbsp;s.</li>
+    </ul>
+
+    <div class="grid2" style="margin-top:34px">
+      <figure>
+        <img src="assets/cross_planner_frenetix.png" alt="Cross-planner results: Frenetix.">
+        <figcaption><b>Cross-planner &mdash; Frenetix.</b></figcaption>
+      </figure>
+      <figure>
+        <img src="assets/cross_planner_rbfn.png" alt="Cross-planner results: MP-RBFN.">
+        <figcaption><b>Cross-planner &mdash; MP-RBFN.</b></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Prompts -->
+<section id="prompts">
+  <div class="wrap">
+    <div class="panel">
+    <span class="kicker">Under the Hood</span>
+    <h2>Prompts</h2>
+    <p class="pe-intro">
+      Every framework task is driven by off-the-shelf LLMs under <b>five prompt conditions</b> &mdash; a cumulative ablation from a minimal <code>baseline</code> up to the full <code>cp&middot;icl&middot;cot</code>. Pick a task, a prompt component, and two conditions to see exactly what each layer adds.
+    </p>
+
+    <div class="pe-gloss">
+      <div class="g">
+        <span class="t"><b>cp</b> &middot; Context Prompt</span>
+        <p>Adds task context &mdash; the full role, output schema, and constraints &mdash; on top of the minimal <code>baseline</code> directive.</p>
+      </div>
+      <div class="g">
+        <span class="t"><b>icl</b> &middot; In-Context Learning</span>
+        <p>Few-shot worked examples (input&nbsp;&rarr;&nbsp;expected output) appended to the prompt so the model imitates the target format.</p>
+      </div>
+      <div class="g">
+        <span class="t"><b>cot</b> &middot; Chain-of-Thought</span>
+        <p>Explicit step-by-step reasoning guidance before the final answer, to improve accuracy on harder cases.</p>
+      </div>
+    </div>
+
+    <p class="pe-tcap">Each task is driven by one or more <b>system-prompt components</b>, and every component exists in all <b>5 conditions</b>.</p>
+    <div class="pe-table-wrap">
+      <table class="pe-table">
+        <thead>
+          <tr><th>Task</th><th>Prompt components</th><th class="num">&times; Conditions</th><th class="num">Prompts</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Generation</td><td class="comp"><code>osm_intent</code><span class="badge-n">1</span></td><td class="num">5</td><td class="num">5</td></tr>
+          <tr><td>Selection</td><td class="comp"><code>location</code> <code>obstacles</code> <code>road_net</code> <code>tags</code> <code>velocity</code><span class="badge-n">5</span></td><td class="num">5</td><td class="num">25</td></tr>
+          <tr class="grp"><td>Modification &mdash; T</td><td class="comp"><code>manipulation_trajectory</code> <code>net_analysis</code><span class="badge-n">2</span></td><td class="num">5</td><td class="num">10</td></tr>
+          <tr class="grp"><td>Modification &mdash; B</td><td class="comp"><code>manipulation_behavior</code> <code>net_analysis</code><span class="badge-n">2</span></td><td class="num">5</td><td class="num">10</td></tr>
+          <tr class="grp"><td>Modification &mdash; G</td><td class="comp"><code>goal_extraction</code><span class="badge-n">1</span></td><td class="num">5</td><td class="num">5</td></tr>
+          <tr class="grp"><td>Modification &mdash; P_add</td><td class="comp"><code>manipulation_add</code> <code>net_analysis</code><span class="badge-n">2</span></td><td class="num">5</td><td class="num">10</td></tr>
+          <tr class="grp"><td>Modification &mdash; P_remove</td><td class="comp"><code>manipulation_remove</code> <code>net_analysis</code><span class="badge-n">2</span></td><td class="num">5</td><td class="num">10</td></tr>
+          <tr><td>Planner Enhancement</td><td class="comp"><code>planner_param</code><span class="badge-n">1</span></td><td class="num">5</td><td class="num">5</td></tr>
+          <tr><td>Module Router</td><td class="comp"><code>module_router</code><span class="badge-n">1</span></td><td class="num">5</td><td class="num">5</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total</td><td>17 components</td><td class="num">&times;5</td><td class="num">&asymp;85</td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <h3 class="pe-subh">The modules these prompts drive</h3>
+    <div class="wf-wrap">
+      <svg viewBox="0 0 1000 400" font-family="'Inter',sans-serif" role="img" aria-label="PlannerForge router-centric workflow">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0f5c74"/>
+          </marker>
+          <marker id="bi" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto-start-reverse" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0f5c74"/>
+          </marker>
+        </defs>
+
+        <text x="500" y="18" text-anchor="middle" font-size="11" fill="#93a3ac">Free-form, intent-classified routing &mdash; modules are invoked on demand, not in a fixed order.</text>
+
+        <!-- spokes (bidirectional) drawn first so nodes sit on top -->
+        <!-- top -->
+        <line x1="442" y1="160" x2="150" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <line x1="480" y1="160" x2="348" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <line x1="532" y1="160" x2="664" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <line x1="570" y1="160" x2="862" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <!-- bottom -->
+        <line x1="442" y1="240" x2="150" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <line x1="480" y1="240" x2="348" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <line x1="532" y1="240" x2="664" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+        <line x1="570" y1="240" x2="862" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
+
+        <!-- User -->
+        <rect x="16" y="176" width="104" height="46" rx="11" fill="#fff" stroke="#d0dbe2"/>
+        <text x="68" y="197" text-anchor="middle" font-size="14" font-weight="600" fill="#16232b">User</text>
+        <text x="68" y="212" text-anchor="middle" font-size="10" fill="#5c6b74">natural-language query</text>
+        <line x1="120" y1="199" x2="402" y2="199" stroke="#0f5c74" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- Router (hub) -->
+        <rect x="406" y="158" width="200" height="82" rx="16" fill="#e4eff3" stroke="#0f5c74" stroke-width="2"/>
+        <text x="506" y="190" text-anchor="middle" font-size="14.5" font-weight="700" fill="#16232b">Chatbot &middot; Module Router</text>
+        <text x="506" y="209" text-anchor="middle" font-size="10" fill="#5c6b74">two-stage function-call routing</text>
+        <text x="506" y="225" text-anchor="middle" font-size="10" fill="#5c6b74">memory &middot; free-form intent</text>
+
+        <!-- top modules -->
+        <g>
+          <rect x="80" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
+          <text x="150" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Generation</text>
+          <text x="150" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">OSM &rarr; scenario</text>
+        </g>
+        <g>
+          <rect x="278" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
+          <text x="348" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Selection</text>
+          <text x="348" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">retrieve from DB</text>
+        </g>
+        <g>
+          <rect x="594" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
+          <text x="664" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Modification</text>
+          <text x="664" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">edit objects &amp; behaviour</text>
+        </g>
+        <g>
+          <rect x="792" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
+          <text x="862" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Q&amp;A</text>
+          <text x="862" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">general questions</text>
+        </g>
+
+        <!-- bottom modules -->
+        <g>
+          <rect x="80" y="300" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
+          <text x="150" y="324" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Test Execution</text>
+          <text x="150" y="340" text-anchor="middle" font-size="9.5" fill="#5c6b74">Frenetix &middot; MP-RBFN</text>
+        </g>
+        <g>
+          <rect x="278" y="300" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
+          <text x="348" y="324" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Result Analysis</text>
+          <text x="348" y="340" text-anchor="middle" font-size="9.5" fill="#5c6b74">ADS assessment</text>
+        </g>
+        <g>
+          <rect x="594" y="300" width="140" height="52" rx="12" fill="#0f5c74"/>
+          <text x="664" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">ADS Enhancement</text>
+          <text x="664" y="340" text-anchor="middle" font-size="9.5" fill="#cfe1e8">cost-tuning loop</text>
+        </g>
+        <g>
+          <rect x="792" y="300" width="140" height="52" rx="12" fill="#0f5c74"/>
+          <text x="862" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">ADS Benchmarking</text>
+          <text x="862" y="340" text-anchor="middle" font-size="9.5" fill="#cfe1e8">cross-planner batch</text>
+        </g>
+      </svg>
+    </div>
+    <div class="wf-legend">
+      <span><span style="display:inline-block;width:13px;height:13px;border-radius:3px;background:#0f5c74;margin-right:7px;"></span>LLM-era modules (Enhancement &amp; Benchmarking)</span>
+      <span><b style="color:#0f5c74;margin-right:6px;font-size:15px;">&#8596;</b>two-way: the router calls a module and receives its result, then re-routes</span>
+    </div>
+    <div class="pe-controls">
+      <div class="pe-field">
+        <label for="pe-task">Task</label>
+        <select id="pe-task"></select>
+      </div>
+      <div class="pe-field">
+        <label for="pe-comp">Component</label>
+        <select id="pe-comp"></select>
+      </div>
+      <div class="pe-field">
+        <label for="pe-base">Base</label>
+        <select id="pe-base"></select>
+      </div>
+      <div class="pe-field">
+        <label for="pe-cmp">Compare</label>
+        <select id="pe-cmp"></select>
+      </div>
+    </div>
+
+    <div class="pe-legend">
+      <span><span class="sw sw-add"></span>added in&nbsp;<i>Compare</i></span>
+      <span><span class="sw sw-del"></span>only in&nbsp;<i>Base</i></span>
+    </div>
+
+    <div class="pe-diff">
+      <div class="pe-heads">
+        <div class="pe-colhead"><span id="pe-base-h">Base</span><button class="pe-copy" id="pe-copy-base">Copy</button></div>
+        <div class="pe-colhead"><span id="pe-cmp-h">Compare</span><button class="pe-copy" id="pe-copy-cmp">Copy</button></div>
+      </div>
+      <div class="pe-body"><div class="pe-rows" id="pe-rows"></div></div>
+    </div>
+    <p class="pe-meta" id="pe-meta">Loading prompts&hellip;</p>
+    </div>
+  </div>
+</section>
+
+<!-- BibTeX -->
+<section id="bibtex">
+  <div class="wrap">
+    <span class="kicker">Cite</span>
+    <h2>BibTeX</h2>
+    <pre>@inproceedings{gao2026plannerforge,
+  title     = {PlannerForge: LLM Agents for Scenario-Based Testing of
+               Motion Planners in Autonomous Driving},
+  author    = {Gao, Yuan and M{\"u}ller, Sebastian and Piccinini, Mattia and
+               Kaufeld, Marc and Zhang, Yuchen and Sch{\"a}fer, Finn Rasmus and
+               Song, Qunying and Betz, Johannes},
+  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in
+               Natural Language Processing (EMNLP)},
+  year      = {2026},
+  address   = {Budapest, Hungary},
+  note      = {Code and data:
+               https://github.com/TUM-AVS/PlannerForge}
+}</pre>
+    <p class="anon-note">Accepted to the EMNLP 2026 Main Conference. Code and data will be released at <a href="https://github.com/TUM-AVS/PlannerForge">github.com/TUM-AVS/PlannerForge</a>; the code upload is still in progress.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    PlannerForge &middot; Professorship of Autonomous Vehicle Systems, Technical University of Munich &middot; <a href="#abstract">back to top</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var CLABEL = {baseline:"baseline", cp:"cp", cp_cot:"cp·cot", cp_icl:"cp·icl", cp_icl_cot:"cp·icl·cot"};
+  var $ = function(id){ return document.getElementById(id); };
+  var DATA = null, CUR = {base:"baseline", cmp:"cp_icl_cot"};
+
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  // LCS line diff -> aligned rows [{t:'eq'|'add'|'del', l, r, li, ri}]
+  function diffLines(a, b){
+    var A = a.split("\n"), B = b.split("\n"), n = A.length, m = B.length;
+    var dp = [];
+    for (var i=0;i<=n;i++){ dp.push(new Int32Array(m+1)); }
+    for (var i=n-1;i>=0;i--){
+      for (var j=m-1;j>=0;j--){
+        dp[i][j] = (A[i]===B[j]) ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j], dp[i][j+1]);
+      }
+    }
+    var rows = [], i=0, j=0;
+    while (i<n && j<m){
+      if (A[i]===B[j]){ rows.push({t:"eq", l:A[i], r:B[j], li:i, ri:j}); i++; j++; }
+      else if (dp[i+1][j] >= dp[i][j+1]){ rows.push({t:"del", l:A[i], li:i}); i++; }
+      else { rows.push({t:"add", r:B[j], ri:j}); j++; }
+    }
+    while (i<n){ rows.push({t:"del", l:A[i], li:i}); i++; }
+    while (j<m){ rows.push({t:"add", r:B[j], ri:j}); j++; }
+    return rows;
+  }
+
+  function cell(num, text, cls){
+    var ln = (num===null) ? "" : (num+1);
+    return '<div class="pe-cell '+cls+'"><div class="ln">'+ln+'</div><div class="tx">'+(text===""?"&nbsp;":esc(text))+'</div></div>';
+  }
+
+  function curComp(){
+    var t = DATA.tasks.find(function(x){return x.id===$("pe-task").value;});
+    var c = t.components.find(function(x){return x.id===$("pe-comp").value;});
+    return c;
+  }
+
+  function render(){
+    var c = curComp();
+    var bt = c.conditions[CUR.base], ct = c.conditions[CUR.cmp];
+    if (bt==null || ct==null){ $("pe-rows").innerHTML=""; $("pe-meta").textContent="(condition unavailable for this component)"; return; }
+    var rows = diffLines(bt, ct), html = "", adds=0, dels=0;
+    for (var k=0;k<rows.length;k++){
+      var r = rows[k];
+      if (r.t==="eq"){ html += cell(r.li, r.l, "") + cell(r.ri, r.r, ""); }
+      else if (r.t==="del"){ html += cell(r.li, r.l, "pe-del") + cell(null, "", "pe-blank"); dels++; }
+      else { html += cell(null, "", "pe-blank") + cell(r.ri, r.r, "pe-add"); adds++; }
+    }
+    $("pe-rows").innerHTML = html;
+    $("pe-base-h").innerHTML = "Base: <b>"+CLABEL[CUR.base]+"</b> <span class='ck'>"+bt.length.toLocaleString()+" ch</span>";
+    $("pe-cmp-h").innerHTML  = "Compare: <b>"+CLABEL[CUR.cmp]+"</b> <span class='ck'>"+ct.length.toLocaleString()+" ch</span>";
+    $("pe-meta").innerHTML = "<b>"+adds+"</b> lines added, <b>"+dels+"</b> removed · "
+      + (CUR.base===CUR.cmp ? "identical selection" : CLABEL[CUR.base]+" → "+CLABEL[CUR.cmp]);
+  }
+
+  function fillConds(sel, val){
+    sel.innerHTML = DATA.conditions.map(function(c){
+      return '<option value="'+c+'"'+(c===val?" selected":"")+'>'+CLABEL[c]+'</option>';
+    }).join("");
+  }
+
+  function fillComps(){
+    var t = DATA.tasks.find(function(x){return x.id===$("pe-task").value;});
+    $("pe-comp").innerHTML = t.components.map(function(c){
+      return '<option value="'+c.id+'">'+c.label+'</option>';
+    }).join("");
+  }
+
+  function init(data){
+    DATA = data;
+    $("pe-task").innerHTML = DATA.tasks.map(function(t){
+      return '<option value="'+t.id+'">'+t.label+'</option>';
+    }).join("");
+    fillComps();
+    fillConds($("pe-base"), CUR.base);
+    fillConds($("pe-cmp"), CUR.cmp);
+    $("pe-task").onchange = function(){ fillComps(); render(); };
+    $("pe-comp").onchange = render;
+    $("pe-base").onchange = function(){ CUR.base = this.value; render(); };
+    $("pe-cmp").onchange  = function(){ CUR.cmp = this.value; render(); };
+    function copyOf(which){ return function(){
+      var c = curComp(), txt = c.conditions[which==="base"?CUR.base:CUR.cmp] || "";
+      navigator.clipboard.writeText(txt).then(function(){
+        var b = which==="base"?$("pe-copy-base"):$("pe-copy-cmp");
+        var o=b.textContent; b.textContent="Copied!"; setTimeout(function(){b.textContent=o;},1200);
+      });
+    };}
+    $("pe-copy-base").onclick = copyOf("base");
+    $("pe-copy-cmp").onclick  = copyOf("cmp");
+    render();
+  }
+
+  fetch("assets/prompts.json").then(function(r){ return r.json(); }).then(init).catch(function(e){
+    $("pe-meta").textContent = "Could not load prompts.json ("+e+")";
+  });
+})();
+</script>
+
+<!-- Figure lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Enlarged figure">
+  <img id="lb-img" alt="">
+  <span class="lb-hint">click anywhere or press Esc to close</span>
+</div>
+<script>
+(function(){
+  var lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img');
+  // every content figure image is enlargeable (videos excluded)
+  var imgs = document.querySelectorAll('figure img');
+  imgs.forEach(function(im){
+    im.classList.add('zoomable');
+    im.addEventListener('click', function(){
+      lbImg.src = im.src; lbImg.alt = im.alt || '';
+      lb.classList.add('open');
+    });
+  });
+  function close(){ lb.classList.remove('open'); lbImg.src = ''; }
+  lb.addEventListener('click', close);
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+})();
+</script>
+
+</body>
+</html>
