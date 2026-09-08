@@ -149,10 +149,6 @@
   /* ---- Video demo ---- */
 
   /* ---- Workflow diagram ---- */
-  .wf-wrap{max-width:1000px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 18px}
-  .wf-wrap svg{width:100%;height:auto;display:block}
-  .wf-legend{display:flex;gap:22px;justify-content:center;align-items:center;font-size:13px;color:var(--muted);margin-top:14px;flex-wrap:wrap}
-  .wf-legend span{display:inline-flex;align-items:center}
   .pe-subh{text-align:center;font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:22px;margin:8px 0 16px;color:var(--fg)}
 
   /* ---- Prompt Explorer ---- */
@@ -286,8 +282,11 @@
   .facet .gl{stroke:var(--grid);stroke-width:1}
   .facet .tick{font-size:9px;fill:var(--ink2)}
   .facet .vlab{font-size:9px;fill:var(--ink2);text-transform:none;letter-spacing:0}
-  .facet .dot{stroke:#fff;stroke-width:2;cursor:pointer}
-  .facet .dot.dim{opacity:.16}
+  .facet .bar{cursor:pointer}
+  .facet .bar.dim{opacity:.18}
+  .facet .mk{opacity:.95}
+  .facet .mk.dim{opacity:.16}
+  .facet .brk{stroke:var(--ink2);stroke-width:1.2;fill:none;opacity:.55}
   .facet .best{font-size:10px;font-weight:700;fill:var(--ink)}
   .viz-note{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.6}
   .viz-tip{position:fixed;z-index:70;pointer-events:none;background:#152028;color:#eaf1f5;
@@ -650,11 +649,12 @@
     <p class="table-note" id="n-task"></p>
 
     <h3 class="subh">Best score per model across the eight slices</h3>
-    <p class="subh-note">Each panel is one task slice; each dot is one model at its best prompt
-      condition. Hover a dot for the exact value and the condition that reached it,
-      <b>click a panel</b> to enlarge it with model labels, and <b>click a dot</b> to follow that
-      model across all eight panels. Scales are zoomed to each panel's range &mdash; all 80 values
-      lie between 0.64 (Selection) and 1.00.</p>
+    <p class="subh-note">Each panel is one task slice; each bar is one model at its best prompt
+      condition, with its provider's mark above it. Hover a bar for the exact value and the
+      condition that reached it, <b>click a panel</b> to enlarge it with model labels, and
+      <b>click a bar</b> to follow that model across all eight panels. All 80 values lie between
+      0.64 (Selection) and 1.00, so each panel's scale is zoomed to its own range: bars start at
+      the panel floor, not at zero (marked by the break on the axis).</p>
 
     <div class="viz" id="viz">
       <div class="viz-bar">
@@ -754,93 +754,6 @@
       </table>
     </div>
 
-    <h3 class="pe-subh">The modules these prompts drive</h3>
-    <div class="wf-wrap">
-      <svg viewBox="0 0 1000 400" font-family="'Inter',sans-serif" role="img" aria-label="PlannerForge router-centric workflow">
-        <defs>
-          <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#0f5c74"/>
-          </marker>
-          <marker id="bi" markerWidth="8" markerHeight="8" refX="5.5" refY="3" orient="auto-start-reverse" markerUnits="strokeWidth">
-            <path d="M0,0 L6,3 L0,6 Z" fill="#0f5c74"/>
-          </marker>
-        </defs>
-
-        <text x="500" y="18" text-anchor="middle" font-size="11" fill="#93a3ac">Free-form, intent-classified routing &mdash; modules are invoked on demand, not in a fixed order.</text>
-
-        <!-- spokes (bidirectional) drawn first so nodes sit on top -->
-        <!-- top -->
-        <line x1="442" y1="160" x2="150" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <line x1="480" y1="160" x2="348" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <line x1="532" y1="160" x2="664" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <line x1="570" y1="160" x2="862" y2="98" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <!-- bottom -->
-        <line x1="442" y1="240" x2="150" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <line x1="480" y1="240" x2="348" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <line x1="532" y1="240" x2="664" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-        <line x1="570" y1="240" x2="862" y2="300" stroke="#0f5c74" stroke-width="1.6" marker-start="url(#bi)" marker-end="url(#bi)"/>
-
-        <!-- User -->
-        <rect x="16" y="176" width="104" height="46" rx="11" fill="#fff" stroke="#d0dbe2"/>
-        <text x="68" y="197" text-anchor="middle" font-size="14" font-weight="600" fill="#16232b">User</text>
-        <text x="68" y="212" text-anchor="middle" font-size="10" fill="#5c6b74">natural-language query</text>
-        <line x1="120" y1="199" x2="402" y2="199" stroke="#0f5c74" stroke-width="2" marker-end="url(#ah)"/>
-
-        <!-- Router (hub) -->
-        <rect x="406" y="158" width="200" height="82" rx="16" fill="#e4eff3" stroke="#0f5c74" stroke-width="2"/>
-        <text x="506" y="190" text-anchor="middle" font-size="14.5" font-weight="700" fill="#16232b">Chatbot &middot; Module Router</text>
-        <text x="506" y="209" text-anchor="middle" font-size="10" fill="#5c6b74">two-stage function-call routing</text>
-        <text x="506" y="225" text-anchor="middle" font-size="10" fill="#5c6b74">memory &middot; free-form intent</text>
-
-        <!-- top modules -->
-        <g>
-          <rect x="80" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
-          <text x="150" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Generation</text>
-          <text x="150" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">OSM &rarr; scenario</text>
-        </g>
-        <g>
-          <rect x="278" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
-          <text x="348" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Selection</text>
-          <text x="348" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">retrieve from DB</text>
-        </g>
-        <g>
-          <rect x="594" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
-          <text x="664" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Modification</text>
-          <text x="664" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">edit objects &amp; behaviour</text>
-        </g>
-        <g>
-          <rect x="792" y="46" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
-          <text x="862" y="70" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Q&amp;A</text>
-          <text x="862" y="86" text-anchor="middle" font-size="9.5" fill="#5c6b74">general questions</text>
-        </g>
-
-        <!-- bottom modules -->
-        <g>
-          <rect x="80" y="300" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
-          <text x="150" y="324" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Test Execution</text>
-          <text x="150" y="340" text-anchor="middle" font-size="9.5" fill="#5c6b74">Frenetix &middot; MP-RBFN</text>
-        </g>
-        <g>
-          <rect x="278" y="300" width="140" height="52" rx="12" fill="#fff" stroke="#d0dbe2"/>
-          <text x="348" y="324" text-anchor="middle" font-size="13" font-weight="600" fill="#16232b">Result Analysis</text>
-          <text x="348" y="340" text-anchor="middle" font-size="9.5" fill="#5c6b74">ADS assessment</text>
-        </g>
-        <g>
-          <rect x="594" y="300" width="140" height="52" rx="12" fill="#0f5c74"/>
-          <text x="664" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">ADS Enhancement</text>
-          <text x="664" y="340" text-anchor="middle" font-size="9.5" fill="#cfe1e8">cost-tuning loop</text>
-        </g>
-        <g>
-          <rect x="792" y="300" width="140" height="52" rx="12" fill="#0f5c74"/>
-          <text x="862" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">ADS Benchmarking</text>
-          <text x="862" y="340" text-anchor="middle" font-size="9.5" fill="#cfe1e8">cross-planner batch</text>
-        </g>
-      </svg>
-    </div>
-    <div class="wf-legend">
-      <span><span style="display:inline-block;width:13px;height:13px;border-radius:3px;background:#0f5c74;margin-right:7px;"></span>LLM-era modules (Enhancement &amp; Benchmarking)</span>
-      <span><b style="color:#0f5c74;margin-right:6px;font-size:15px;">&#8596;</b>two-way: the router calls a module and receives its result, then re-routes</span>
-    </div>
     <div class="pe-controls">
       <div class="pe-field">
         <label for="pe-task">Task</label>
@@ -883,17 +796,12 @@
     <span class="kicker">Cite</span>
     <h2>BibTeX</h2>
     <pre>@inproceedings{gao2026plannerforge,
-  title     = {PlannerForge: LLM Agents for Scenario-Based Testing of
-               Motion Planners in Autonomous Driving},
-  author    = {Gao, Yuan and M{\"u}ller, Sebastian and Piccinini, Mattia and
-               Kaufeld, Marc and Zhang, Yuchen and Sch{\"a}fer, Finn Rasmus and
-               Song, Qunying and Betz, Johannes},
-  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in
-               Natural Language Processing (EMNLP)},
+  title     = {PlannerForge: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving},
+  author    = {Gao, Yuan and M{\"u}ller, Sebastian and Piccinini, Mattia and Kaufeld, Marc and Zhang, Yuchen and Sch{\"a}fer, Finn Rasmus and Song, Qunying and Betz, Johannes},
+  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
   year      = {2026},
   address   = {Budapest, Hungary},
-  note      = {Code and data:
-               https://github.com/TUM-AVS/PlannerForge}
+  note      = {Code and data: https://github.com/TUM-AVS/PlannerForge}
 }</pre>
     <p class="anon-note">Accepted to the EMNLP 2026 Main Conference. Code and data will be released at <a href="https://github.com/TUM-AVS/PlannerForge">github.com/TUM-AVS/PlannerForge</a>; the code upload is still in progress.</p>
   </div>
@@ -1210,6 +1118,21 @@
   var PANELS = null, MODELS = null;
 
   function esc(t){ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  // The paper puts a vendor mark above each bar; same mapping here. The four
+  // raster marks are cropped from the paper's own concept figure.
+  var MARK = [
+    [/^Qwen/i,      "assets/logos/models/qwen.png"],
+    [/^Deepseek/i,  "assets/logos/models/deepseek.png"],
+    [/^Glm/i,       "assets/logos/models/zai.png"],
+    [/^Gemini/i,    "assets/logos/models/gemini.png"],
+    [/^Gemma/i,     "assets/logos/models/gemini.png"],
+    [/^Gpt/i,       "assets/logos/models/openai.png"]
+  ];
+  function markOf(model){
+    for(var i=0;i<MARK.length;i++){ if(MARK[i][0].test(model)) return MARK[i][1]; }
+    return null;
+  }
+
   function seriesOf(model, group){
     if(/\(Think\)/.test(model)) return "think";
     return /cloud/i.test(group || "") ? "cloud" : "local";
@@ -1257,8 +1180,9 @@
   function facet(p, zoom){
     var W = panelWidth(zoom), H = zoom ? 372 : 132;
     var padL = zoom ? 54 : 30, padR = zoom ? 20 : 8;
-    var padT = zoom ? 22 : 14, padB = zoom ? 132 : 12;
+    var padT = zoom ? 62 : 42, padB = zoom ? 116 : 12;
     var r    = zoom ? 6 : 4.5;
+    var ic   = zoom ? 26 : 15;          // vendor-mark size
     var fs   = zoom ? 12 : 9;
 
     var shown = MODELS.filter(function(m){
@@ -1299,22 +1223,40 @@
     });
     // dots
     var bestM = shown.reduce(function(a,b){ return p.byModel[b].v > p.byModel[a].v ? b : a; }, shown[0]);
+    var slot = (W - padL - padR) / MODELS.length;
+    var bw   = Math.min(slot * 0.5, zoom ? 30 : 13);
+    var base = Y(y0);
     MODELS.forEach(function(m, i){
       var d = p.byModel[m]; if(!d || ST.off[d.series]) return;
       var col = SERIES.filter(function(s){ return s.key === d.series; })[0].color;
       var dim = ST.model && ST.model !== m ? " dim" : "";
-      var big = (m === bestM) ? 1.6 : 0;
-      out.push('<circle class="dot'+dim+'" cx="'+X(i).toFixed(1)+'" cy="'+Y(d.v).toFixed(1)+'" r="'+(r+big)+'"'
-              +' fill="'+col+'" data-m="'+esc(m)+'" data-p="'+esc(p.key)+'"/>');
+      var x = X(i) - bw / 2, top = Y(d.v), rr = Math.min(4, bw / 2);
+      // top-rounded bar anchored to the panel baseline
+      out.push('<path class="bar'+dim+'" fill="'+col+'" data-m="'+esc(m)+'" data-p="'+esc(p.key)+'"'
+              +' d="M'+x.toFixed(1)+' '+base.toFixed(1)
+              +' V'+(top+rr).toFixed(1)
+              +' a'+rr+' '+rr+' 0 0 1 '+rr+' -'+rr
+              +' h'+(bw-2*rr).toFixed(1)
+              +' a'+rr+' '+rr+' 0 0 1 '+rr+' '+rr
+              +' V'+base.toFixed(1)+' Z"/>');
+      var src = markOf(m);
+      if(src){
+        out.push('<image class="mk'+dim+'" href="'+src+'" x="'+(X(i)-ic/2).toFixed(1)+'"'
+                +' y="'+(top-ic-4).toFixed(1)+'" width="'+ic+'" height="'+ic+'"'
+                +' preserveAspectRatio="xMidYMid meet"/>');
+      }
       if(zoom){
         out.push('<text class="vlab" text-anchor="end"'
                 +' transform="translate('+(X(i)+4).toFixed(1)+','+(H-padB+14)+') rotate(-42)"'
                 +' style="font-size:'+fs+'px">'+esc(m)+'</text>');
       }
     });
+    // the value axis is zoomed, so mark the break at the baseline
+    out.push('<path class="brk" d="M'+(padL-4)+' '+(base-3).toFixed(1)+' l8 -4 M'+(padL-4)+' '
+            +(base+2).toFixed(1)+' l8 -4"/>');
     // direct-label the best only
     var bd = p.byModel[bestM];
-    out.push('<text class="best" x="'+X(MODELS.indexOf(bestM)).toFixed(1)+'" y="'+(Y(bd.v)-r-5).toFixed(1)
+    out.push('<text class="best" x="'+X(MODELS.indexOf(bestM)).toFixed(1)+'" y="'+(Y(bd.v)-ic-10).toFixed(1)
             +'" text-anchor="middle" style="font-size:'+(fs+1)+'px">'+fmt(bd.v)+'</text>');
     out.push('</svg>');
     return out.join("");
@@ -1339,7 +1281,8 @@
     if(ST.model) note.push('Following <b>'+esc(ST.model)+'</b> across all panels.');
     if(zoomed) note.push('Enlarged: <b>'+esc(list[0].label)+'</b> — click the panel again to go back.');
     if(!note.length) note.push('Values are each model’s maximum over the five prompt conditions '
-      + '(baseline → cp_icl_cot), <i>N</i>&nbsp;=&nbsp;200 per cell. The best model in each panel is labelled.');
+      + '(baseline → cp_icl_cot), <i>N</i>&nbsp;=&nbsp;200 per cell. The best model in each panel is labelled. '
+      + 'Bars begin at the panel floor, not zero.');
     $("viz-note").innerHTML = note.join(" ");
     $("viz-table-btn").className = "viz-btn" + (ST.table ? " on" : "");
   }
@@ -1362,7 +1305,7 @@
   function hideTip(){ tip.className = "viz-tip"; }
 
   grid.addEventListener("mousemove", function(e){
-    var c = e.target.closest ? e.target.closest("circle.dot") : null;
+    var c = e.target.closest ? e.target.closest("path.bar") : null;
     if(!c){ hideTip(); return; }
     var p = PANELS.filter(function(x){ return x.key === c.getAttribute("data-p"); })[0];
     var m = c.getAttribute("data-m"), d = p.byModel[m];
@@ -1376,7 +1319,7 @@
   grid.addEventListener("mouseleave", hideTip);
 
   grid.addEventListener("click", function(e){
-    var c = e.target.closest ? e.target.closest("circle.dot") : null;
+    var c = e.target.closest ? e.target.closest("path.bar") : null;
     if(c){                                     // follow this model across panels
       var m = c.getAttribute("data-m");
       ST.model = (ST.model === m) ? null : m;
