@@ -205,6 +205,38 @@
   .anon-note{font-size:13px;color:var(--muted);max-width:760px;margin:18px auto 0;text-align:center}
 
 
+
+  .skip-link{position:absolute;left:-9999px;top:0;z-index:200;background:var(--accent);color:#fff;
+             padding:11px 18px;border-radius:0 0 10px 0;font-size:14px;font-weight:600}
+  .skip-link:focus{left:0;text-decoration:none}
+
+  /* ---- Scroll depth: parallax layers + reveals ----------------------------
+     Small amplitudes on purpose. This is a paper page, so depth should be felt
+     rather than noticed. Only transform/opacity are animated (GPU-safe), and
+     everything collapses to a static page under prefers-reduced-motion. */
+  .hero{position:relative;overflow-x:clip;overflow-y:visible}
+  .atmo{position:absolute;left:-6%;right:-6%;top:-14%;height:78vh;z-index:0;
+        pointer-events:none;opacity:.85;
+        background:radial-gradient(58% 58% at 18% 28%, rgba(234,149,89,.16), transparent 70%),
+                   radial-gradient(46% 52% at 82% 16%, rgba(8,145,178,.11), transparent 72%);
+        filter:blur(30px)}
+  .hero > .wrap{position:relative;z-index:1}
+  .px{will-change:transform}
+
+  .reveal{opacity:0;transform:translate3d(0,20px,0);
+          transition:opacity .68s cubic-bezier(.22,.7,.3,1),transform .68s cubic-bezier(.22,.7,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.dl1{transition-delay:.07s}
+  .reveal.dl2{transition-delay:.14s}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal,.reveal.in{opacity:1;transform:none;transition:none}
+    .px{transform:none!important;will-change:auto}
+    .atmo{display:none}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+                         transition-duration:.01ms!important;scroll-behavior:auto!important}
+  }
+
   /* ---- Shared section furniture ---- */
   .section-intro{max-width:840px;margin:0 auto 28px;text-align:center;font-size:16px;color:#3c4a52;line-height:1.62}
   .subh{font-family:"Newsreader",Georgia,serif;font-size:24px;font-weight:600;text-align:center;margin:46px 0 6px;color:var(--steel)}
@@ -312,6 +344,7 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
 <!-- Sticky nav -->
 <nav class="nav">
@@ -329,7 +362,9 @@
 </nav>
 
 <!-- Hero -->
+<main id="main-content">
 <header class="hero">
+  <div class="atmo px" data-px="-0.16" aria-hidden="true"></div>
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -352,7 +387,7 @@
              title="582 CommonRoad scenarios on Hugging Face"><img class="hf" src="assets/logos/huggingface.svg" alt="" aria-hidden="true"> Dataset</a>
         </div>
       </div>
-      <figure class="hero-teaser">
+      <figure class="hero-teaser px" data-px="0.09">
         <img src="assets/concept.png" alt="PlannerForge overview: LLM agents automate the scenario-based testing pipeline.">
         <figcaption><b>PlannerForge overview.</b> LLM agents automate the scenario-based testing
           pipeline &mdash; generation, selection, modification, test and analysis over a
@@ -381,7 +416,7 @@
 
 <!-- Pipeline strip -->
 <section class="pipe" id="framework">
-  <div class="fw-fig">
+  <div class="fw-fig px" data-px="0.05">
     <figure>
       <img src="assets/framework.png" alt="The PlannerForge framework: six modules driven by a chatbot interface across the eight scenario-based-testing stages.">
       <figcaption><b>The PlannerForge framework.</b> A chatbot-driven interface routes user intent
@@ -806,6 +841,7 @@
     <p class="anon-note">Accepted to the EMNLP 2026 Main Conference. Code and data will be released at <a href="https://github.com/TUM-AVS/PlannerForge">github.com/TUM-AVS/PlannerForge</a>; the code upload is still in progress.</p>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
@@ -1367,6 +1403,88 @@
   }).catch(function(err){
     $("viz-note").textContent = "Could not load results.json (" + err + ").";
   });
+})();
+</script>
+
+<!-- Scroll depth: parallax on flagged layers + one-shot reveals.
+     No library: a single rAF-throttled scroll loop. Disabled entirely for
+     prefers-reduced-motion and for coarse pointers (phones), where parallax
+     costs battery and gains nothing. -->
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var coarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+
+  /* ---------- one-shot reveals ---------- */
+  var REVEAL = [
+    "#contributions .panel", "#abstract .wrap > p", "#highlights .panel",
+    "#demo .section-intro", ".demo-block", ".fw-fig figure",
+    "#results .stats", "#results .table-wrap", "#results #viz",
+    "#results figure", "#results .findings", "#prompts .panel", "#bibtex pre"
+  ];
+  var targets = [];
+  REVEAL.forEach(function(sel){
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function(el){
+      if(targets.indexOf(el) < 0) targets.push(el);
+    });
+  });
+
+  if(reduce || !("IntersectionObserver" in window)){
+    targets.forEach(function(el){ el.classList.add("reveal","in"); });
+  } else {
+    targets.forEach(function(el, i){
+      el.classList.add("reveal");
+      if(i % 3 === 1) el.classList.add("dl1");
+      if(i % 3 === 2) el.classList.add("dl2");
+    });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        e.target.classList.add("in");
+        io.unobserve(e.target);              // one-shot: never re-animate on scroll back
+      });
+    }, {rootMargin: "0px 0px -12% 0px", threshold: 0.06});
+    targets.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- parallax ---------- */
+  if(reduce || coarse) return;
+  var layers = Array.prototype.slice.call(document.querySelectorAll("[data-px]"));
+  if(!layers.length) return;
+
+  var vh = window.innerHeight, ticking = false;
+  function measure(){
+    vh = window.innerHeight;
+    layers.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      el.__mid = r.top + window.scrollY + r.height / 2;   // element centre in page space
+      el.__k   = parseFloat(el.getAttribute("data-px")) || 0;
+      el.__cap = el.classList.contains("atmo") ? 90 : 46;  // keep travel small
+    });
+  }
+  function apply(){
+    var mid = window.scrollY + vh / 2;
+    layers.forEach(function(el){
+      var d = mid - el.__mid;                    // how far past the element we are
+      if(Math.abs(d) > vh * 1.6){ return; }      // skip far-off layers
+      var y = Math.max(-el.__cap, Math.min(el.__cap, d * el.__k));
+      el.style.transform = "translate3d(0," + y.toFixed(2) + "px,0)";
+    });
+    ticking = false;
+  }
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(apply);
+  }
+  measure(); apply();
+  window.addEventListener("scroll", onScroll, {passive: true});
+  var rt;
+  window.addEventListener("resize", function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){ measure(); apply(); }, 150);
+  });
+  window.addEventListener("load", function(){ measure(); apply(); });
 })();
 </script>
 
