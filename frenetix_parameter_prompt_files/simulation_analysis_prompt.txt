@@ -118,7 +118,7 @@ external_cost_weights:
     occ_ve: 0.0 # Occlusion Visibility Estimator (lateral adaption to increase visible area)
 
 [Final Output from Motion Planner]
-Cost data successfully saved to /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_147_T-1/cost/cost_144.json
+Cost data successfully saved to <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_147_T-1/cost/cost_144.json
 [08/13/25 14:11:25] CRITICAL Scenario ZAM_Tjunction-1_147_T-1 in timestep 145                                       simulation.py:686
                     INFO     Agent 60000 current time step: 145                                                          agent.py:218
 [08/13/25 14:11:25] INFO     Sampled interval of velocity: 0.00 m/s - 11.87 m/s                                        planner.py:310
@@ -172,7 +172,7 @@ INFO     Agent 60000 current time step: 233                                     
                     INFO     Agent 60000: timestep 234: goal reached out of time                                         agent.py:278
                     CRITICAL Simulation completed                                                                   simulation.py:516
 Generating GIF
-/home/avsaw1/sebastian/Frenetix-Motion-Planner/venv/lib/python3.10/site-packages/commonroad/scenario/scenario.py:520: UserWarning: Not a valid scenario ID: ZAM_Tjunction-1_147_T-1_BP4860
+<repo>/Frenetix-Motion-Planner/venv/lib/python3.10/site-packages/commonroad/scenario/scenario.py:520: UserWarning: Not a valid scenario ID: ZAM_Tjunction-1_147_T-1_BP4860
   warnings.warn("Not a valid scenario ID: " + benchmark_id)
 
 ------------------------
@@ -231,7 +231,7 @@ external_cost_weights:
     occ_ve: 0.0 # Occlusion Visibility Estimator (lateral adaption to increase visible area)
 
 [Final Output from Motion Planner]
-Cost data successfully saved to /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1/cost/cost_144.json
+Cost data successfully saved to <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1/cost/cost_144.json
                     CRITICAL Scenario ZAM_Tjunction-1_60_T-1 in timestep 145                                       simulation.py:686
                     INFO     Agent 60000 current time step: 145                                                         agent.py:218
                     INFO     Sampled interval of velocity: 0.00 m/s - 10.52 m/s                                       planner.py:310
@@ -276,16 +276,16 @@ external_cost_weights:
 
 [Final Output from Motion Planner]
 [08/13/25 14:38:13] INFO     Agent 60000: Total Planning Time:               0.39490 s                                  agent.py:240
-Successfully saved data to: /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/trajectory_cost/trajectory_cost_54.json
-Successfully saved data to: /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/trajectory/trajectory_54.json
-Successfully saved data to: /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/cost/cost_54.json
-Trajectory data successfully saved to /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/trajectory/trajectory_54.json
-Cost data successfully saved to /home/avsaw1/sebastian/ChaBot7/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/cost/cost_54.json
+Successfully saved data to: <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/trajectory_cost/trajectory_cost_54.json
+Successfully saved data to: <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/trajectory/trajectory_54.json
+Successfully saved data to: <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/cost/cost_54.json
+Trajectory data successfully saved to <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/trajectory/trajectory_54.json
+Cost data successfully saved to <repo>/Frenetix-Motion-Planner/logs/ZAM_Tjunction-1_60_T-1_T9818/cost/cost_54.json
                     CRITICAL Scenario ZAM_ZAMTjunction160T1T9818-1 in timestep 55                                  simulation.py:686
                     INFO     Agent 60000: timestep 55: collision                                                        agent.py:278
                     CRITICAL Simulation completed                                                                  simulation.py:516
 Generating GIF
-/home/avsaw1/sebastian/Frenetix-Motion-Planner/venv/lib/python3.10/site-packages/commonroad/scenario/scenario.py:520: UserWarning: Not a valid scenario ID: ZAM_Tjunction-1_60_T-1_T9818
+<repo>/Frenetix-Motion-Planner/venv/lib/python3.10/site-packages/commonroad/scenario/scenario.py:520: UserWarning: Not a valid scenario ID: ZAM_Tjunction-1_60_T-1_T9818
   warnings.warn("Not a valid scenario ID: " + benchmark_id)
 
 ------------------------

@@ -14,15 +14,18 @@
 
 </div>
 
-![PlannerForge: LLM agents driving the scenario-based test process, from scenario source through generation, database, selection and test execution to ADS assessment.](docs/assets/concept.png)
+<p align="center">
+  <img src="docs/assets/concept.png" width="72%"
+       alt="PlannerForge: LLM agents driving the scenario-based test process, from scenario source through generation, database, selection and test execution to ADS assessment.">
+</p>
 
-## News
+## 📰 News
 
-- **2026.09** — Code and dataset released.
-- **2026.08** — Paper accepted to EMNLP 2026 (Main Conference).
-- **2026.05** — Paper and project website released.
+- ✅ **2026.09** — Code and dataset released.
+- 🎉 **2026.08** — Paper accepted to EMNLP 2026 (Main Conference).
+- 📄 **2026.05** — Paper and project website released.
 
-## Introduction
+## 🧭 Introduction
 
 PlannerForge is a chatbot that turns free-form natural language into
 executable, measurable tests for motion planners. You describe the situation
@@ -46,7 +49,7 @@ Six modules cover the full scenario-based testing pipeline:
 
 ![The PlannerForge framework and its six modules.](docs/assets/framework.png)
 
-## Performance
+## 📊 Performance
 
 All numbers below are from the paper. `C/O` means commercial / open-source
 backend, using `qwen3.6-plus` and `qwen3.6:35b` with the `cp_icl_cot` prompt.
@@ -155,7 +158,7 @@ where 0 is a collision and 5 is safe, so lower is more safety-critical.
 | PF (Participant) | 63 s | 21.7k | 192/200 | 94.8% | **58** | **1.84→1.20** |
 | PF (Goal) | **8 s** | **7.1k** | 199/200 | **100%** | 45 | 1.84→1.36 |
 
-## Supported LLM backends
+## 🤖 Supported LLM backends
 
 PlannerForge calls off-the-shelf models through LangChain — nothing is
 fine-tuned. The paper evaluates eight model families, ten variants in total
@@ -194,7 +197,7 @@ QWEN_MODEL=<model id>
 Reproducing the paper's sweep needs commercial-API budget, or ≥24 GB VRAM for
 the open-weight backends.
 
-## Install
+## 🔧 Install
 
 PlannerForge uses three isolated Python environments, because the LLM/UI stack
 and the CommonRoad/SUMO stack have conflicting dependencies. The app runs in
@@ -213,7 +216,7 @@ bash setup/apply_patches.sh                    # planner patches (submodules)
 Full instructions, including the planner environments and the two in-package
 patches: [`setup/install.md`](setup/install.md).
 
-## Quick Start
+## ⚡ Quick Start
 
 ```bash
 cp .env.example .env         # add one LLM provider key
@@ -236,7 +239,7 @@ module router works out which stage you mean:
 The full guided tour — all six stages with example prompts, and where every
 artefact lands on disk — is in [`docs/usage.md`](docs/usage.md).
 
-## Adding your own motion planner
+## 🔌 Adding your own motion planner
 
 PlannerForge runs a planner as an **external subprocess**, so your planner keeps
 its own environment and dependencies — nothing is imported into the app. The
@@ -259,7 +262,7 @@ stub runner: [`docs/integrating_a_planner.md`](docs/integrating_a_planner.md).
 The two bundled planners are the reference integrations — Frenetix is the full
 example including cost tuning, MP-RBFN the minimal one without it.
 
-## Documentation
+## 📖 Documentation
 
 | Document | Contents |
 |---|---|
@@ -268,7 +271,7 @@ example including cost tuning, MP-RBFN the minimal one without it.
 | [`docs/integrating_a_planner.md`](docs/integrating_a_planner.md) | The motion-planner subprocess contract: registration, CLI, output files, cost logs, weight YAML |
 | [`THIRD_PARTY.md`](THIRD_PARTY.md) | Third-party components and their licences |
 
-## Repository layout
+## 🗂️ Repository layout
 
 ```
 PlannerForge/
@@ -294,7 +297,7 @@ PlannerForge/
 └── docs/                            documentation and README figures
 ```
 
-## Built on open source
+## 🙏 Built on open source
 
 PlannerForge orchestrates established open-source tools rather than
 introducing new low-level algorithms. We gratefully acknowledge:
@@ -315,14 +318,12 @@ introducing new low-level algorithms. We gratefully acknowledge:
 - [Frenetix-Motion-Planner](https://github.com/TUM-AVS/Frenetix-Motion-Planner)
 - [RBFN-Motion-Primitives (MP-RBFN)](https://github.com/TUM-AVS/RBFN-Motion-Primitives)
 
-**Scientific Python** — [NumPy](https://github.com/numpy/numpy), [SciPy](https://github.com/scipy/scipy), [pandas](https://github.com/pandas-dev/pandas), [Shapely](https://github.com/shapely/shapely), [Matplotlib](https://github.com/matplotlib/matplotlib), [lxml](https://github.com/lxml/lxml), [Pillow](https://github.com/python-pillow/Pillow), [imageio](https://github.com/imageio/imageio), [OmegaConf](https://github.com/omry/omegaconf), [requests](https://github.com/psf/requests), [python-dotenv](https://github.com/theskumar/python-dotenv), [PyYAML](https://github.com/yaml/pyyaml).
-
 **LLM backends evaluated** — open-weight, served locally via Ollama: [Qwen](https://github.com/QwenLM/Qwen3), [Gemma](https://ai.google.dev/gemma), [gpt-oss](https://github.com/openai/gpt-oss). Commercial APIs accessed through LangChain: Qwen-Plus/DashScope, [DeepSeek](https://github.com/deepseek-ai/DeepSeek-V3), GLM, Google Gemini, OpenAI. See the paper's Appendix A.1 for exact pinned model identifiers.
 
 Version pins for the full stack are in [`requirements.txt`](requirements.txt)
 and [`environment-cr37.yml`](environment-cr37.yml).
 
-## Citation
+## 📝 Citation
 
 ```bibtex
 @inproceedings{gao2026plannerforge,
@@ -340,7 +341,7 @@ and [`environment-cr37.yml`](environment-cr37.yml).
 The ACL Anthology entry, with pages and DOI, will replace this once published.
 Machine-readable metadata: [`CITATION.cff`](CITATION.cff).
 
-## License
+## ⚖️ License
 
 PlannerForge's own code is MIT ([`LICENSE`](LICENSE)). The two bundled motion
 planners are LGPL-3.0 and ship as git submodules pinned to their upstream
