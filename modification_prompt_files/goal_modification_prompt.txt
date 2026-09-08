@@ -1,0 +1,115 @@
+GOAL MODIFICATION PROMPT
+
+Your task is to extract the target goal position for the ego vehicle from the user's request. The user wants to change where the ego vehicle should end up.
+
+You need to extract TWO pieces of information:
+1. **Target Lanelet/Edge ID**: The specific lane or edge ID
+2. **Position in Lanelet**: Where in the lanelet to place the goal (beginning, middle, or end)
+
+POSITION KEYWORDS TO DETECT:
+- **"beginning"** or **"start"** → position: "beginning" (0% of lane)
+- **"quarter"** or **"1/4"** or **"between beginning and middle"** or **"one fourth"** → position: "quarter" (25% of lane)
+- **"middle"** or **"center"** or **"half"** → position: "middle" (50% of lane)
+- **"three quarter"** or **"3/4"** or **"between middle and end"** → position: "three_quarter" (75% of lane)
+- **"end"** or **"final"** → position: "final" (100% of lane)
+- If NO position keyword is mentioned → default to "final"
+
+IMPORTANT RULES:
+- Extract the edge/lanelet ID as a string
+- If the user specifies "edge X", "lane X", or "lanelet X", return {"target_edge": "X"}
+- Always detect position keywords carefully - look for fractions, percentages, or descriptive phrases
+- If no position keyword is found, default to "final"
+- Always preserve the exact ID from the user's request
+
+OUTPUT FORMAT:
+Return ONLY a JSON object with the following structure:
+{
+  "target_edge": "<edge_id>",
+  "position": "beginning" | "quarter" | "middle" | "three_quarter" | "final"
+}
+
+EXAMPLES:
+
+User input: Change the ego goal to edge 665
+Output:
+{
+  "target_edge": "665",
+  "position": "final"
+}
+
+User input: Move goal position to the end of lane 661
+Output:
+{
+  "target_edge": "661",
+  "position": "final"
+}
+
+User input: we want to move the goal state of ego to the middle of lane 665
+Output:
+{
+  "target_edge": "665",
+  "position": "middle"
+}
+
+User input: Set ego destination to the beginning of lanelet 12345
+Output:
+{
+  "target_edge": "12345",
+  "position": "beginning"
+}
+
+User input: Move goal to the start of edge 661
+Output:
+{
+  "target_edge": "661",
+  "position": "beginning"
+}
+
+User input: Update the goal to the center of lane 665
+Output:
+{
+  "target_edge": "665",
+  "position": "middle"
+}
+
+User input: Move goal to the point between beginning and middle of lane 665
+Output:
+{
+  "target_edge": "665",
+  "position": "quarter"
+}
+
+User input: Set goal at 1/4 of edge 661
+Output:
+{
+  "target_edge": "661",
+  "position": "quarter"
+}
+
+User input: Place goal between middle and end of lane 665
+Output:
+{
+  "target_edge": "665",
+  "position": "three_quarter"
+}
+
+User input: Move goal to 3/4 point of lanelet 12345
+Output:
+{
+  "target_edge": "12345",
+  "position": "three_quarter"
+}
+
+User input: Change goal destination
+Output:
+{
+  "target_edge": null,
+  "position": "final",
+  "description": "User wants to change goal but didn't specify target edge/lanelet"
+}
+
+CRITICAL NOTES:
+- The edge/lanelet ID will be used to calculate the goal position coordinates
+- The position determines WHERE in the lanelet to place the goal (beginning/middle/end)
+- Always preserve the exact ID format (string) as provided by the user
+- Default to "final" if no position keyword is detected

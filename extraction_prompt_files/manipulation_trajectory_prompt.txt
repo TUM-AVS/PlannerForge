@@ -1,0 +1,123 @@
+[TASK]
+You will be given a SUMO `.vehicles.rou.xml` route file and a user request to redirect one or more vehicles to a new target edge. Emit the **complete updated route file** with the requested change applied. Return only the XML — no commentary, no markdown fences.
+
+The user identifies vehicles by their numeric `id` attribute and target edges by edge id. The downstream simulator requires the new route to consist of an ordered sequence of edges connected via the network's `<connection>` elements (see the network summary from the previous step). You may insert intermediate edges to bridge non-adjacent endpoints.
+
+[CP]
+Rules when editing a vehicle's route:
+
+- DO NOT change the vehicle's `id`, `depart`, `departLane`, `departPos`, `departSpeed`, or `type`. The user is only redirecting the vehicle's destination, not respawning it.
+- DO NOT change the FIRST edge in the route — that edge corresponds to the vehicle's starting position and must stay in sync with `departPos`.
+- DO append the target edge as the LAST edge. Insert any intermediate edges required to walk a valid path from the current last edge to the target edge, using the network's `<connection>` adjacency. Transitive connections are allowed (X→Y, Y→Z lets you write `X Y Z`).
+- DO NOT modify other vehicles. Their `<vehicle>` and `<route>` elements must remain byte-equivalent.
+- DO NOT keep `arrivalPos`, `arrivalLane`, or `insertionChecks="none"` attributes on a vehicle whose route you change. Those were tied to the OLD destination — remove them. (`insertionChecks="none"` disables safety checks and is only safe for exact trajectory replay, not for a re-routed vehicle.)
+- Honour vClass: if the network summary says edge E `disallow`s the vehicle's vClass, do NOT route through E. Pick an alternative path. If no valid path exists, emit the route file unchanged and add a comment line `<!-- vehicle <id> cannot reach <target> within vClass constraints -->`.
+- Return the COMPLETE updated file. Do not abbreviate, do not use `...`, do not omit any vehicle.
+
+[ICL]
+User input: I want vehicle 20054 to move to lane 211
+Route file:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0" accel="2.35" decel="5.25" maxSpeed="50.0"/>
+    <vehicle id="20054" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6179">
+        <route edges="544"/>
+    </vehicle>
+    <vehicle id="20055" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="111.6614">
+        <route edges="544"/>
+    </vehicle>
+</routes>
+Prior knowledge: edge 544 connects to edge 211. All vehicles allowed on both.
+
+Output:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0" accel="2.35" decel="5.25" maxSpeed="50.0"/>
+    <vehicle id="20054" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6179">
+        <route edges="544 211"/>
+    </vehicle>
+    <vehicle id="20055" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="111.6614">
+        <route edges="544"/>
+    </vehicle>
+</routes>
+Reasoning: Vehicle 20054 starts on edge 544 (matches departPos). The network confirms 544→211 directly, so we append 211. Vehicle 20055 is untouched.
+
+User input: 20007 moves to 80
+Route file:
+<routes>
+    <vType id="car_dynamic" vClass="passenger" length="5.0"/>
+    <vehicle id="20004" depart="0.1" type="car_dynamic" departLane="0" departPos="33.98">
+        <route edges="58 507"/>
+    </vehicle>
+    <vehicle id="20007" depart="0.1" type="car_dynamic" departLane="0" departPos="25.36">
+        <route edges="58"/>
+    </vehicle>
+</routes>
+Prior knowledge: 58 connects to 507, 600, 700. 600 connects to 80.
+
+Output:
+<routes>
+    <vType id="car_dynamic" vClass="passenger" length="5.0"/>
+    <vehicle id="20004" depart="0.1" type="car_dynamic" departLane="0" departPos="33.98">
+        <route edges="58 507"/>
+    </vehicle>
+    <vehicle id="20007" depart="0.1" type="car_dynamic" departLane="0" departPos="25.36">
+        <route edges="58 600 80"/>
+    </vehicle>
+</routes>
+Reasoning: 20007 starts on 58. 58 does not connect to 80 directly, but 58→600 and 600→80 are valid. We walk the transitive path `58 600 80`. 20004 untouched.
+
+User input: Move vehicles 16 and 17 to edge 665
+Route file:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="16" type="passenger" depart="0.00" departLane="0" departPos="0.00" arrivalLane="0" arrivalPos="36.11" insertionChecks="none">
+        <route edges="1092 661"/>
+    </vehicle>
+    <vehicle id="17" type="passenger" depart="0.00" departLane="0" departPos="87.11" arrivalLane="0" arrivalPos="13.40" insertionChecks="none">
+        <route edges="1090 1092 661"/>
+    </vehicle>
+</routes>
+Prior knowledge: 1092→665, 1090→1092.
+
+Output:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="16" type="passenger" depart="0.00" departLane="0" departPos="0.00">
+        <route edges="1092 665"/>
+    </vehicle>
+    <vehicle id="17" type="passenger" depart="0.00" departLane="0" departPos="87.11">
+        <route edges="1090 1092 665"/>
+    </vehicle>
+</routes>
+Reasoning: Both 16 and 17 are redirected. We KEEP their starting edges (1092 for 16, 1090 for 17) and the original `departPos` — only the destination is rewritten. We REMOVE `arrivalPos`, `arrivalLane`, and `insertionChecks="none"` because those bound the old destination and are unsafe to keep on a re-routed vehicle.
+
+User input: Make vehicle 333 take a detour through edge 15 to edge 20
+Route file:
+<routes>
+    <vType id="car_dynamic" vClass="passenger"/>
+    <vehicle id="333" depart="0.1" departSpeed="0.5" type="car_dynamic" departLane="0" departPos="55.0">
+        <route edges="7"/>
+    </vehicle>
+</routes>
+Prior knowledge: 7→10 and 7→15. 10→20. 15→20.
+
+Output:
+<routes>
+    <vType id="car_dynamic" vClass="passenger"/>
+    <vehicle id="333" depart="0.1" departSpeed="0.5" type="car_dynamic" departLane="0" departPos="55.0">
+        <route edges="7 15 20"/>
+    </vehicle>
+</routes>
+Reasoning: User asked for a detour through 15. Network gives 7→15 and 15→20, so the route `7 15 20` honours the detour AND ends at the requested 20.
+
+[COT]
+Before emitting the updated route file, walk through these reasoning steps explicitly:
+
+  1. (Locate the target vehicle) Find each `<vehicle id="...">` element matching the user-named vid(s).
+  2. (Identify the current start edge) Read the FIRST edge in the vehicle's `<route edges="...">`. This must stay the first edge of your output.
+  3. (Pick the target edge) From the user request, identify the destination edge id.
+  4. (Walk the path) Using the network summary from the previous step, find a sequence of edges from the current last edge to the target edge that respects `<connection>` adjacency and the vehicle's vClass. Allow transitive multi-hop paths.
+  5. (Strip stale destination attributes) Remove `arrivalPos`, `arrivalLane`, and `insertionChecks="none"` from any re-routed vehicle.
+  6. (Leave other vehicles alone) Every untouched `<vehicle>` and `<vType>` element must appear byte-equivalent in your output.
+  7. (Emit) Return the COMPLETE updated route file.
+
+End each step on its own line (e.g. `Step 1 (locate): found vid=20054`, `Step 4 (walk): 544 → 211 direct`), then emit the final XML as the last block of output.

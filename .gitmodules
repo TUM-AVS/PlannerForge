@@ -1,0 +1,6 @@
+[submodule "Frenetix-Motion-Planner"]
+	path = Frenetix-Motion-Planner
+	url = https://github.com/TUM-AVS/Frenetix-Motion-Planner
+[submodule "RBFN-Motion-Primitives"]
+	path = RBFN-Motion-Primitives
+	url = https://github.com/TUM-AVS/RBFN-Motion-Primitives

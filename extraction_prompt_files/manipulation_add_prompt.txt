@@ -1,0 +1,105 @@
+[TASK]
+You will be given a SUMO `.vehicles.rou.xml` route file and a user request to ADD one or more new vehicles. Insert the requested vehicle(s) and emit the **complete updated route file** as your output — only the XML, no commentary, no markdown fences.
+
+[CP]
+Rules when adding a vehicle:
+
+- VEHICLE TYPE: Reuse an existing `<vType>` if its `vClass` matches what the user asked for. If the user requested a class that has no existing vType (truck without a truck vType, bus without a bus vType), insert a new `<vType>` near the top using the templates below.
+- ROUTE: The new vehicle's `<route edges="X ...">` **MUST start with the user-named target edge** as its FIRST token. If you want the vehicle to traverse multiple edges, append them AFTER the target edge — never prepend. The semantics of "Add a truck on edge 442" is "the truck STARTS on edge 442", not "the truck visits edge 442 at some point". A route like `<route edges="437 442"/>` is WRONG for `target=442`; the correct form is `<route edges="442 ..."/>`. Do NOT route through edges that `disallow` the chosen vClass.
+- VEHICLE ID: Choose the smallest non-negative integer id not already used in the file. Stay numeric — `id="1"` not `id="new_car"`.
+- DEPART TIME: Pick `depart` within the time range of existing vehicles. Use a float.
+- DEPART POSITION: Use `departPos="free"` to avoid insertion collisions (unless the user gave an explicit position).
+- DEPART SPEED: Use `departSpeed="max"` or `departSpeed="random"` unless the user specified.
+- NEVER set `insertionChecks="none"` on a newly added vehicle. That flag disables safety checks and is only safe for exact trajectory replay — a new vehicle must obey normal SUMO safety logic.
+- LEAVE OTHER VEHICLES alone. Their `<vehicle>` and `<vType>` elements must remain byte-equivalent.
+- RETURN the COMPLETE updated file.
+
+vType templates:
+
+Passenger car:
+  <vType id="car" accel="1.2" decel="4.5" sigma="0.5" length="4.5" minGap="2.5" maxSpeed="33" guiShape="passenger" vClass="passenger"/>
+
+Truck:
+  <vType id="truck" accel="0.8" decel="4.5" sigma="0.5" length="12" minGap="3" maxSpeed="25" guiShape="truck" vClass="truck"/>
+
+Bus:
+  <vType id="bus" accel="0.6" decel="4.0" sigma="0.5" length="15" minGap="3" maxSpeed="20" guiShape="bus" vClass="bus"/>
+
+[ICL]
+User input: Add a car to edge 533
+Route file:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0" accel="2.35" decel="5.25"/>
+    <vehicle id="30" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6">
+        <route edges="544 577"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0" accel="2.35" decel="5.25"/>
+    <vehicle id="30" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6">
+        <route edges="544 577"/>
+    </vehicle>
+    <vehicle id="1" depart="0.1" departSpeed="max" type="car_dynamic" departPos="free">
+        <route edges="533"/>
+    </vehicle>
+</routes>
+Reasoning: User asked for a car. The existing `car_dynamic` vType has vClass="passenger" — reuse it. Smallest unused id is 1 (30 is taken). Edge 533 is the requested first edge.
+
+User input: Add a truck on edge 20
+Route file:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0"/>
+    <vehicle id="500" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6">
+        <route edges="5 7"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0"/>
+    <vType id="truck" accel="0.8" decel="4.5" sigma="0.5" length="12" minGap="3" maxSpeed="25" guiShape="truck" vClass="truck"/>
+    <vehicle id="500" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6">
+        <route edges="5 7"/>
+    </vehicle>
+    <vehicle id="1" type="truck" depart="0.1" departSpeed="max" departPos="free">
+        <route edges="20"/>
+    </vehicle>
+</routes>
+Reasoning: User asked for a truck. No truck vType exists — insert the truck template. The smallest unused id is 1. Edge 20 is the requested first edge.
+
+User input: Add two buses on edge 662 with departs at 5 and 7 seconds.
+Route file:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="10" type="passenger" depart="0.5" departPos="free">
+        <route edges="660 661"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vType id="bus" accel="0.6" decel="4.0" sigma="0.5" length="15" minGap="3" maxSpeed="20" guiShape="bus" vClass="bus"/>
+    <vehicle id="10" type="passenger" depart="0.5" departPos="free">
+        <route edges="660 661"/>
+    </vehicle>
+    <vehicle id="1" type="bus" depart="5.0" departPos="free" departSpeed="max">
+        <route edges="662"/>
+    </vehicle>
+    <vehicle id="2" type="bus" depart="7.0" departPos="free" departSpeed="max">
+        <route edges="662"/>
+    </vehicle>
+</routes>
+Reasoning: Two buses → two new vehicles. Insert the bus vType once and reuse it. Smallest unused ids are 1 and 2. The user gave explicit depart times (5, 7) → use them as floats.
+
+[COT]
+Before emitting the updated route file, walk through these reasoning steps explicitly:
+
+  1. (Locate target) Identify the edge id the user named for the new vehicle(s), and the requested vehicle class (car/truck/bus). Note the required vClass.
+  2. (Pick unique id) Scan existing `<vehicle id="...">` entries. Pick the smallest unused non-negative integer for the new vehicle(s).
+  3. (Resolve vType) If a `<vType>` with the required vClass already exists, reuse its id. Otherwise insert a new `<vType>` from the templates near the top of `<routes>`.
+  4. (Set depart attributes) Pick `depart` within the time range of existing vehicles (or honour the user's explicit value). Use `departPos="free"` and `departSpeed="max"` or `"random"` unless the user specified otherwise. NEVER set `insertionChecks="none"`.
+  5. (Validate edge) Confirm from the prior net-file analysis that the chosen edge is drivable for this vClass (no `disallow` match).
+  6. (Build route) The `<route edges="...">` value MUST start with the target edge as the FIRST token. Optionally append valid downstream edges after it. Do NOT put the target edge in any later position.
+  7. (Emit) Return the COMPLETE updated route file with the new `<vehicle>` element appended. No partial files, no abbreviations.
+
+End each step on its own line (e.g. `Step 1 (locate target): user named edge 533 + truck → vClass="truck"`), then emit the final XML as the last block of output.

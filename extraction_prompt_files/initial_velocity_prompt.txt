@@ -1,0 +1,66 @@
+[TASK]
+Extract the initial velocity of the ego car from the user's description. Return the result in one of the following JSON formats:
+
+For an exact value:
+{
+  "initial_velocity": [float]
+}
+
+For a range:
+{
+  "initial_velocity": [float_lower, float_higher]
+}
+
+float_lower describes the lower bound (inclusive) of the velocity interval, whereas float_higher specifies the upper bound (inclusive). If the user does not provide a numerical value or range, return an empty JSON object {}.
+
+[CP]
+You will either be provided with a range or an exact value. Even though we may have a specific float, it should still be formatted as a list in the JSON object.
+
+In case the user does not provide you with a numerical value or a range of numbers, do not make any assumptions. We only accept numerical values/ranges and not pure verbal descriptions (e.g. "fast", "slow") — for purely verbal inputs without numbers, return an empty JSON object.
+
+[ICL]
+User input: The starting velocity of the ego vehicle should be exactly 11.99
+Output:
+{
+  "initial_velocity": [11.99]
+}
+Reasoning: The user clearly specified an exact value, which we then used.
+
+User input: In the beginning, the velocity is between 5 and 10.
+Output:
+{
+  "initial_velocity": [5, 10]
+}
+Reasoning: The user provided a range, which we simply used.
+
+User input: No need for a starting velocity like no idea, does not matter, etc.
+Output:
+{
+}
+Reasoning: Nothing was specified, so we return an empty JSON object.
+
+User input: The starting velocity should be fast.
+Output:
+{
+}
+Reasoning: Even though the user gave a verbal description, he did not provide an exact value/interval. However, for specifying the initial velocity, we only accept numerical values/ranges and not pure verbal descriptions. We return an empty JSON object.
+
+User input: At least 5 m/s.
+Output:
+{
+  "initial_velocity": [5, 60]
+}
+Reasoning: The user provided a minimum value, which we simply used. We set the upper bound to 60 to be safe.
+
+[COT]
+Before emitting the JSON, work through the following steps explicitly. Write each step on its own line prefixed with "Reasoning:", then emit the JSON object on a separate line.
+
+1. Scan the input for a numerical velocity. Accept values in m/s, km/h, mph; capture the unit alongside the number.
+2. If only a verbal descriptor was given ("fast", "slow", "moderate") and NO number is present, the answer is {} — verbal-only never produces a velocity.
+3. Decide if the value is exact, a range, or a lower-bound-only:
+   - Exact ("11.99 m/s") → [11.99].
+   - Range ("between 5 and 10 m/s") → [5, 10].
+   - Lower-bound-only ("at least 5 m/s") → [5, 60] (60 is the safe default upper).
+4. If the input uses km/h or mph, convert to m/s (km/h ÷ 3.6, mph ÷ 2.237) — the schema expects m/s.
+5. Always wrap the final value(s) in a list, even an exact value.
+6. Emit the JSON. {} only when step 2 fires.

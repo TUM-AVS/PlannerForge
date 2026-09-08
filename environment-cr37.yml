@@ -1,0 +1,29 @@
+# CommonRoad / SUMO toolchain environment (Python 3.10).
+# Create with:  conda env create -f environment-cr37.yml
+# The app calls it by name via `conda run -n cr37 ...`; if you pick another
+# name, set CR_CONDA_ENV and OSM_CONDA_ENV in your .env accordingly.
+# After creating the env, apply the two patches described in setup/install.md.
+name: cr37
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - commonroad-all==0.1.0
+      - commonroad-io==2024.3
+      - commonroad-scenario-designer==0.8.5
+      - commonroad-drivability-checker==2025.4.0
+      - commonroad-route-planner==2022.3
+      - commonroad-vehicle-models==3.0.2
+      - commonroad-sumo==2025.1.4
+      - sumocr==2024.1
+      - eclipse-sumo==1.25.0
+      - sumolib==1.25.0
+      - osmnx==2.0.7
+      - imageio==2.37.2
+      - omegaconf==2.3.0
+      - lxml==4.9.4
+      - matplotlib==3.8.4
+      - numpy==1.26.4
+      - shapely==2.1.2

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>OSM picker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; }
+    #map { height: 100%; width: 100%; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script>
+    const map = L.map('map').setView([48.137, 11.575], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const drawn = new L.FeatureGroup();
+    map.addLayer(drawn);
+    map.addControl(new L.Control.Draw({
+      draw: {
+        polygon: false, polyline: false, circle: false,
+        marker: false, circlemarker: false,
+        rectangle: { shapeOptions: { color: '#e67e22', weight: 2 } }
+      },
+      edit: { featureGroup: drawn, remove: true }
+    }));
+
+    // ====================================================================
+    // Two-way bbox sync with the parent Gradio textbox (elem_id below).
+    //
+    // Why it lives here and not in the parent page: gr.HTML can't execute
+    // injected <script> tags and gradio 5.47 exposes no js_on_load/js hook,
+    // so any parent-side listener never runs. This file, however, is a real
+    // document loaded via <iframe src>, so its script DOES run. We therefore
+    // drive both directions from inside the iframe (same-origin → we can
+    // touch window.parent.document):
+    //   • parent → map: poll the textbox; when it holds a new bbox (filled by
+    //     Parse-with-LLM or typed), draw it and fly there.
+    //   • map → parent: on draw/edit/delete, write the bbox back into it.
+    // `lastBbox` de-dupes so neither direction echoes into a loop.
+    // ====================================================================
+    const BBOX_SEL = '#bbox_input_generate textarea, #bbox_input_generate input';
+    let lastBbox = null;
+
+    function bboxEq(a, b) {
+      return a && b && a.length === 4 && b.length === 4 &&
+             a.every((v, i) => Math.abs(v - b[i]) < 1e-6);
+    }
+    function parseBbox(text) {
+      if (!text) return null;
+      const p = text.split(',').map(Number);
+      return (p.length === 4 && p.every(isFinite)) ? p : null;
+    }
+    function parentBboxEl() {
+      try { return window.parent.document.querySelector(BBOX_SEL); }
+      catch (e) { return null; }   // cross-origin (shouldn't happen)
+    }
+    function setNativeValue(el, value) {
+      const proto = el.tagName === 'TEXTAREA'
+        ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, value);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    function showBbox(bbox) {
+      const bounds = L.latLngBounds([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
+      drawn.clearLayers();
+      drawn.addLayer(L.rectangle(bounds, { color: '#e67e22', weight: 2 }));
+      map.fitBounds(bounds, { padding: [20, 20], maxZoom: 18 });
+      fetchAndOverlay(bounds);
+      lastBbox = bbox.slice();
+    }
+    // map → parent textbox (on draw). Stores full-precision lastBbox first so
+    // the rounded value we write back doesn't trip the poll into re-flying.
+    function syncDrawToParent(bounds) {
+      lastBbox = [bounds.getSouth(), bounds.getWest(),
+                  bounds.getNorth(), bounds.getEast()];
+      const txt = lastBbox.map(x => Number(x).toFixed(6)).join(',');
+      const el = parentBboxEl();
+      if (el) setNativeValue(el, txt);
+    }
+    // parent textbox → map (poll). Fires for parse-fill, typing, programmatic.
+    setInterval(() => {
+      const el = parentBboxEl();
+      if (!el) return;
+      const pb = parseBbox((el.value || '').trim());
+      if (pb && !bboxEq(pb, lastBbox)) showBbox(pb);
+    }, 600);
+
+    // ---- Road-class preview overlay -----------------------------------
+    // Same OSM highway= categories as the Python `CLASS_GROUPS`.
+    const ROADS_TYPES = new Set([
+      "motorway", "trunk",
+      "primary", "secondary", "tertiary",
+      "residential", "unclassified", "living_street",
+      "service", "track"
+    ]);
+    const LINK_TYPES = new Set([
+      "motorway_link", "trunk_link",
+      "primary_link", "secondary_link", "tertiary_link"
+    ]);
+
+    let roadsLayer = L.layerGroup().addTo(map);
+    let linkLayer  = L.layerGroup().addTo(map);
+    let otherLayer = L.layerGroup();   // off by default
+    let layerCtrl = L.control.layers(null, {
+      "Roads (blue)":         roadsLayer,
+      "Link roads (orange)":  linkLayer,
+      "Other (gray)":         otherLayer,
+    }, { collapsed: false, position: 'topright' }).addTo(map);
+
+    // Small toast for fetch progress
+    const toast = L.control({ position: 'bottomleft' });
+    toast.onAdd = () => {
+      const div = L.DomUtil.create('div', 'osm-toast');
+      div.style.padding = '4px 8px';
+      div.style.background = 'rgba(255,255,255,0.85)';
+      div.style.border = '1px solid #aaa';
+      div.style.borderRadius = '4px';
+      div.style.font = '12px sans-serif';
+      div.id = 'osm-toast';
+      div.textContent = 'draw a rectangle, or Parse a description to fly here';
+      return div;
+    };
+    toast.addTo(map);
+    function setToast(t) {
+      const el = document.getElementById('osm-toast');
+      if (el) el.textContent = t;
+    }
+
+    let lastFetchToken = 0;
+    async function fetchAndOverlay(bounds) {
+      const s = bounds.getSouth(), w = bounds.getWest(),
+            n = bounds.getNorth(), e = bounds.getEast();
+      const tok = ++lastFetchToken;
+      setToast('fetching roads…');
+      roadsLayer.clearLayers();
+      linkLayer.clearLayers();
+      otherLayer.clearLayers();
+
+      const query = `[out:json][timeout:60];` +
+                    `way[highway](${s},${w},${n},${e});` +
+                    `out body geom;`;
+      const url = "https://overpass-api.de/api/interpreter?data=" +
+                  encodeURIComponent(query);
+      try {
+        const r = await fetch(url);
+        if (tok !== lastFetchToken) return;  // a newer draw superseded us
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const data = await r.json();
+        const ways = (data.elements || []).filter(el => el.type === "way");
+        let nRoads = 0, nLink = 0, nOther = 0;
+        for (const wy of ways) {
+          const hw = (wy.tags || {}).highway;
+          if (!hw || !wy.geometry) continue;
+          const coords = wy.geometry.map(p => [p.lat, p.lon]);
+          if (ROADS_TYPES.has(hw)) {
+            L.polyline(coords, { color: '#0066cc', weight: 3, opacity: 0.85 })
+             .bindTooltip(hw).addTo(roadsLayer);
+            nRoads++;
+          } else if (LINK_TYPES.has(hw)) {
+            L.polyline(coords, { color: '#ff9933', weight: 3, opacity: 0.95 })
+             .bindTooltip(hw).addTo(linkLayer);
+            nLink++;
+          } else {
+            L.polyline(coords, { color: '#777',    weight: 2, opacity: 0.7 })
+             .bindTooltip(hw).addTo(otherLayer);
+            nOther++;
+          }
+        }
+        setToast(`roads: ${nRoads}  link: ${nLink}  other: ${nOther}`);
+      } catch (err) {
+        setToast('overpass error: ' + err.message);
+      }
+    }
+
+    map.on(L.Draw.Event.CREATED, ev => {
+      drawn.clearLayers();
+      drawn.addLayer(ev.layer);
+      syncDrawToParent(ev.layer.getBounds());
+      fetchAndOverlay(ev.layer.getBounds());
+    });
+    map.on(L.Draw.Event.EDITED, ev => {
+      ev.layers.eachLayer(l => {
+        syncDrawToParent(l.getBounds());
+        fetchAndOverlay(l.getBounds());
+      });
+    });
+    map.on(L.Draw.Event.DELETED, () => {
+      lastBbox = null;
+      const el = parentBboxEl();
+      if (el) setNativeValue(el, '');
+      roadsLayer.clearLayers();
+      linkLayer.clearLayers();
+      otherLayer.clearLayers();
+      setToast('draw a rectangle, or Parse a description to fly here');
+    });
+
+    window.addEventListener('resize', () => map.invalidateSize());
+    console.log('[osm map] bbox-sync ready — polling parent #bbox_input_generate');
+  </script>
+</body>
+</html>

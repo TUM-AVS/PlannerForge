@@ -1,0 +1,199 @@
+[TASK]
+Extract driving obstacles and their respective counts from the user's description and return them in the following JSON format:
+
+{
+  "obstacle1": [int_lower, int_higher],
+  "obstacle2": [int_lower, int_higher],
+  "obstacle3": [int],
+  ...
+}
+
+The key of each object represents the category of object (car, truck, pedestrian, parked vehicle, ...). The sub-objects of each obstacle element represent their count. The count can either be given as a single exact value or a range. In both cases, return them formatted as the content of a list. "int" symbolizes an integer, with "int_lower" being the lower boundary of a range (inclusive) and "int_higher" the upper bound (inclusive).
+
+If the user indicates that he does not care about the types and numbers of obstacles, return an empty JSON object {}.
+
+[CP]
+There are two classes of obstacles: static and dynamic. Static obstacles impact the driving scenario without moving and are typically areas in space that the ego vehicle should maneuver around. Dynamic obstacles constitute anything that moves, like other vehicles or pedestrians. The following is a list of all obstacles you can use:
+
+Static Obstacles:
+
+unknown:
+  description: A stationary object whose identity or type cannot be reliably determined by sensors or perception systems. Could be anything from debris to unusual infrastructure.
+  examples:
+    - blocked by an unidentified object
+    - sensor picks up unclear shape on road
+    - appears as a stationary blob in LiDAR data
+
+parkedVehicle:
+  description: A vehicle that is not currently moving and is positioned at the side of the road or in a designated parking space. Often poses a risk of opening doors or sudden re-entry into traffic.
+  examples:
+    - parked car partially blocks lane
+    - vehicle stationary on shoulder
+    - delivery van parked in a bike lane
+
+constructionZone:
+  description: An area marked for road work or maintenance that may include cones, signs, equipment, and altered traffic patterns. May restrict road usage or require rerouting.
+  examples:
+    - lane closed due to road work
+    - detour marked with barriers
+    - workers and machinery on roadside
+
+roadBoundary:
+  description: Physical or visual limits of the drivable area, such as curbs, guardrails, walls, or grass borders. These define where the vehicle cannot or should not go.
+  examples:
+    - approaches a curb
+    - turns near a guardrail
+    - avoids edge of road near ditch
+
+
+Dynamic Obstacles:
+
+unknown:
+  description: A moving object that cannot be classified as a known category. May be due to poor visibility, sensor error, or unusual shape/motion.
+  examples:
+    - unidentified object moving slowly on shoulder
+    - unpredictable motion detected near road
+    - blurry moving mass appears on camera
+
+car:
+  description: A standard passenger vehicle actively participating in traffic. Can perform typical driving maneuvers such as overtaking or turning.
+  examples:
+    - merges into lane without signaling
+    - stops suddenly ahead
+    - performs U-turn
+
+truck:
+  description: A large freight vehicle, often slower and with limited maneuverability. May block view or occupy multiple lanes during turns.
+  examples:
+    - takes wide turn at intersection
+    - obstructs lane while unloading
+    - accelerates slowly after red light
+
+bus:
+  description: A large public transport vehicle making frequent stops. May enter or exit traffic at designated bus stops and influence pedestrian flow.
+  examples:
+    - pulls out from bus stop
+    - stops to pick up passengers
+    - obstructs vision at crosswalk
+
+motorcycle:
+  description: A two-wheeled motorized vehicle, often more agile and less visible than cars. May change lanes quickly or appear unexpectedly.
+  examples:
+    - weaves through traffic
+    - suddenly appears in blind spot
+    - overtakes between lanes
+
+bicycle:
+  description: A non-motorized, human-powered vehicle using either the road or designated bike lanes. Its speed and path can vary significantly.
+  examples:
+    - rides along shoulder
+    - merges into traffic at intersection
+    - swerves to avoid obstacle
+
+pedestrian:
+  description: A human walking, jogging, or standing, either in designated areas (sidewalks, crosswalks) or unexpectedly entering the road.
+  examples:
+    - runs into the street
+    - waits at crosswalk
+    - crosses between parked cars
+
+priorityVehicle:
+  description: Emergency or special-use vehicle with the right of way in many situations (e.g., ambulances, police cars, fire trucks), often using sirens or lights.
+  examples:
+    - sirens heard as it approaches
+    - speeds through red light
+    - vehicle yields to approaching ambulance
+
+train:
+  description: A rail-bound vehicle crossing or running alongside the road. May block road at crossings and require full stop.
+  examples:
+    - blocks intersection at level crossing
+    - passes parallel to road
+    - triggers warning lights and barriers
+
+taxi:
+  description: A passenger transport vehicle that may stop frequently or drive unpredictably based on passenger pickups and drop-offs.
+  examples:
+    - pulls over without signaling
+    - stops suddenly to pick up passenger
+    - changes lane erratically
+
+The user may not always supply you with numerical values, so you may have to make reasonable assumptions about how many instances of each category are present. To help you with correctly interpreting ranges from verbal-only descriptions, here are two examples of reasonable mappings from expressions to ranges:
+
+Expression: "many vehicles/cars/buses/..."
+Range: For dynamic obstacles, the range for many is [20, x] where x is any number larger than 25. If you already know from the conversation history that the scenario takes place at a busy intersection, highway or traffic jam, you may easily choose a number like ~50 for x. For static obstacles, 4 or 5 is already quite a high number, so in that case "many" refers to a range like [3, 5].
+
+Expression: "a few vehicles/cars/buses/..."
+Range: For dynamic obstacles we are looking at a realistic range of [2, 5]. However, you may use your knowledge from the conversation history to make a more reasonable assumption. For static obstacles, this is closer to a range of [2, 3].
+
+Note: As seen from the list above, the numbers corresponding to verbal descriptions are different for static and dynamic obstacles. This is due to the fact that in reality there are many vehicles using a specific road, which might only have a single static obstacle, yet still influence traffic massively. Therefore, you will rarely have a situation where more than a single static obstacle is required, and you should try to keep the numbers low.
+
+Rules for filling in the JSON:
+- If the user states that a certain obstacle is irrelevant to the scenario, simply exclude it from your output.
+- If the user actively informs you that no obstacles of a given type are needed or desired, set the count for that type to 0.
+- If the user states that he does not want any obstacles at all, set all of them to 0.
+
+[ICL]
+User input: I want at least 5 cars to be involved, as well as a truck.
+Output:
+{
+  "car": [5, 15],
+  "truck": [1]
+}
+Reasoning: The user specified "at least 5 cars", which sets the lower bound to 5. Since no upper limit was given, we add a reasonable upper bound of 15 to allow flexibility in the query. The single truck is included with the exact value [1].
+
+User input: The scene takes place in the city, with a group of cyclists nearby and a few pedestrians crossing the road. No vehicles should be included in this scenario.
+Output:
+{
+  "bicycle": [3, 8],
+  "pedestrian": [2, 5],
+  "car": [0],
+  "truck": [0],
+  "bus": [0],
+  "taxi": [0],
+  "motorcycle": [0]
+}
+Reasoning: A group of cyclists would be accurately described by a range of [3, 8], and "a few pedestrians" can be expressed as [2, 5] without any further knowledge. Since the user actively wants to include no vehicles, all conventional vehicles are set to the exact value of [0].
+
+User input: The road is blocked by a construction zone and there are two cars following the ego.
+Output:
+{
+  "car": [2],
+  "constructionZone": [1]
+}
+Reasoning: The user has specified all numbers exactly, so no assumptions or ranges are required.
+
+User input: The obstacles do not matter to me. Any type and amount is fine. Like no idea, does not matter, etc.
+Output:
+{
+}
+Reasoning: The user very clearly stated that obstacles are irrelevant to him, and therefore we return an empty JSON object.
+
+User input: I want there to be cars and a truck. The number of cars does not matter to me.
+Output:
+{
+  "car": [2, 60],
+  "truck": [1]
+}
+Reasoning: The user does not care about the number of cars, just that there are multiple and that they are present. Therefore, we choose a generous range of [2, 60]. However, a single truck was specified, so we use an exact value there.
+
+User input: At least 5 cars.
+Output:
+{
+  "car": [5, 100]
+}
+Reasoning: The user specified "at least 5 cars", which sets the lower bound to 5. Since no upper limit was given, we add a reasonable upper bound of 100 to allow flexibility in the query.
+
+[COT]
+Before emitting the JSON, work through the following steps explicitly. Write each step on its own line prefixed with "Reasoning:", then emit the JSON object on a separate line.
+
+1. Enumerate every obstacle category the user mentioned: cars, trucks, motorcycles, bicycles, pedestrians, parked vehicles, construction zones, etc. Phrases like "heavy traffic" / "lots of cars" still count as a car mention.
+2. For each category, decide if the user gave a count, a range, or just presence:
+   - Exact count ("3 trucks") → [3, 3] (or [3] — both are accepted).
+   - Range ("2–4 motorcycles") → [2, 4].
+   - Lower-bound-only ("at least 5 cars") → [5, 100] (use a broad upper to stay flexible).
+   - Presence-only ("there are some cars", "lots of cars") → [1, 100] or similar wide range.
+   - Explicit absence ("no pedestrians") → DO NOT add the key — only include obstacles that are present or counted.
+3. Classify each category as static or dynamic per the taxonomy in [CP]. Reject any category not listed in the taxonomy.
+4. If the user states they don't care about obstacles at all, emit {}.
+5. Otherwise emit the JSON with one key per category that survived the steps above.

@@ -1,0 +1,29 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Downloaded / regenerable state
+CollectedScenarios/   # fetched by add_scenarios.py from Hugging Face
+chroma/
+Scenarios/
+data/
+results/
+logs/
+*.log
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Backups
+*.bak
+*.bak.*

@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use PlannerForge, please cite the paper below."
+title: "PlannerForge: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving"
+authors:
+  - family-names: Gao
+    given-names: Yuan
+    affiliation: "Technical University of Munich"
+  - family-names: "Müller"
+    given-names: Sebastian
+    affiliation: "Technical University of Munich"
+  - family-names: Piccinini
+    given-names: Mattia
+    affiliation: "Technical University of Munich"
+  - family-names: Kaufeld
+    given-names: Marc
+    affiliation: "Technical University of Munich"
+  - family-names: Song
+    given-names: Qunying
+    affiliation: "University College London"
+  - family-names: Betz
+    given-names: Johannes
+    affiliation: "Technical University of Munich"
+license: MIT
+repository-code: "https://github.com/TUM-AVS/PlannerForge"
+preferred-citation:
+  type: conference-paper
+  title: "PlannerForge: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving"
+  year: 2026
+  collection-title: "Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP)"
+  authors:
+    - family-names: Gao
+      given-names: Yuan
+    - family-names: "Müller"
+      given-names: Sebastian
+    - family-names: Piccinini
+      given-names: Mattia
+    - family-names: Kaufeld
+      given-names: Marc
+    - family-names: Song
+      given-names: Qunying
+    - family-names: Betz
+      given-names: Johannes

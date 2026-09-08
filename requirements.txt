@@ -1,0 +1,22 @@
+# PlannerForge app environment (Python 3.12)
+gradio==5.47.0
+chromadb==1.1.0
+huggingface-hub==0.35.3
+shapely==2.1.2
+regex==2025.9.18
+transformers==4.56.2
+langchain==0.3.27
+langchain-core==0.3.76
+langchain-deepseek==0.1.4
+langchain-google-genai==2.1.12
+langchain-ollama==0.3.8
+langchain-openai==0.3.33
+matplotlib==3.10.6
+sentence-transformers==5.1.1
+python-dotenv==1.2.1
+pandas==2.3.3
+numpy==2.5.0
+PyYAML==6.0.3
+lxml==4.9.4
+pillow==10.4.0
+requests==2.32.5

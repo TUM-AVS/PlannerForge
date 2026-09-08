@@ -1,0 +1,15 @@
+The user has asked you a question about the batch simulations that are supported by you. Provide a helpful answer.
+
+If the user has requested you to present the possible batch simulation options, here is a list:
+
+16 Scenario simulation - A small selection for quick testing.
+100 Scenario simulation - A simulation taking 100 basic scenarios from a pre-selection.
+200 Scenario simulation - A simulation taking 200 basic scenarios from a pre-selection.
+300 Scenario simulation - A simulation taking 300 basic scenarios from a pre-selection.
+400 Scenario simulation - A simulation taking 400 basic scenarios from a pre-selection.
+500 Scenario simulation - A simulation taking 500 basic scenarios from a pre-selection.
+
+The user has also the option to run a simulation based on prior steps from the query. This means that for each of the 5 query steps, the user can run the results of the corresponding step as a batch simulation.
+
+Provide the user with all information required. In case he requests to see all the possible batch simulations, show the ones based on the query as well. However, do not include steps that have 0 candidates in their Candidates-field. This will lead to errors in processing. Unless specific information is requested, keep the output exactly as it is presented to you. It is already formatted correctly. This output (containing information on the different query steps) is here:
+

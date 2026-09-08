@@ -1,0 +1,70 @@
+[TASK]
+Extract the target goal position for the ego vehicle from the user's request. The user wants to change where the ego ends up. You must emit a single strict-JSON object with two fields:
+
+  {
+    "target_edge": "<edge_id_or_lanelet_id_as_string>" | null,
+    "position":    "beginning" | "quarter" | "middle" | "three_quarter" | "final"
+  }
+
+If the user did not name a specific edge or lanelet, emit `target_edge: null` and add an extra `"description"` field explaining what is missing. If the user did not name a position, default to `"final"`. Return ONLY the JSON object — no markdown fences, no commentary, no prose.
+
+[CP]
+Position-keyword mapping:
+
+  - "start", "beginning"                                            → beginning   (0% of lane)
+  - "1/4", "quarter", "between beginning and middle", "one fourth"  → quarter     (25% of lane)
+  - "middle", "center", "half"                                      → middle      (50% of lane)
+  - "3/4", "three quarter", "between middle and end"                → three_quarter (75% of lane)
+  - "end", "final"                                                  → final       (100% of lane)
+  - no position keyword present                                     → final       (default)
+
+Rules:
+
+- Always preserve the edge/lanelet id as a STRING ("665", not 665) — even if the user typed a bare integer.
+- If the user typed "edge X", "lane X", or "lanelet X", set target_edge="X".
+- If no id is named, target_edge MUST be null and you MUST add a description field saying so. Do NOT invent an id.
+- One JSON object only. Do not wrap in markdown fences. Do not emit explanatory text around the JSON.
+
+[ICL]
+User input: Change the ego goal to edge 665
+Output: {"target_edge": "665", "position": "final"}
+
+User input: Move goal position to the end of lane 661
+Output: {"target_edge": "661", "position": "final"}
+
+User input: we want to move the goal state of ego to the middle of lane 665
+Output: {"target_edge": "665", "position": "middle"}
+
+User input: Set ego destination to the beginning of lanelet 12345
+Output: {"target_edge": "12345", "position": "beginning"}
+
+User input: Move goal to the start of edge 661
+Output: {"target_edge": "661", "position": "beginning"}
+
+User input: Update the goal to the center of lane 665
+Output: {"target_edge": "665", "position": "middle"}
+
+User input: Move goal to the point between beginning and middle of lane 665
+Output: {"target_edge": "665", "position": "quarter"}
+
+User input: Set goal at 1/4 of edge 661
+Output: {"target_edge": "661", "position": "quarter"}
+
+User input: Place goal between middle and end of lane 665
+Output: {"target_edge": "665", "position": "three_quarter"}
+
+User input: Move goal to 3/4 point of lanelet 12345
+Output: {"target_edge": "12345", "position": "three_quarter"}
+
+User input: Change goal destination
+Output: {"target_edge": null, "position": "final", "description": "User wants to change goal but did not specify a target edge/lanelet id"}
+
+[COT]
+Before emitting the JSON, walk through these reasoning steps explicitly:
+
+  1. (Identify target edge/lanelet) Scan the user input for "lane X", "edge X", "lanelet X", or an isolated numeric id near goal-related vocabulary ("goal", "destination", "target"). If multiple candidates appear, prefer the one most tightly tied to "goal".
+  2. (Identify position keyword) Map the user's words onto exactly one of {beginning, quarter, middle, three_quarter, final} using the keyword table. If no keyword present, default to "final".
+  3. (Handle missing target) If no edge/lanelet id is named, set target_edge: null and add a "description" field. Do NOT invent an id.
+  4. (Emit JSON) Output ONLY the JSON object — no markdown fences, no commentary, no prose. The downstream parser captures the last balanced {...} block in your response.
+
+End each step on its own line (e.g. `Step 1 (target edge): user wrote "lanelet 665" → target_edge="665"`, `Step 2 (position): "middle" → middle`), then emit the final JSON object as the last block of output. Do not embed placeholder braces inside the reasoning prose.

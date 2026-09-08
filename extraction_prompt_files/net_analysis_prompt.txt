@@ -1,0 +1,66 @@
+[TASK]
+You will be shown a SUMO `.net.xml` road-network file. Return a CONCISE text summary (UNDER 400 WORDS, no headings, no markdown) of the edges, their connections, and the lane-disallow / vClass restrictions that matter for routing. The summary feeds a second LLM call that modifies vehicle routes — that downstream call cannot see the .net.xml, so your summary must mention every fact a routing edit could depend on, but stay tight.
+
+Do NOT modify the network. Do NOT produce a route file. Return only the analytical summary. Do NOT enumerate every internal lane — only routable edge ids and their pairwise connections.
+
+[CP]
+Read the .net.xml structure as follows:
+
+- `<edge id="X" function="internal">` blocks describe internal logical edges inside junctions. Users do not route over these — ignore them in your summary.
+- `<edge id="X" from="A" to="B" ...>` are the routable edges. Record id, from-junction, to-junction.
+- Inside each routable edge, `<lane disallow="...">` lists vehicle classes that may NOT use this edge (e.g. `disallow="pedestrian tram rail_urban"`). If a class is not in `disallow`, it is allowed.
+- `<connection from="X" to="Y" ...>` declares a directed connection. Vehicles can travel from X to Y if both edges allow the vehicle's vClass.
+- Transitive connections matter: if X → Y and Y → Z exist, the route `X Y Z` is valid.
+- `<junction id="J" type="dead_end">` marks J as a network exit — vehicles whose route ends inside the network without reaching a dead-end junction will be flagged as "broken".
+
+Always include in your summary:
+1. The set of routable edge IDs.
+2. For each edge: from-junction → to-junction, and any non-default `disallow` list. **Be explicit about disallows** — list every restricted vClass for every edge, even if multiple edges share the same set. Downstream routing depends on this.
+3. The full list of pairwise connections (both direct and transitive when interesting).
+4. Which junctions are dead-ends (exit points).
+5. If the user's request mentions a specific edge OR a specific vehicle ID, call out (a) the connections involving that edge, and (b) the disallow set of every edge along plausible routes for that vehicle's vClass. Flag any edge that disallows the user-vehicle's vClass — the downstream router must avoid those.
+6. If the user's vehicle has a vClass that is `disallow`-ed by intermediate edges along the shortest path, explicitly call this out and propose an alternative path that respects the disallow constraints. The downstream router cannot infer disallows from the route file alone.
+
+[ICL]
+User input: Make vehicle 20004 go to 507
+
+net file:
+<net xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.20">
+    <edge id=":13_0" function="internal"> <lane id=":13_0_0" .../> </edge>
+    <edge id="1" from="1" to="13"> <lane id="1_0" disallow="pedestrian tram rail_urban rail rail_electric ship" speed="36.11"/> </edge>
+    <edge id="2" from="13" to="4"> <lane id="2_0" disallow="pedestrian tram rail_urban rail rail_electric ship"/> </edge>
+    <edge id="506" from="10" to="13"> <lane id="506_0" disallow="pedestrian tram rail_urban rail rail_electric ship"/> </edge>
+    <edge id="507" from="13" to="11"> <lane id="507_0" disallow="pedestrian tram rail_urban rail rail_electric ship"/> </edge>
+    <edge id="57"  from="13" to="12"> <lane id="57_0"  disallow="pedestrian tram rail_urban rail rail_electric ship"/> </edge>
+    <edge id="58"  from="5"  to="13"> <lane id="58_0"  disallow="pedestrian tram rail_urban rail rail_electric ship"/> </edge>
+    <junction id="1"  type="dead_end"/> <junction id="4" type="dead_end"/> <junction id="5" type="dead_end"/>
+    <junction id="10" type="dead_end"/> <junction id="11" type="dead_end"/> <junction id="12" type="dead_end"/>
+    <junction id="13" type="zipper" .../>
+    <connection from="1"   to="57"  dir="r"/>
+    <connection from="1"   to="507" dir="l"/>
+    <connection from="506" to="2"   dir="r"/>
+    <connection from="506" to="57"  dir="l"/>
+    <connection from="58"  to="507" dir="r"/>
+    <connection from="58"  to="2"   dir="l"/>
+</net>
+
+Output:
+**Routable edges:** 1, 2, 57, 58, 506, 507. All edges disallow {pedestrian, tram, rail_urban, rail, rail_electric, ship} — cars, trucks, buses, motorcycles all allowed.
+**Topology:** Central junction is 13 (zipper). Approaching edges: 1 (from junction 1), 506 (from junction 10), 58 (from junction 5). Exit edges: 2 (to junction 4), 507 (to junction 11), 57 (to junction 12). Junctions 1/4/5/10/11/12 are all dead-ends.
+**Connections at junction 13:** 1→57, 1→507, 506→2, 506→57, 58→507, 58→2.
+**User's vehicle 20004 — focus edge 507:** Edge 507 is reachable from 1 (left turn, edge 1 → 507) and from 58 (right turn, edge 58 → 507). 507 itself exits to dead-end junction 11.
+
+Reasoning: I scanned the network for routable edges (skipping internal `:13_*`), listed each edge's connectivity, and surfaced the disallow set (identical across all edges here). I called out edge 507 explicitly since the user's request targets it. The summary lets the next step decide whether vehicle 20004's current start edge connects to 507 directly or via an intermediate.
+
+[COT]
+Before writing your summary, walk through these reasoning steps explicitly:
+
+  1. (Skip internal edges) Filter out every `<edge>` with `function="internal"` — those are junction-internal and not routable.
+  2. (Enumerate routable edges) For each remaining `<edge>`, record id, from-junction, to-junction, and the lane's `disallow` set.
+  3. (Identify dead-ends) Scan `<junction>` elements for `type="dead_end"`. Routes that terminate at these junctions are valid exits.
+  4. (Collect connections) For each `<connection from="X" to="Y">`, record the pair. Note any `dir="r"|"l"|"s"` direction hint if present.
+  5. (Spot transitive paths) If X → Y and Y → Z appear, mention this so the downstream LLM can route across multi-hop paths.
+  6. (Focus on user's request) If the user named an edge or vehicle, surface every connection touching that edge.
+  7. (Emit) Write the structured summary, in plain prose. Do not return XML.
+
+End each step on its own line (e.g. `Step 1: removed 12 internal edges, 6 routable remain`), then emit the final summary as the last block of output.

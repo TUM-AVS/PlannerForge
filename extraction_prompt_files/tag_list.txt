@@ -1,0 +1,188 @@
+comfort:
+  description: The vehicle behaves in a smooth and passenger-friendly way, avoiding harsh acceleration, braking, or steering.
+  examples:
+    - drives smoothly
+    - maintains steady speed
+    - avoids sharp maneuvers
+
+critical:
+  description: A high-risk or safety-critical situation requiring immediate driver or system intervention.
+  examples:
+    - dangerous situation
+    - needs quick reaction
+    - imminent collision risk
+
+emergency_braking:
+  description: The vehicle brakes suddenly and forcefully to avoid a collision or danger.
+  examples:
+    - slams the brakes
+    - sudden stop
+    - hard braking to avoid a crash
+
+evasive:
+  description: The vehicle takes quick action to avoid an obstacle or danger.
+  examples:
+    - swerves to avoid
+    - dodges another car
+    - veers off course
+
+highway:
+  description: The scenario takes place on a major road with high-speed traffic and no intersections.
+  examples:
+    - driving on the highway
+    - cruising on a freeway
+    - traveling on the expressway
+
+illegal_cut_in:
+  description: A vehicle enters the lane abruptly or without proper signaling, often in a dangerous or illegal way.
+  examples:
+    - cuts in aggressively
+    - merges without signaling
+    - squeezes into lane
+
+intersection:
+  description: The vehicle encounters or navigates an area where roads cross.
+  examples:
+    - approaches a junction
+    - enters an intersection
+    - waits at a crossroads
+
+interstate:
+  description: The scenario takes place on a multi-state highway or long-distance route.
+  examples:
+    - driving on the interstate
+    - traveling across states
+    - long-haul highway route
+
+lane_change:
+  description: The vehicle moves from one lane to another.
+  examples:
+    - changes lanes
+    - moves into left lane
+    - merges right
+
+lane_following:
+  description: The vehicle stays in its current lane, maintaining alignment and trajectory.
+  examples:
+    - stays in lane
+    - follows the lane markings
+    - continues in the same lane
+
+merging_lanes:
+  description: Lanes are combining into one, and vehicles adjust to merge safely.
+  examples:
+    - merging with traffic
+    - lane ends ahead
+    - two lanes become one
+
+multi_lane:
+  description: The road has multiple lanes in the same direction, often with traffic flow dynamics.
+  examples:
+    - wide road with several lanes
+    - changes lanes frequently
+    - chooses between lanes
+
+no_oncoming_traffic:
+  description: There are no vehicles coming from the opposite direction.
+  examples:
+    - empty road ahead
+    - clear opposite lane
+    - no traffic from the front
+
+oncoming_traffic:
+  description: Vehicles are approaching from the opposite direction.
+  examples:
+    - car coming toward
+    - traffic in opposing lane
+    - vehicle ahead in opposite direction
+
+parallel_lanes:
+  description: Multiple lanes run alongside each other in the same direction.
+  examples:
+    - adjacent lanes
+    - cars driving side by side
+    - vehicles in parallel lanes
+
+race_track:
+  description: The scenario takes place on a race track or simulated competitive driving environment.
+  examples:
+    - racing environment
+    - high-speed cornering
+    - circuit track
+
+roundabout:
+  description: A circular intersection where vehicles travel around a central island.
+  examples:
+    - enters a roundabout
+    - navigates circular junction
+    - exits at second exit
+
+rural:
+  description: The scenario takes place in countryside or sparsely populated areas.
+  examples:
+    - driving through farmland
+    - empty rural roads
+    - village setting
+
+simulated:
+  description: The scenario is computer-generated or part of a simulation environment.
+  examples:
+    - virtual test run
+    - simulation mode
+    - synthetic scenario
+
+single_lane:
+  description: The road only allows one lane of traffic per direction or in total.
+  examples:
+    - narrow road
+    - only one lane available
+    - single-lane path
+
+slip_road:
+  description: A short connecting road used to enter or exit a highway.
+  examples:
+    - takes the exit ramp
+    - merges onto highway
+    - enters via slip road
+
+speed_limit:
+  description: The vehicle interacts with or responds to a posted speed limit.
+  examples:
+    - reduces speed to limit
+    - obeys speed sign
+    - exceeds posted limit
+
+traffic_jam:
+  description: The vehicle is stuck or moving slowly in dense traffic.
+  examples:
+    - bumper to bumper
+    - heavy congestion
+    - slow-moving line of cars
+
+turn_left:
+  description: The vehicle turns left at an intersection, junction, or bend.
+  examples:
+    - takes a left
+    - turns at the light
+    - veers left
+
+turn_right:
+  description: The vehicle turns right at an intersection, junction, or bend.
+  examples:
+    - moves right at junction
+    - takes a right turn
+    - turns at the corner
+
+two_lane:
+  description: The road has two lanes, typically one in each direction.
+  examples:
+    - two-lane road
+    - one lane per direction
+    - opposing traffic flow
+
+urban:
+  description: The scenario occurs in a city or densely populated area.
+  examples:
+    - city driving
+    - urban intersection
+    - buildings and traffic lights

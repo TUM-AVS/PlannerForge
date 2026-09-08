@@ -1,0 +1,86 @@
+[TASK]
+You will be given a SUMO `.vehicles.rou.xml` route file and a user request to REMOVE one or more vehicles. Delete the requested `<vehicle>` elements and emit the **complete updated route file** as your output — only the XML, no commentary, no markdown fences.
+
+[CP]
+Rules when removing a vehicle:
+
+- Identify each target vehicle by its `id` attribute.
+- Remove the ENTIRE `<vehicle>...</vehicle>` block, including its nested `<route>` element. Do not leave dangling tags or empty elements.
+- All `<vType>` definitions remain in the output even if the removed vehicle was the only user of a particular vType. vTypes are global declarations, not per-vehicle.
+- All OTHER `<vehicle>` elements must remain byte-equivalent to the input — same id, depart, departPos, departSpeed, type, route. Do not reorder.
+- If the user names a vid that does NOT exist in the file, emit the route file UNCHANGED and append the comment `<!-- vehicle <id> not found, no change applied -->` after the last `<vehicle>` element. Do not invent a removal.
+- Return the COMPLETE updated route file.
+
+[ICL]
+User input: Remove vehicle 20055
+Route file:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0"/>
+    <vehicle id="20054" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6">
+        <route edges="544"/>
+    </vehicle>
+    <vehicle id="20055" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="111.7">
+        <route edges="544"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="car_dynamic" guiShape="passenger" vClass="passenger" length="5.0"/>
+    <vehicle id="20054" depart="0.1" departSpeed="0.0" type="car_dynamic" departLane="0" departPos="120.6">
+        <route edges="544"/>
+    </vehicle>
+</routes>
+Reasoning: 20055 is the target. We delete its `<vehicle>` block entirely. 20054 is preserved byte-equivalent. The `car_dynamic` vType stays — even though no vehicle now references it, it's a global declaration.
+
+User input: Delete vehicles 16 and 17
+Route file:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="16" type="passenger" depart="0.00" departLane="0" departPos="0.00">
+        <route edges="1092 661"/>
+    </vehicle>
+    <vehicle id="17" type="passenger" depart="0.00" departLane="0" departPos="87.11">
+        <route edges="1090 1092 661"/>
+    </vehicle>
+    <vehicle id="20" type="passenger" depart="0.50" departLane="0" departPos="5.0">
+        <route edges="100 200"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="20" type="passenger" depart="0.50" departLane="0" departPos="5.0">
+        <route edges="100 200"/>
+    </vehicle>
+</routes>
+Reasoning: Both 16 and 17 are removed. Vehicle 20 is preserved with all its original attributes.
+
+User input: Remove vehicle 999
+Route file:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="20" type="passenger" depart="0.5" departLane="0" departPos="5.0">
+        <route edges="100 200"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="20" type="passenger" depart="0.5" departLane="0" departPos="5.0">
+        <route edges="100 200"/>
+    </vehicle>
+    <!-- vehicle 999 not found, no change applied -->
+</routes>
+Reasoning: 999 is not present. We do NOT invent a removal — we emit the file unchanged plus a comment so the downstream pipeline can detect the no-op.
+
+[COT]
+Before emitting the updated route file, walk through these reasoning steps explicitly:
+
+  1. (Locate target) Find each `<vehicle id="...">` element whose id matches the user-named vid(s).
+  2. (Verify presence) If a vid is absent, do NOT invent a removal. Emit the route file unchanged and append `<!-- vehicle <vid> not found, no change applied -->`.
+  3. (Check independence) Confirm no `<vType>` definition needs to be removed. vTypes are global — even unused ones stay.
+  4. (Delete cleanly) Remove the entire `<vehicle>...</vehicle>` block including its nested `<route>` element. Strip any surrounding blank lines so the remaining elements stay contiguous.
+  5. (Preserve others) Every other `<vehicle>` and `<vType>` element must remain byte-equivalent. Do not reorder.
+  6. (Emit) Return the COMPLETE updated route file.
+
+End each step on its own line (e.g. `Step 1 (locate): found vid=20055`, `Step 4 (delete): removed block`), then emit the final XML as the last block of output.

@@ -1,0 +1,3228 @@
+diff --git a/.gitignore b/.gitignore
+index 03244e5..d508a8a 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -16,4 +16,5 @@ doc/build/
+ output/
+ logs
+ venv
+-tools
+\ No newline at end of file
++tools
++
+diff --git a/batch_presets/batch_100_scenarios.csv b/batch_presets/batch_100_scenarios.csv
+new file mode 100644
+index 0000000..2867b69
+--- /dev/null
++++ b/batch_presets/batch_100_scenarios.csv
+@@ -0,0 +1,100 @@
++AUT_Haag-12_1_T-4
++BEL_Aarschot-3_1_T-1
++BEL_Brussels-29_1_T-1
++BEL_Brussels-54_2_T-1
++BEL_Brussels-80_4_T-1
++BEL_Leuven-43_1_T-1
++BEL_Zwevegem-1_4_T-1
++BRA_BeloHorizonte-14_1_T-3
++BRA_BeloHorizonte-14_1_T-7
++BRA_BeloHorizonte-39_1_T-2
++BRA_VilaVelha-27_1_T-3
++BRA_VilaVelha-63_1_T-2
++BRA_VilaVelha-66_1_T-8
++CHN_Qingdao-14_12_T-1
++CHN_Qingdao-14_33_T-1
++CHN_Qingdao-31_2_T-1
++CHN_Qingdao-5_36_T-1
++CHN_Tianjin-18_7_T-1
++DEU_Arnstadt-39_1_T-4
++DEU_Arnstadt-46_1_T-1
++DEU_Arnstadt-83_1_T-9
++DEU_Aschaffenburg-17_8_T-1
++DEU_Aschaffenburg-22_3_T-1
++DEU_Aschaffenburg-23_30_T-1
++DEU_Aschaffenburg-37_2_T-1
++DEU_Aschaffenburg-58_7_T-1
++DEU_Bebra-18_1_T-4
++DEU_Bebra-32_1_T-1
++DEU_Bebra-37_1_T-3
++DEU_Bebra-39_1_T-1
++DEU_Bonn-23_2_T-1
++DEU_Bonn-34_3_T-1
++DEU_Bonn-35_5_T-1
++DEU_Bremen-14_4_T-1
++DEU_Bremen-1_51_T-1
++DEU_Damme-17_1_T-1
++DEU_Darmstadt-24_1_T-1
++DEU_Flensburg-63_1_T-1
++DEU_Flensburg-73_1_T-1
++DEU_Goeppingen-11_1_T-3
++DEU_Goeppingen-26_1_T-3
++DEU_Goeppingen-38_1_T-2
++DEU_Goeppingen-63_1_T-5
++DEU_Hanover-1_17_T-1
++DEU_Hanover-35_9_T-1
++DEU_Hanover-38_27_T-1
++DEU_Hanover-38_46_T-1
++DEU_Hanover-44_1_T-1
++DEU_Hanover-44_29_T-1
++DEU_Heilbronn-13_1_T-2
++DEU_Heilbronn-152_1_T-8
++DEU_Heilbronn-156_1_T-2
++DEU_Heilbronn-163_1_T-3
++DEU_Heilbronn-215_1_T-2
++DEU_Heilbronn-236_1_T-1
++DEU_Heilbronn-247_1_T-6
++DEU_Heilbronn-248_1_T-9
++DEU_Heilbronn-330_1_T-4
++DEU_Heilbronn-37_1_T-2
++DEU_Heilbronn-86_1_T-1
++DEU_Heilbronn-95_1_T-6
++DEU_Hennigsdorf-16_6_T-1
++DEU_Herzogenaurach-106_1_T-4
++DEU_Herzogenaurach-137_1_T-4
++DEU_Herzogenaurach-157_1_T-2
++DEU_Herzogenaurach-161_1_T-3
++DEU_Herzogenaurach-181_1_T-6
++DEU_Herzogenaurach-18_1_T-2
++DEU_Herzogenaurach-66_1_T-9
++DEU_Herzogenaurach-99_1_T-7
++DEU_Kiel-2_18_T-1
++DEU_Kiel-2_20_T-1
++DEU_Kiel-35_7_T-1
++DEU_Kiel-43_52_T-1
++DEU_Kiel-46_1_T-1
++DEU_Kitzingen-41_1_T-3
++DEU_Kleinmachnow-19_1_T-6
++DEU_Kleinmachnow-90_1_T-5
++DEU_Leipzig-27_9_T-1
++DEU_Leipzig-39_22_T-1
++DEU_Leipzig-55_25_T-1
++DEU_Leipzig-59_50_T-1
++DEU_Memmingen-207_1_T-1
++DEU_Memmingen-21_1_T-3
++DEU_Memmingen-79_1_T-2
++DEU_Memmingen-96_1_T-1
++DEU_Muehlhausen-13_1_T-1
++DEU_Nuremberg-16_7_T-1
++DEU_Nuremberg-23_2_T-1
++DEU_Nuremberg-24_30_T-1
++DEU_Nuremberg-27_4_T-1
++DEU_Nuremberg-30_1_T-1
++DEU_Nuremberg-35_1_T-1
++DEU_Nuremberg-44_3_T-1
++DEU_Nuremberg-6_29_T-1
++DEU_Riesa-8_1_T-1
++DEU_Salzwedel-25_1_T-7
++DEU_Salzwedel-50_1_T-1
++DEU_Salzwedel-54_1_T-1
++DEU_Schopfloch-3_1_T-9
+diff --git a/batch_presets/batch_200_scenarios.csv b/batch_presets/batch_200_scenarios.csv
+new file mode 100644
+index 0000000..55bd9f4
+--- /dev/null
++++ b/batch_presets/batch_200_scenarios.csv
+@@ -0,0 +1,200 @@
++ARG_Carcarana-4_4_T-1
++AUT_Haag-12_1_T-4
++AUT_Haag-51_1_T-2
++BEL_Aarschot-3_1_T-1
++BEL_Antwerp-22_7_T-1
++BEL_Antwerp-59_2_T-1
++BEL_Brussels-29_1_T-1
++BEL_Brussels-49_9_T-1
++BEL_Brussels-54_2_T-1
++BEL_Brussels-80_4_T-1
++BEL_Brussels-82_4_T-1
++BEL_Leuven-43_1_T-1
++BEL_Leuven-54_8_T-1
++BEL_Putte-1_1_T-1
++BEL_Putte-8_2_T-1
++BEL_Zwevegem-1_4_T-1
++BRA_BeloHorizonte-12_1_T-4
++BRA_BeloHorizonte-14_1_T-3
++BRA_BeloHorizonte-14_1_T-7
++BRA_BeloHorizonte-39_1_T-2
++BRA_VilaVelha-23_1_T-5
++BRA_VilaVelha-27_1_T-3
++BRA_VilaVelha-34_1_T-1
++BRA_VilaVelha-35_1_T-2
++BRA_VilaVelha-4_1_T-2
++BRA_VilaVelha-63_1_T-2
++BRA_VilaVelha-66_1_T-8
++BRA_VilaVelha-72_1_T-4
++CHN_Beijing-11_3_T-1
++CHN_Beijing-6_8_T-1
++CHN_Qingdao-11_13_T-1
++CHN_Qingdao-14_12_T-1
++CHN_Qingdao-14_33_T-1
++CHN_Qingdao-21_4_T-1
++CHN_Qingdao-29_2_T-1
++CHN_Qingdao-31_2_T-1
++CHN_Qingdao-5_36_T-1
++CHN_Qingdao-8_11_T-1
++CHN_Tianjin-18_7_T-1
++DEU_Arnstadt-36_1_T-1
++DEU_Arnstadt-39_1_T-4
++DEU_Arnstadt-46_1_T-1
++DEU_Arnstadt-47_1_T-4
++DEU_Arnstadt-83_1_T-9
++DEU_Aschaffenburg-16_6_T-1
++DEU_Aschaffenburg-17_8_T-1
++DEU_Aschaffenburg-22_3_T-1
++DEU_Aschaffenburg-23_18_T-1
++DEU_Aschaffenburg-23_30_T-1
++DEU_Aschaffenburg-27_3_T-1
++DEU_Aschaffenburg-37_2_T-1
++DEU_Aschaffenburg-41_15_T-1
++DEU_Aschaffenburg-58_7_T-1
++DEU_Aschaffenburg-7_10_T-1
++DEU_BadAibling-9_1_T-2
++DEU_BadAibling-9_1_T-3
++DEU_Bebra-18_1_T-4
++DEU_Bebra-18_1_T-5
++DEU_Bebra-32_1_T-1
++DEU_Bebra-37_1_T-1
++DEU_Bebra-37_1_T-3
++DEU_Bebra-39_1_T-1
++DEU_Bebra-45_1_T-1
++DEU_Bonn-16_24_T-1
++DEU_Bonn-19_2_T-1
++DEU_Bonn-23_2_T-1
++DEU_Bonn-34_3_T-1
++DEU_Bonn-35_5_T-1
++DEU_Bremen-10_50_T-1
++DEU_Bremen-10_60_T-1
++DEU_Bremen-14_4_T-1
++DEU_Bremen-1_51_T-1
++DEU_Bremen-27_6_T-1
++DEU_Bremen-30_1_T-1
++DEU_Bremen-5_5_T-1
++DEU_Bremen-9_50_T-1
++DEU_Damme-17_1_T-1
++DEU_Darmstadt-24_1_T-1
++DEU_Darmstadt-72_1_T-3
++DEU_Flensburg-40_1_T-1
++DEU_Flensburg-63_1_T-1
++DEU_Flensburg-73_1_T-1
++DEU_Goeppingen-11_1_T-3
++DEU_Goeppingen-19_1_T-5
++DEU_Goeppingen-26_1_T-3
++DEU_Goeppingen-38_1_T-2
++DEU_Goeppingen-63_1_T-5
++DEU_Hanover-19_8_T-1
++DEU_Hanover-1_17_T-1
++DEU_Hanover-35_9_T-1
++DEU_Hanover-38_27_T-1
++DEU_Hanover-38_46_T-1
++DEU_Hanover-44_1_T-1
++DEU_Hanover-44_29_T-1
++DEU_Hanover-44_43_T-1
++DEU_Hanover-45_17_T-1
++DEU_Hanover-45_21_T-1
++DEU_Heilbronn-138_1_T-6
++DEU_Heilbronn-13_1_T-2
++DEU_Heilbronn-142_1_T-8
++DEU_Heilbronn-144_1_T-1
++DEU_Heilbronn-152_1_T-8
++DEU_Heilbronn-156_1_T-2
++DEU_Heilbronn-163_1_T-3
++DEU_Heilbronn-209_1_T-3
++DEU_Heilbronn-215_1_T-2
++DEU_Heilbronn-236_1_T-1
++DEU_Heilbronn-247_1_T-6
++DEU_Heilbronn-248_1_T-9
++DEU_Heilbronn-330_1_T-4
++DEU_Heilbronn-345_1_T-1
++DEU_Heilbronn-347_1_T-1
++DEU_Heilbronn-37_1_T-2
++DEU_Heilbronn-86_1_T-1
++DEU_Heilbronn-88_1_T-6
++DEU_Heilbronn-95_1_T-6
++DEU_Heilbronn-98_1_T-4
++DEU_Hennigsdorf-16_6_T-1
++DEU_Herzogenaurach-106_1_T-4
++DEU_Herzogenaurach-124_1_T-3
++DEU_Herzogenaurach-12_1_T-8
++DEU_Herzogenaurach-137_1_T-4
++DEU_Herzogenaurach-14_1_T-4
++DEU_Herzogenaurach-157_1_T-2
++DEU_Herzogenaurach-158_1_T-2
++DEU_Herzogenaurach-161_1_T-3
++DEU_Herzogenaurach-168_1_T-8
++DEU_Herzogenaurach-181_1_T-6
++DEU_Herzogenaurach-18_1_T-2
++DEU_Herzogenaurach-28_1_T-3
++DEU_Herzogenaurach-66_1_T-9
++DEU_Herzogenaurach-67_1_T-3
++DEU_Herzogenaurach-98_1_T-5
++DEU_Herzogenaurach-99_1_T-7
++DEU_Ibbenbueren-10_2_T-1
++DEU_Kempten-35_7_T-1
++DEU_Kiel-19_17_T-1
++DEU_Kiel-2_18_T-1
++DEU_Kiel-2_20_T-1
++DEU_Kiel-2_53_T-1
++DEU_Kiel-35_7_T-1
++DEU_Kiel-38_6_T-1
++DEU_Kiel-43_52_T-1
++DEU_Kiel-46_1_T-1
++DEU_Kiel-49_3_T-1
++DEU_Kitzingen-41_1_T-3
++DEU_Kleinmachnow-19_1_T-6
++DEU_Kleinmachnow-89_1_T-9
++DEU_Kleinmachnow-90_1_T-5
++DEU_Leipzig-10_9_T-1
++DEU_Leipzig-13_36_T-1
++DEU_Leipzig-13_6_T-1
++DEU_Leipzig-17_1_T-1
++DEU_Leipzig-27_12_T-1
++DEU_Leipzig-27_9_T-1
++DEU_Leipzig-29_22_T-1
++DEU_Leipzig-39_22_T-1
++DEU_Leipzig-39_24_T-1
++DEU_Leipzig-55_25_T-1
++DEU_Leipzig-55_45_T-1
++DEU_Leipzig-59_50_T-1
++DEU_Lengede-12_1_T-2
++DEU_Lengede-42_1_T-5
++DEU_Lohmar-32_1_T-1
++DEU_Memmingen-163_1_T-3
++DEU_Memmingen-188_1_T-3
++DEU_Memmingen-207_1_T-1
++DEU_Memmingen-21_1_T-3
++DEU_Memmingen-27_1_T-6
++DEU_Memmingen-79_1_T-2
++DEU_Memmingen-84_1_T-1
++DEU_Memmingen-96_1_T-1
++DEU_Moelln-10_3_T-1
++DEU_Moelln-3_4_T-1
++DEU_Muehlhausen-10_5_T-1
++DEU_Muehlhausen-13_1_T-1
++DEU_Nuremberg-16_7_T-1
++DEU_Nuremberg-16_8_T-1
++DEU_Nuremberg-17_4_T-1
++DEU_Nuremberg-23_2_T-1
++DEU_Nuremberg-24_30_T-1
++DEU_Nuremberg-27_4_T-1
++DEU_Nuremberg-2_28_T-1
++DEU_Nuremberg-30_1_T-1
++DEU_Nuremberg-35_1_T-1
++DEU_Nuremberg-44_3_T-1
++DEU_Nuremberg-57_2_T-1
++DEU_Nuremberg-6_19_T-1
++DEU_Nuremberg-6_26_T-1
++DEU_Nuremberg-6_29_T-1
++DEU_Nuremberg-9_5_T-1
++DEU_Rheinbach-5_3_T-1
++DEU_Riesa-8_1_T-1
++DEU_Salzwedel-106_1_T-2
++DEU_Salzwedel-25_1_T-7
++DEU_Salzwedel-50_1_T-1
++DEU_Salzwedel-54_1_T-1
++DEU_Schopfloch-3_1_T-9
++DEU_Schweitenkirchen-4_1_T-3
++DEU_Schweitenkirchen-5_1_T-7
+\ No newline at end of file
+diff --git a/batch_presets/batch_300_scenarios.csv b/batch_presets/batch_300_scenarios.csv
+new file mode 100644
+index 0000000..d6c00f0
+--- /dev/null
++++ b/batch_presets/batch_300_scenarios.csv
+@@ -0,0 +1,300 @@
++ARG_Carcarana-4_4_T-1
++AUT_Haag-12_1_T-4
++AUT_Haag-51_1_T-2
++BEL_Aarschot-3_1_T-1
++BEL_Antwerp-22_7_T-1
++BEL_Antwerp-59_2_T-1
++BEL_Brussels-29_1_T-1
++BEL_Brussels-49_9_T-1
++BEL_Brussels-54_2_T-1
++BEL_Brussels-80_4_T-1
++BEL_Brussels-82_4_T-1
++BEL_Leuven-43_1_T-1
++BEL_Leuven-54_8_T-1
++BEL_Putte-1_1_T-1
++BEL_Putte-8_2_T-1
++BEL_Zwevegem-1_4_T-1
++BRA_BeloHorizonte-12_1_T-4
++BRA_BeloHorizonte-14_1_T-3
++BRA_BeloHorizonte-14_1_T-7
++BRA_BeloHorizonte-39_1_T-2
++BRA_VilaVelha-23_1_T-5
++BRA_VilaVelha-27_1_T-3
++BRA_VilaVelha-34_1_T-1
++BRA_VilaVelha-35_1_T-2
++BRA_VilaVelha-4_1_T-2
++BRA_VilaVelha-63_1_T-2
++BRA_VilaVelha-66_1_T-8
++BRA_VilaVelha-72_1_T-4
++CHN_Beijing-11_3_T-1
++CHN_Beijing-6_8_T-1
++CHN_Qingdao-11_13_T-1
++CHN_Qingdao-14_12_T-1
++CHN_Qingdao-14_33_T-1
++CHN_Qingdao-21_4_T-1
++CHN_Qingdao-29_2_T-1
++CHN_Qingdao-31_2_T-1
++CHN_Qingdao-5_36_T-1
++CHN_Qingdao-8_11_T-1
++CHN_Tianjin-18_7_T-1
++DEU_Arnstadt-36_1_T-1
++DEU_Arnstadt-39_1_T-4
++DEU_Arnstadt-46_1_T-1
++DEU_Arnstadt-47_1_T-4
++DEU_Arnstadt-83_1_T-9
++DEU_Aschaffenburg-16_6_T-1
++DEU_Aschaffenburg-17_8_T-1
++DEU_Aschaffenburg-22_3_T-1
++DEU_Aschaffenburg-23_18_T-1
++DEU_Aschaffenburg-23_30_T-1
++DEU_Aschaffenburg-27_3_T-1
++DEU_Aschaffenburg-37_2_T-1
++DEU_Aschaffenburg-41_15_T-1
++DEU_Aschaffenburg-58_7_T-1
++DEU_Aschaffenburg-7_10_T-1
++DEU_BadAibling-9_1_T-2
++DEU_BadAibling-9_1_T-3
++DEU_Bebra-18_1_T-4
++DEU_Bebra-18_1_T-5
++DEU_Bebra-32_1_T-1
++DEU_Bebra-37_1_T-1
++DEU_Bebra-37_1_T-3
++DEU_Bebra-39_1_T-1
++DEU_Bebra-45_1_T-1
++DEU_Bonn-16_24_T-1
++DEU_Bonn-19_2_T-1
++DEU_Bonn-23_2_T-1
++DEU_Bonn-34_3_T-1
++DEU_Bonn-35_5_T-1
++DEU_Bremen-10_50_T-1
++DEU_Bremen-10_60_T-1
++DEU_Bremen-14_4_T-1
++DEU_Bremen-1_51_T-1
++DEU_Bremen-27_6_T-1
++DEU_Bremen-30_1_T-1
++DEU_Bremen-5_5_T-1
++DEU_Bremen-9_50_T-1
++DEU_Damme-17_1_T-1
++DEU_Darmstadt-24_1_T-1
++DEU_Darmstadt-72_1_T-3
++DEU_Flensburg-40_1_T-1
++DEU_Flensburg-63_1_T-1
++DEU_Flensburg-73_1_T-1
++DEU_Goeppingen-11_1_T-3
++DEU_Goeppingen-19_1_T-5
++DEU_Goeppingen-26_1_T-3
++DEU_Goeppingen-38_1_T-2
++DEU_Goeppingen-63_1_T-5
++DEU_Hanover-19_8_T-1
++DEU_Hanover-1_17_T-1
++DEU_Hanover-35_9_T-1
++DEU_Hanover-38_27_T-1
++DEU_Hanover-38_46_T-1
++DEU_Hanover-44_1_T-1
++DEU_Hanover-44_29_T-1
++DEU_Hanover-44_43_T-1
++DEU_Hanover-45_17_T-1
++DEU_Hanover-45_21_T-1
++DEU_Heilbronn-138_1_T-6
++DEU_Heilbronn-13_1_T-2
++DEU_Heilbronn-142_1_T-8
++DEU_Heilbronn-144_1_T-1
++DEU_Heilbronn-152_1_T-8
++DEU_Heilbronn-156_1_T-2
++DEU_Heilbronn-163_1_T-3
++DEU_Heilbronn-209_1_T-3
++DEU_Heilbronn-215_1_T-2
++DEU_Heilbronn-236_1_T-1
++DEU_Heilbronn-247_1_T-6
++DEU_Heilbronn-248_1_T-9
++DEU_Heilbronn-330_1_T-4
++DEU_Heilbronn-345_1_T-1
++DEU_Heilbronn-347_1_T-1
++DEU_Heilbronn-37_1_T-2
++DEU_Heilbronn-86_1_T-1
++DEU_Heilbronn-88_1_T-6
++DEU_Heilbronn-95_1_T-6
++DEU_Heilbronn-98_1_T-4
++DEU_Hennigsdorf-16_6_T-1
++DEU_Herzogenaurach-106_1_T-4
++DEU_Herzogenaurach-124_1_T-3
++DEU_Herzogenaurach-12_1_T-8
++DEU_Herzogenaurach-137_1_T-4
++DEU_Herzogenaurach-14_1_T-4
++DEU_Herzogenaurach-157_1_T-2
++DEU_Herzogenaurach-158_1_T-2
++DEU_Herzogenaurach-161_1_T-3
++DEU_Herzogenaurach-168_1_T-8
++DEU_Herzogenaurach-181_1_T-6
++DEU_Herzogenaurach-18_1_T-2
++DEU_Herzogenaurach-28_1_T-3
++DEU_Herzogenaurach-66_1_T-9
++DEU_Herzogenaurach-67_1_T-3
++DEU_Herzogenaurach-98_1_T-5
++DEU_Herzogenaurach-99_1_T-7
++DEU_Ibbenbueren-10_2_T-1
++DEU_Kempten-35_7_T-1
++DEU_Kiel-19_17_T-1
++DEU_Kiel-2_18_T-1
++DEU_Kiel-2_20_T-1
++DEU_Kiel-2_53_T-1
++DEU_Kiel-35_7_T-1
++DEU_Kiel-38_6_T-1
++DEU_Kiel-43_52_T-1
++DEU_Kiel-46_1_T-1
++DEU_Kiel-49_3_T-1
++DEU_Kitzingen-41_1_T-3
++DEU_Kleinmachnow-19_1_T-6
++DEU_Kleinmachnow-89_1_T-9
++DEU_Kleinmachnow-90_1_T-5
++DEU_Leipzig-10_9_T-1
++DEU_Leipzig-13_36_T-1
++DEU_Leipzig-13_6_T-1
++DEU_Leipzig-17_1_T-1
++DEU_Leipzig-27_12_T-1
++DEU_Leipzig-27_9_T-1
++DEU_Leipzig-29_22_T-1
++DEU_Leipzig-39_22_T-1
++DEU_Leipzig-39_24_T-1
++DEU_Leipzig-55_25_T-1
++DEU_Leipzig-55_45_T-1
++DEU_Leipzig-59_50_T-1
++DEU_Lengede-12_1_T-2
++DEU_Lengede-42_1_T-5
++DEU_Lohmar-32_1_T-1
++DEU_Memmingen-163_1_T-3
++DEU_Memmingen-188_1_T-3
++DEU_Memmingen-207_1_T-1
++DEU_Memmingen-21_1_T-3
++DEU_Memmingen-27_1_T-6
++DEU_Memmingen-79_1_T-2
++DEU_Memmingen-84_1_T-1
++DEU_Memmingen-96_1_T-1
++DEU_Moelln-10_3_T-1
++DEU_Moelln-3_4_T-1
++DEU_Muehlhausen-10_5_T-1
++DEU_Muehlhausen-13_1_T-1
++DEU_Nuremberg-16_7_T-1
++DEU_Nuremberg-16_8_T-1
++DEU_Nuremberg-17_4_T-1
++DEU_Nuremberg-23_2_T-1
++DEU_Nuremberg-24_30_T-1
++DEU_Nuremberg-27_4_T-1
++DEU_Nuremberg-2_28_T-1
++DEU_Nuremberg-30_1_T-1
++DEU_Nuremberg-35_1_T-1
++DEU_Nuremberg-44_3_T-1
++DEU_Nuremberg-57_2_T-1
++DEU_Nuremberg-6_19_T-1
++DEU_Nuremberg-6_26_T-1
++DEU_Nuremberg-6_29_T-1
++DEU_Nuremberg-9_5_T-1
++DEU_Rheinbach-5_3_T-1
++DEU_Riesa-8_1_T-1
++DEU_Salzwedel-106_1_T-2
++DEU_Salzwedel-25_1_T-7
++DEU_Salzwedel-50_1_T-1
++DEU_Salzwedel-54_1_T-1
++DEU_Schopfloch-3_1_T-9
++DEU_Schweitenkirchen-4_1_T-3
++DEU_Schweitenkirchen-5_1_T-7
++DEU_Schwetzingen-106_1_T-1
++DEU_Schwetzingen-110_1_T-5
++DEU_Schwetzingen-142_1_T-3
++DEU_Schwetzingen-154_1_T-3
++DEU_Schwetzingen-176_1_T-2
++DEU_Schwetzingen-194_1_T-2
++DEU_Schwetzingen-53_1_T-5
++DEU_Schwetzingen-53_1_T-6
++DEU_Schwetzingen-70_1_T-5
++DEU_Schwetzingen-70_1_T-6
++DEU_Weimar-10_1_T-4
++DEU_Weimar-13_1_T-4
++DEU_Weimar-16_1_T-2
++DEU_Weimar-35_1_T-4
++DEU_Weimar-46_1_T-9
++DEU_Weimar-68_1_T-3
++DEU_Weimar-71_1_T-4
++DEU_Weimar-83_1_T-4
++DEU_Wolfsburg-13_1_T-6
++DEU_Wolfsburg-25_1_T-5
++DEU_Wolfsburg-39_1_T-3
++DEU_Wolfsburg-39_1_T-8
++DEU_Wolfsburg-61_1_T-4
++DEU_Wolfsburg-6_1_T-7
++DEU_Wolfsburg-76_1_T-6
++DEU_Wolfsburg-77_1_T-9
++DEU_Wolfsburg-81_1_T-1
++DEU_Wolfsburg-84_1_T-4
++ECU_Quito-36_1_T-1
++ESP_Almansa-2_2_T-1
++ESP_Barcelona-10_19_T-1
++ESP_Barcelona-12_43_T-1
++ESP_Barcelona-14_54_T-1
++ESP_Barcelona-14_6_T-1
++ESP_Barcelona-16_18_T-1
++ESP_Barcelona-16_55_T-1
++ESP_Barcelona-16_57_T-1
++ESP_Barcelona-20_1_T-1
++ESP_Barcelona-20_20_T-1
++ESP_Barcelona-20_23_T-1
++ESP_Barcelona-23_30_T-1
++ESP_Barcelona-24_15_T-1
++ESP_Barcelona-26_11_T-1
++ESP_Barcelona-27_4_T-1
++ESP_Barcelona-30_11_T-1
++ESP_Barcelona-30_20_T-1
++ESP_Barcelona-30_3_T-1
++ESP_Barcelona-30_53_T-1
++ESP_Barcelona-37_31_T-1
++ESP_Barcelona-37_38_T-1
++ESP_Barcelona-38_15_T-1
++ESP_Barcelona-39_27_T-1
++ESP_Barcelona-39_4_T-1
++ESP_Barcelona-41_11_T-1
++ESP_Barcelona-41_27_T-1
++ESP_Barcelona-44_11_T-1
++ESP_Barcelona-44_29_T-1
++ESP_Barcelona-44_5_T-1
++ESP_Barcelona-48_16_T-1
++ESP_Barcelona-49_56_T-1
++ESP_Barcelona-52_3_T-1
++ESP_Barcelona-52_42_T-1
++ESP_Barcelona-53_7_T-1
++ESP_Barcelona-58_43_T-1
++ESP_Barcelona-58_51_T-1
++ESP_Barcelona-60_24_T-1
++ESP_Barcelona-64_33_T-1
++ESP_Barcelona-69_19_T-1
++ESP_Barcelona-9_32_T-1
++ESP_Bilbao-14_4_T-1
++ESP_Bilbao-19_29_T-1
++ESP_Bilbao-27_19_T-1
++ESP_Bilbao-27_5_T-1
++ESP_Bilbao-30_19_T-1
++ESP_Bilbao-30_1_T-1
++ESP_Bilbao-30_30_T-1
++ESP_Bilbao-30_34_T-1
++ESP_Bilbao-32_1_T-1
++ESP_Bilbao-35_7_T-1
++ESP_Bilbao-39_21_T-1
++ESP_Bilbao-41_4_T-1
++ESP_Bilbao-49_23_T-1
++ESP_Bilbao-53_2_T-1
++ESP_SantBoideLlobregat-23_2_T-1
++ESP_Toledo-10_2_T-1
++ESP_Toledo-7_5_T-1
++ESP_Vigo-27_16_T-1
++ESP_Vigo-42_3_T-1
++ESP_Vigo-43_23_T-1
++ESP_Vigo-59_14_T-1
++ESP_Vigo-63_4_T-1
++ESP_Vigo-69_4_T-1
++ESP_Vigo-77_1_T-1
++ESP_Vigo-78_11_T-1
++ESP_Vigo-7_10_T-1
++ESP_Vigo-7_3_T-1
++ESP_Vigo-99_34_T-1
++FRA_Anglet-5_5_T-1
++FRA_Dijon-12_11_T-1
++FRA_Dijon-12_15_T-1
+\ No newline at end of file
+diff --git a/batch_presets/batch_400_scenarios.csv b/batch_presets/batch_400_scenarios.csv
+new file mode 100644
+index 0000000..3600778
+--- /dev/null
++++ b/batch_presets/batch_400_scenarios.csv
+@@ -0,0 +1,400 @@
++ARG_Carcarana-4_4_T-1
++AUT_Haag-12_1_T-4
++AUT_Haag-51_1_T-2
++BEL_Aarschot-3_1_T-1
++BEL_Antwerp-22_7_T-1
++BEL_Antwerp-59_2_T-1
++BEL_Brussels-29_1_T-1
++BEL_Brussels-49_9_T-1
++BEL_Brussels-54_2_T-1
++BEL_Brussels-80_4_T-1
++BEL_Brussels-82_4_T-1
++BEL_Leuven-43_1_T-1
++BEL_Leuven-54_8_T-1
++BEL_Putte-1_1_T-1
++BEL_Putte-8_2_T-1
++BEL_Zwevegem-1_4_T-1
++BRA_BeloHorizonte-12_1_T-4
++BRA_BeloHorizonte-14_1_T-3
++BRA_BeloHorizonte-14_1_T-7
++BRA_BeloHorizonte-39_1_T-2
++BRA_VilaVelha-23_1_T-5
++BRA_VilaVelha-27_1_T-3
++BRA_VilaVelha-34_1_T-1
++BRA_VilaVelha-35_1_T-2
++BRA_VilaVelha-4_1_T-2
++BRA_VilaVelha-63_1_T-2
++BRA_VilaVelha-66_1_T-8
++BRA_VilaVelha-72_1_T-4
++CHN_Beijing-11_3_T-1
++CHN_Beijing-6_8_T-1
++CHN_Qingdao-11_13_T-1
++CHN_Qingdao-14_12_T-1
++CHN_Qingdao-14_33_T-1
++CHN_Qingdao-21_4_T-1
++CHN_Qingdao-29_2_T-1
++CHN_Qingdao-31_2_T-1
++CHN_Qingdao-5_36_T-1
++CHN_Qingdao-8_11_T-1
++CHN_Tianjin-18_7_T-1
++DEU_Arnstadt-36_1_T-1
++DEU_Arnstadt-39_1_T-4
++DEU_Arnstadt-46_1_T-1
++DEU_Arnstadt-47_1_T-4
++DEU_Arnstadt-83_1_T-9
++DEU_Aschaffenburg-16_6_T-1
++DEU_Aschaffenburg-17_8_T-1
++DEU_Aschaffenburg-22_3_T-1
++DEU_Aschaffenburg-23_18_T-1
++DEU_Aschaffenburg-23_30_T-1
++DEU_Aschaffenburg-27_3_T-1
++DEU_Aschaffenburg-37_2_T-1
++DEU_Aschaffenburg-41_15_T-1
++DEU_Aschaffenburg-58_7_T-1
++DEU_Aschaffenburg-7_10_T-1
++DEU_BadAibling-9_1_T-2
++DEU_BadAibling-9_1_T-3
++DEU_Bebra-18_1_T-4
++DEU_Bebra-18_1_T-5
++DEU_Bebra-32_1_T-1
++DEU_Bebra-37_1_T-1
++DEU_Bebra-37_1_T-3
++DEU_Bebra-39_1_T-1
++DEU_Bebra-45_1_T-1
++DEU_Bonn-16_24_T-1
++DEU_Bonn-19_2_T-1
++DEU_Bonn-23_2_T-1
++DEU_Bonn-34_3_T-1
++DEU_Bonn-35_5_T-1
++DEU_Bremen-10_50_T-1
++DEU_Bremen-10_60_T-1
++DEU_Bremen-14_4_T-1
++DEU_Bremen-1_51_T-1
++DEU_Bremen-27_6_T-1
++DEU_Bremen-30_1_T-1
++DEU_Bremen-5_5_T-1
++DEU_Bremen-9_50_T-1
++DEU_Damme-17_1_T-1
++DEU_Darmstadt-24_1_T-1
++DEU_Darmstadt-72_1_T-3
++DEU_Flensburg-40_1_T-1
++DEU_Flensburg-63_1_T-1
++DEU_Flensburg-73_1_T-1
++DEU_Goeppingen-11_1_T-3
++DEU_Goeppingen-19_1_T-5
++DEU_Goeppingen-26_1_T-3
++DEU_Goeppingen-38_1_T-2
++DEU_Goeppingen-63_1_T-5
++DEU_Hanover-19_8_T-1
++DEU_Hanover-1_17_T-1
++DEU_Hanover-35_9_T-1
++DEU_Hanover-38_27_T-1
++DEU_Hanover-38_46_T-1
++DEU_Hanover-44_1_T-1
++DEU_Hanover-44_29_T-1
++DEU_Hanover-44_43_T-1
++DEU_Hanover-45_17_T-1
++DEU_Hanover-45_21_T-1
++DEU_Heilbronn-138_1_T-6
++DEU_Heilbronn-13_1_T-2
++DEU_Heilbronn-142_1_T-8
++DEU_Heilbronn-144_1_T-1
++DEU_Heilbronn-152_1_T-8
++DEU_Heilbronn-156_1_T-2
++DEU_Heilbronn-163_1_T-3
++DEU_Heilbronn-209_1_T-3
++DEU_Heilbronn-215_1_T-2
++DEU_Heilbronn-236_1_T-1
++DEU_Heilbronn-247_1_T-6
++DEU_Heilbronn-248_1_T-9
++DEU_Heilbronn-330_1_T-4
++DEU_Heilbronn-345_1_T-1
++DEU_Heilbronn-347_1_T-1
++DEU_Heilbronn-37_1_T-2
++DEU_Heilbronn-86_1_T-1
++DEU_Heilbronn-88_1_T-6
++DEU_Heilbronn-95_1_T-6
++DEU_Heilbronn-98_1_T-4
++DEU_Hennigsdorf-16_6_T-1
++DEU_Herzogenaurach-106_1_T-4
++DEU_Herzogenaurach-124_1_T-3
++DEU_Herzogenaurach-12_1_T-8
++DEU_Herzogenaurach-137_1_T-4
++DEU_Herzogenaurach-14_1_T-4
++DEU_Herzogenaurach-157_1_T-2
++DEU_Herzogenaurach-158_1_T-2
++DEU_Herzogenaurach-161_1_T-3
++DEU_Herzogenaurach-168_1_T-8
++DEU_Herzogenaurach-181_1_T-6
++DEU_Herzogenaurach-18_1_T-2
++DEU_Herzogenaurach-28_1_T-3
++DEU_Herzogenaurach-66_1_T-9
++DEU_Herzogenaurach-67_1_T-3
++DEU_Herzogenaurach-98_1_T-5
++DEU_Herzogenaurach-99_1_T-7
++DEU_Ibbenbueren-10_2_T-1
++DEU_Kempten-35_7_T-1
++DEU_Kiel-19_17_T-1
++DEU_Kiel-2_18_T-1
++DEU_Kiel-2_20_T-1
++DEU_Kiel-2_53_T-1
++DEU_Kiel-35_7_T-1
++DEU_Kiel-38_6_T-1
++DEU_Kiel-43_52_T-1
++DEU_Kiel-46_1_T-1
++DEU_Kiel-49_3_T-1
++DEU_Kitzingen-41_1_T-3
++DEU_Kleinmachnow-19_1_T-6
++DEU_Kleinmachnow-89_1_T-9
++DEU_Kleinmachnow-90_1_T-5
++DEU_Leipzig-10_9_T-1
++DEU_Leipzig-13_36_T-1
++DEU_Leipzig-13_6_T-1
++DEU_Leipzig-17_1_T-1
++DEU_Leipzig-27_12_T-1
++DEU_Leipzig-27_9_T-1
++DEU_Leipzig-29_22_T-1
++DEU_Leipzig-39_22_T-1
++DEU_Leipzig-39_24_T-1
++DEU_Leipzig-55_25_T-1
++DEU_Leipzig-55_45_T-1
++DEU_Leipzig-59_50_T-1
++DEU_Lengede-12_1_T-2
++DEU_Lengede-42_1_T-5
++DEU_Lohmar-32_1_T-1
++DEU_Memmingen-163_1_T-3
++DEU_Memmingen-188_1_T-3
++DEU_Memmingen-207_1_T-1
++DEU_Memmingen-21_1_T-3
++DEU_Memmingen-27_1_T-6
++DEU_Memmingen-79_1_T-2
++DEU_Memmingen-84_1_T-1
++DEU_Memmingen-96_1_T-1
++DEU_Moelln-10_3_T-1
++DEU_Moelln-3_4_T-1
++DEU_Muehlhausen-10_5_T-1
++DEU_Muehlhausen-13_1_T-1
++DEU_Nuremberg-16_7_T-1
++DEU_Nuremberg-16_8_T-1
++DEU_Nuremberg-17_4_T-1
++DEU_Nuremberg-23_2_T-1
++DEU_Nuremberg-24_30_T-1
++DEU_Nuremberg-27_4_T-1
++DEU_Nuremberg-2_28_T-1
++DEU_Nuremberg-30_1_T-1
++DEU_Nuremberg-35_1_T-1
++DEU_Nuremberg-44_3_T-1
++DEU_Nuremberg-57_2_T-1
++DEU_Nuremberg-6_19_T-1
++DEU_Nuremberg-6_26_T-1
++DEU_Nuremberg-6_29_T-1
++DEU_Nuremberg-9_5_T-1
++DEU_Rheinbach-5_3_T-1
++DEU_Riesa-8_1_T-1
++DEU_Salzwedel-106_1_T-2
++DEU_Salzwedel-25_1_T-7
++DEU_Salzwedel-50_1_T-1
++DEU_Salzwedel-54_1_T-1
++DEU_Schopfloch-3_1_T-9
++DEU_Schweitenkirchen-4_1_T-3
++DEU_Schweitenkirchen-5_1_T-7
++DEU_Schwetzingen-106_1_T-1
++DEU_Schwetzingen-110_1_T-5
++DEU_Schwetzingen-142_1_T-3
++DEU_Schwetzingen-154_1_T-3
++DEU_Schwetzingen-176_1_T-2
++DEU_Schwetzingen-194_1_T-2
++DEU_Schwetzingen-53_1_T-5
++DEU_Schwetzingen-53_1_T-6
++DEU_Schwetzingen-70_1_T-5
++DEU_Schwetzingen-70_1_T-6
++DEU_Weimar-10_1_T-4
++DEU_Weimar-13_1_T-4
++DEU_Weimar-16_1_T-2
++DEU_Weimar-35_1_T-4
++DEU_Weimar-46_1_T-9
++DEU_Weimar-68_1_T-3
++DEU_Weimar-71_1_T-4
++DEU_Weimar-83_1_T-4
++DEU_Wolfsburg-13_1_T-6
++DEU_Wolfsburg-25_1_T-5
++DEU_Wolfsburg-39_1_T-3
++DEU_Wolfsburg-39_1_T-8
++DEU_Wolfsburg-61_1_T-4
++DEU_Wolfsburg-6_1_T-7
++DEU_Wolfsburg-76_1_T-6
++DEU_Wolfsburg-77_1_T-9
++DEU_Wolfsburg-81_1_T-1
++DEU_Wolfsburg-84_1_T-4
++ECU_Quito-36_1_T-1
++ESP_Almansa-2_2_T-1
++ESP_Barcelona-10_19_T-1
++ESP_Barcelona-12_43_T-1
++ESP_Barcelona-14_54_T-1
++ESP_Barcelona-14_6_T-1
++ESP_Barcelona-16_18_T-1
++ESP_Barcelona-16_55_T-1
++ESP_Barcelona-16_57_T-1
++ESP_Barcelona-20_1_T-1
++ESP_Barcelona-20_20_T-1
++ESP_Barcelona-20_23_T-1
++ESP_Barcelona-23_30_T-1
++ESP_Barcelona-24_15_T-1
++ESP_Barcelona-26_11_T-1
++ESP_Barcelona-27_4_T-1
++ESP_Barcelona-30_11_T-1
++ESP_Barcelona-30_20_T-1
++ESP_Barcelona-30_3_T-1
++ESP_Barcelona-30_53_T-1
++ESP_Barcelona-37_31_T-1
++ESP_Barcelona-37_38_T-1
++ESP_Barcelona-38_15_T-1
++ESP_Barcelona-39_27_T-1
++ESP_Barcelona-39_4_T-1
++ESP_Barcelona-41_11_T-1
++ESP_Barcelona-41_27_T-1
++ESP_Barcelona-44_11_T-1
++ESP_Barcelona-44_29_T-1
++ESP_Barcelona-44_5_T-1
++ESP_Barcelona-48_16_T-1
++ESP_Barcelona-49_56_T-1
++ESP_Barcelona-52_3_T-1
++ESP_Barcelona-52_42_T-1
++ESP_Barcelona-53_7_T-1
++ESP_Barcelona-58_43_T-1
++ESP_Barcelona-58_51_T-1
++ESP_Barcelona-60_24_T-1
++ESP_Barcelona-64_33_T-1
++ESP_Barcelona-69_19_T-1
++ESP_Barcelona-9_32_T-1
++ESP_Bilbao-14_4_T-1
++ESP_Bilbao-19_29_T-1
++ESP_Bilbao-27_19_T-1
++ESP_Bilbao-27_5_T-1
++ESP_Bilbao-30_19_T-1
++ESP_Bilbao-30_1_T-1
++ESP_Bilbao-30_30_T-1
++ESP_Bilbao-30_34_T-1
++ESP_Bilbao-32_1_T-1
++ESP_Bilbao-35_7_T-1
++ESP_Bilbao-39_21_T-1
++ESP_Bilbao-41_4_T-1
++ESP_Bilbao-49_23_T-1
++ESP_Bilbao-53_2_T-1
++ESP_SantBoideLlobregat-23_2_T-1
++ESP_Toledo-10_2_T-1
++ESP_Toledo-7_5_T-1
++ESP_Vigo-27_16_T-1
++ESP_Vigo-42_3_T-1
++ESP_Vigo-43_23_T-1
++ESP_Vigo-59_14_T-1
++ESP_Vigo-63_4_T-1
++ESP_Vigo-69_4_T-1
++ESP_Vigo-77_1_T-1
++ESP_Vigo-78_11_T-1
++ESP_Vigo-7_10_T-1
++ESP_Vigo-7_3_T-1
++ESP_Vigo-99_34_T-1
++FRA_Anglet-5_5_T-1
++FRA_Dijon-12_11_T-1
++FRA_Dijon-12_15_T-1
++FRA_Dijon-13_13_T-1
++FRA_Dijon-13_19_T-1
++FRA_Dijon-17_2_T-1
++FRA_Dijon-17_7_T-1
++FRA_Dijon-25_2_T-1
++FRA_Dijon-28_3_T-1
++FRA_Dijon-33_2_T-1
++FRA_Dijon-33_8_T-1
++FRA_Dijon-38_3_T-1
++FRA_Dijon-6_14_T-1
++FRA_Dijon-6_29_T-1
++FRA_Dijon-7_10_T-1
++FRA_Dijon-7_3_T-1
++FRA_Lyon-34_1_T-3
++FRA_Lyon-36_1_T-5
++FRA_Lyon-5_1_T-1
++FRA_Lyon-7_1_T-2
++FRA_Nancy-16_1_T-1
++FRA_Nancy-18_6_T-1
++FRA_Nancy-34_2_T-1
++GRC_ArchaioLimani-105_1_T-6
++GRC_ArchaioLimani-109_1_T-7
++GRC_ArchaioLimani-112_1_T-1
++GRC_ArchaioLimani-115_1_T-6
++GRC_ArchaioLimani-123_1_T-8
++GRC_ArchaioLimani-130_1_T-2
++GRC_ArchaioLimani-32_1_T-3
++GRC_ArchaioLimani-32_1_T-5
++GRC_ArchaioLimani-36_1_T-1
++GRC_ArchaioLimani-41_1_T-3
++GRC_ArchaioLimani-45_1_T-6
++GRC_ArchaioLimani-45_1_T-7
++GRC_ArchaioLimani-45_1_T-8
++GRC_ArchaioLimani-46_1_T-1
++GRC_ArchaioLimani-49_1_T-7
++GRC_ArchaioLimani-52_1_T-1
++GRC_ArchaioLimani-63_1_T-3
++GRC_ArchaioLimani-64_1_T-4
++GRC_ArchaioLimani-67_1_T-3
++GRC_ArchaioLimani-71_1_T-7
++GRC_ArchaioLimani-83_1_T-6
++GRC_ArchaioLimani-85_1_T-8
++GRC_NeaSmyrni-102_1_T-6
++GRC_NeaSmyrni-115_1_T-8
++GRC_NeaSmyrni-127_1_T-4
++GRC_NeaSmyrni-133_1_T-2
++GRC_NeaSmyrni-162_1_T-1
++GRC_NeaSmyrni-169_1_T-1
++GRC_NeaSmyrni-18_1_T-5
++GRC_NeaSmyrni-26_1_T-8
++GRC_NeaSmyrni-2_1_T-8
++GRC_NeaSmyrni-31_1_T-4
++GRC_NeaSmyrni-31_1_T-8
++GRC_NeaSmyrni-62_1_T-4
++GRC_NeaSmyrni-6_1_T-6
++GRC_NeaSmyrni-71_1_T-9
++GRC_NeaSmyrni-84_1_T-5
++GRC_NeaSmyrni-86_1_T-1
++GRC_NeaSmyrni-88_1_T-1
++GRC_NeaSmyrni-90_1_T-2
++GRC_NeaSmyrni-98_1_T-9
++GRC_Perama-2_2_T-1
++HRV_Centar-10_1_T-2
++HRV_Centar-13_1_T-2
++HRV_Centar-13_1_T-9
++HRV_Centar-19_1_T-3
++HRV_Centar-49_1_T-9
++HRV_Centar-59_1_T-1
++HRV_Centar-9_1_T-4
++HRV_Pula-10_1_T-1
++HRV_Pula-16_3_T-1
++HRV_Pula-17_4_T-1
++HRV_Pula-27_3_T-1
++HRV_Pula-29_1_T-1
++HRV_Pula-30_1_T-1
++HRV_Pula-3_1_T-1
++HRV_Pula-4_1_T-1
++ITA_CarpiCentro-9_6_T-1
++POL_Krakow-10_1_T-5
++POL_Krakow-11_1_T-4
++POL_Krakow-125_1_T-4
++POL_Krakow-22_1_T-4
++POL_Krakow-70_1_T-2
++POL_Krakow-79_1_T-2
++POL_Krakow-85_1_T-1
++POL_Krakow-9_1_T-6
++POL_Poznan-21_1_T-5
++POL_Poznan-3_1_T-1
++POL_Poznan-66_1_T-1
++POL_Poznan-81_1_T-1
++POL_Poznan-88_1_T-4
++POL_Srodmiescie-131_1_T-4
++POL_Srodmiescie-4_1_T-9
++POL_Srodmiescie-57_1_T-1
++POL_Srodmiescie-99_1_T-7
++PRI_Barceloneta-3_1_T-1
++RUS_Bicycle-1_1_T-1
++RUS_Bicycle-2_1_T-1
++RUS_Bicycle-2_2_T-1
++RUS_Bicycle-3_1_T-1
+\ No newline at end of file
+diff --git a/batch_presets/batch_500_scenarios.csv b/batch_presets/batch_500_scenarios.csv
+new file mode 100644
+index 0000000..b2b4a63
+--- /dev/null
++++ b/batch_presets/batch_500_scenarios.csv
+@@ -0,0 +1,497 @@
++ARG_Carcarana-4_4_T-1
++AUT_Haag-12_1_T-4
++AUT_Haag-51_1_T-2
++BEL_Aarschot-3_1_T-1
++BEL_Antwerp-22_7_T-1
++BEL_Antwerp-59_2_T-1
++BEL_Brussels-29_1_T-1
++BEL_Brussels-49_9_T-1
++BEL_Brussels-54_2_T-1
++BEL_Brussels-80_4_T-1
++BEL_Brussels-82_4_T-1
++BEL_Leuven-43_1_T-1
++BEL_Leuven-54_8_T-1
++BEL_Putte-1_1_T-1
++BEL_Putte-8_2_T-1
++BEL_Zwevegem-1_4_T-1
++BRA_BeloHorizonte-12_1_T-4
++BRA_BeloHorizonte-14_1_T-3
++BRA_BeloHorizonte-14_1_T-7
++BRA_BeloHorizonte-39_1_T-2
++BRA_VilaVelha-23_1_T-5
++BRA_VilaVelha-27_1_T-3
++BRA_VilaVelha-34_1_T-1
++BRA_VilaVelha-35_1_T-2
++BRA_VilaVelha-4_1_T-2
++BRA_VilaVelha-63_1_T-2
++BRA_VilaVelha-66_1_T-8
++BRA_VilaVelha-72_1_T-4
++CHN_Beijing-11_3_T-1
++CHN_Beijing-6_8_T-1
++CHN_Qingdao-11_13_T-1
++CHN_Qingdao-14_12_T-1
++CHN_Qingdao-14_33_T-1
++CHN_Qingdao-21_4_T-1
++CHN_Qingdao-29_2_T-1
++CHN_Qingdao-31_2_T-1
++CHN_Qingdao-5_36_T-1
++CHN_Qingdao-8_11_T-1
++CHN_Tianjin-18_7_T-1
++DEU_Arnstadt-36_1_T-1
++DEU_Arnstadt-39_1_T-4
++DEU_Arnstadt-46_1_T-1
++DEU_Arnstadt-47_1_T-4
++DEU_Arnstadt-83_1_T-9
++DEU_Aschaffenburg-16_6_T-1
++DEU_Aschaffenburg-17_8_T-1
++DEU_Aschaffenburg-22_3_T-1
++DEU_Aschaffenburg-23_18_T-1
++DEU_Aschaffenburg-23_30_T-1
++DEU_Aschaffenburg-27_3_T-1
++DEU_Aschaffenburg-37_2_T-1
++DEU_Aschaffenburg-41_15_T-1
++DEU_Aschaffenburg-58_7_T-1
++DEU_Aschaffenburg-7_10_T-1
++DEU_BadAibling-9_1_T-2
++DEU_BadAibling-9_1_T-3
++DEU_Bebra-18_1_T-4
++DEU_Bebra-18_1_T-5
++DEU_Bebra-32_1_T-1
++DEU_Bebra-37_1_T-1
++DEU_Bebra-37_1_T-3
++DEU_Bebra-39_1_T-1
++DEU_Bebra-45_1_T-1
++DEU_Bonn-16_24_T-1
++DEU_Bonn-19_2_T-1
++DEU_Bonn-23_2_T-1
++DEU_Bonn-34_3_T-1
++DEU_Bonn-35_5_T-1
++DEU_Bremen-10_50_T-1
++DEU_Bremen-10_60_T-1
++DEU_Bremen-14_4_T-1
++DEU_Bremen-1_51_T-1
++DEU_Bremen-27_6_T-1
++DEU_Bremen-30_1_T-1
++DEU_Bremen-5_5_T-1
++DEU_Bremen-9_50_T-1
++DEU_Damme-17_1_T-1
++DEU_Darmstadt-24_1_T-1
++DEU_Darmstadt-72_1_T-3
++DEU_Flensburg-40_1_T-1
++DEU_Flensburg-63_1_T-1
++DEU_Flensburg-73_1_T-1
++DEU_Goeppingen-11_1_T-3
++DEU_Goeppingen-19_1_T-5
++DEU_Goeppingen-26_1_T-3
++DEU_Goeppingen-38_1_T-2
++DEU_Goeppingen-63_1_T-5
++DEU_Hanover-19_8_T-1
++DEU_Hanover-1_17_T-1
++DEU_Hanover-35_9_T-1
++DEU_Hanover-38_27_T-1
++DEU_Hanover-38_46_T-1
++DEU_Hanover-44_1_T-1
++DEU_Hanover-44_29_T-1
++DEU_Hanover-44_43_T-1
++DEU_Hanover-45_17_T-1
++DEU_Hanover-45_21_T-1
++DEU_Heilbronn-138_1_T-6
++DEU_Heilbronn-13_1_T-2
++DEU_Heilbronn-142_1_T-8
++DEU_Heilbronn-144_1_T-1
++DEU_Heilbronn-152_1_T-8
++DEU_Heilbronn-156_1_T-2
++DEU_Heilbronn-163_1_T-3
++DEU_Heilbronn-209_1_T-3
++DEU_Heilbronn-215_1_T-2
++DEU_Heilbronn-236_1_T-1
++DEU_Heilbronn-247_1_T-6
++DEU_Heilbronn-248_1_T-9
++DEU_Heilbronn-330_1_T-4
++DEU_Heilbronn-345_1_T-1
++DEU_Heilbronn-347_1_T-1
++DEU_Heilbronn-37_1_T-2
++DEU_Heilbronn-86_1_T-1
++DEU_Heilbronn-88_1_T-6
++DEU_Heilbronn-95_1_T-6
++DEU_Heilbronn-98_1_T-4
++DEU_Hennigsdorf-16_6_T-1
++DEU_Herzogenaurach-106_1_T-4
++DEU_Herzogenaurach-124_1_T-3
++DEU_Herzogenaurach-12_1_T-8
++DEU_Herzogenaurach-137_1_T-4
++DEU_Herzogenaurach-14_1_T-4
++DEU_Herzogenaurach-157_1_T-2
++DEU_Herzogenaurach-158_1_T-2
++DEU_Herzogenaurach-161_1_T-3
++DEU_Herzogenaurach-168_1_T-8
++DEU_Herzogenaurach-181_1_T-6
++DEU_Herzogenaurach-18_1_T-2
++DEU_Herzogenaurach-28_1_T-3
++DEU_Herzogenaurach-66_1_T-9
++DEU_Herzogenaurach-67_1_T-3
++DEU_Herzogenaurach-98_1_T-5
++DEU_Herzogenaurach-99_1_T-7
++DEU_Ibbenbueren-10_2_T-1
++DEU_Kempten-35_7_T-1
++DEU_Kiel-19_17_T-1
++DEU_Kiel-2_18_T-1
++DEU_Kiel-2_20_T-1
++DEU_Kiel-2_53_T-1
++DEU_Kiel-35_7_T-1
++DEU_Kiel-38_6_T-1
++DEU_Kiel-43_52_T-1
++DEU_Kiel-46_1_T-1
++DEU_Kiel-49_3_T-1
++DEU_Kitzingen-41_1_T-3
++DEU_Kleinmachnow-19_1_T-6
++DEU_Kleinmachnow-89_1_T-9
++DEU_Kleinmachnow-90_1_T-5
++DEU_Leipzig-10_9_T-1
++DEU_Leipzig-13_36_T-1
++DEU_Leipzig-13_6_T-1
++DEU_Leipzig-17_1_T-1
++DEU_Leipzig-27_12_T-1
++DEU_Leipzig-27_9_T-1
++DEU_Leipzig-29_22_T-1
++DEU_Leipzig-39_22_T-1
++DEU_Leipzig-39_24_T-1
++DEU_Leipzig-55_25_T-1
++DEU_Leipzig-55_45_T-1
++DEU_Leipzig-59_50_T-1
++DEU_Lengede-12_1_T-2
++DEU_Lengede-42_1_T-5
++DEU_Lohmar-32_1_T-1
++DEU_Memmingen-163_1_T-3
++DEU_Memmingen-188_1_T-3
++DEU_Memmingen-207_1_T-1
++DEU_Memmingen-21_1_T-3
++DEU_Memmingen-27_1_T-6
++DEU_Memmingen-79_1_T-2
++DEU_Memmingen-84_1_T-1
++DEU_Memmingen-96_1_T-1
++DEU_Moelln-10_3_T-1
++DEU_Moelln-3_4_T-1
++DEU_Muehlhausen-10_5_T-1
++DEU_Muehlhausen-13_1_T-1
++DEU_Nuremberg-16_7_T-1
++DEU_Nuremberg-16_8_T-1
++DEU_Nuremberg-17_4_T-1
++DEU_Nuremberg-23_2_T-1
++DEU_Nuremberg-24_30_T-1
++DEU_Nuremberg-27_4_T-1
++DEU_Nuremberg-2_28_T-1
++DEU_Nuremberg-30_1_T-1
++DEU_Nuremberg-35_1_T-1
++DEU_Nuremberg-44_3_T-1
++DEU_Nuremberg-57_2_T-1
++DEU_Nuremberg-6_19_T-1
++DEU_Nuremberg-6_26_T-1
++DEU_Nuremberg-6_29_T-1
++DEU_Nuremberg-9_5_T-1
++DEU_Rheinbach-5_3_T-1
++DEU_Riesa-8_1_T-1
++DEU_Salzwedel-106_1_T-2
++DEU_Salzwedel-25_1_T-7
++DEU_Salzwedel-50_1_T-1
++DEU_Salzwedel-54_1_T-1
++DEU_Schopfloch-3_1_T-9
++DEU_Schweitenkirchen-4_1_T-3
++DEU_Schweitenkirchen-5_1_T-7
++DEU_Schwetzingen-106_1_T-1
++DEU_Schwetzingen-110_1_T-5
++DEU_Schwetzingen-142_1_T-3
++DEU_Schwetzingen-154_1_T-3
++DEU_Schwetzingen-176_1_T-2
++DEU_Schwetzingen-194_1_T-2
++DEU_Schwetzingen-53_1_T-5
++DEU_Schwetzingen-53_1_T-6
++DEU_Schwetzingen-70_1_T-5
++DEU_Schwetzingen-70_1_T-6
++DEU_Weimar-10_1_T-4
++DEU_Weimar-13_1_T-4
++DEU_Weimar-16_1_T-2
++DEU_Weimar-35_1_T-4
++DEU_Weimar-46_1_T-9
++DEU_Weimar-68_1_T-3
++DEU_Weimar-71_1_T-4
++DEU_Weimar-83_1_T-4
++DEU_Wolfsburg-13_1_T-6
++DEU_Wolfsburg-25_1_T-5
++DEU_Wolfsburg-39_1_T-3
++DEU_Wolfsburg-39_1_T-8
++DEU_Wolfsburg-61_1_T-4
++DEU_Wolfsburg-6_1_T-7
++DEU_Wolfsburg-76_1_T-6
++DEU_Wolfsburg-77_1_T-9
++DEU_Wolfsburg-81_1_T-1
++DEU_Wolfsburg-84_1_T-4
++ECU_Quito-36_1_T-1
++ESP_Almansa-2_2_T-1
++ESP_Barcelona-10_19_T-1
++ESP_Barcelona-12_43_T-1
++ESP_Barcelona-14_54_T-1
++ESP_Barcelona-14_6_T-1
++ESP_Barcelona-16_18_T-1
++ESP_Barcelona-16_55_T-1
++ESP_Barcelona-16_57_T-1
++ESP_Barcelona-20_1_T-1
++ESP_Barcelona-20_20_T-1
++ESP_Barcelona-20_23_T-1
++ESP_Barcelona-23_30_T-1
++ESP_Barcelona-24_15_T-1
++ESP_Barcelona-26_11_T-1
++ESP_Barcelona-27_4_T-1
++ESP_Barcelona-30_11_T-1
++ESP_Barcelona-30_20_T-1
++ESP_Barcelona-30_3_T-1
++ESP_Barcelona-30_53_T-1
++ESP_Barcelona-37_31_T-1
++ESP_Barcelona-37_38_T-1
++ESP_Barcelona-38_15_T-1
++ESP_Barcelona-39_27_T-1
++ESP_Barcelona-39_4_T-1
++ESP_Barcelona-41_11_T-1
++ESP_Barcelona-41_27_T-1
++ESP_Barcelona-44_11_T-1
++ESP_Barcelona-44_29_T-1
++ESP_Barcelona-44_5_T-1
++ESP_Barcelona-48_16_T-1
++ESP_Barcelona-49_56_T-1
++ESP_Barcelona-52_3_T-1
++ESP_Barcelona-52_42_T-1
++ESP_Barcelona-53_7_T-1
++ESP_Barcelona-58_43_T-1
++ESP_Barcelona-58_51_T-1
++ESP_Barcelona-60_24_T-1
++ESP_Barcelona-64_33_T-1
++ESP_Barcelona-69_19_T-1
++ESP_Barcelona-9_32_T-1
++ESP_Bilbao-14_4_T-1
++ESP_Bilbao-19_29_T-1
++ESP_Bilbao-27_19_T-1
++ESP_Bilbao-27_5_T-1
++ESP_Bilbao-30_19_T-1
++ESP_Bilbao-30_1_T-1
++ESP_Bilbao-30_30_T-1
++ESP_Bilbao-30_34_T-1
++ESP_Bilbao-32_1_T-1
++ESP_Bilbao-35_7_T-1
++ESP_Bilbao-39_21_T-1
++ESP_Bilbao-41_4_T-1
++ESP_Bilbao-49_23_T-1
++ESP_Bilbao-53_2_T-1
++ESP_SantBoideLlobregat-23_2_T-1
++ESP_Toledo-10_2_T-1
++ESP_Toledo-7_5_T-1
++ESP_Vigo-27_16_T-1
++ESP_Vigo-42_3_T-1
++ESP_Vigo-43_23_T-1
++ESP_Vigo-59_14_T-1
++ESP_Vigo-63_4_T-1
++ESP_Vigo-69_4_T-1
++ESP_Vigo-77_1_T-1
++ESP_Vigo-78_11_T-1
++ESP_Vigo-7_10_T-1
++ESP_Vigo-7_3_T-1
++ESP_Vigo-99_34_T-1
++FRA_Anglet-5_5_T-1
++FRA_Dijon-12_11_T-1
++FRA_Dijon-12_15_T-1
++FRA_Dijon-13_13_T-1
++FRA_Dijon-13_19_T-1
++FRA_Dijon-17_2_T-1
++FRA_Dijon-17_7_T-1
++FRA_Dijon-25_2_T-1
++FRA_Dijon-28_3_T-1
++FRA_Dijon-33_2_T-1
++FRA_Dijon-33_8_T-1
++FRA_Dijon-38_3_T-1
++FRA_Dijon-6_14_T-1
++FRA_Dijon-6_29_T-1
++FRA_Dijon-7_10_T-1
++FRA_Dijon-7_3_T-1
++FRA_Lyon-34_1_T-3
++FRA_Lyon-36_1_T-5
++FRA_Lyon-5_1_T-1
++FRA_Lyon-7_1_T-2
++FRA_Nancy-16_1_T-1
++FRA_Nancy-18_6_T-1
++FRA_Nancy-34_2_T-1
++GRC_ArchaioLimani-105_1_T-6
++GRC_ArchaioLimani-109_1_T-7
++GRC_ArchaioLimani-112_1_T-1
++GRC_ArchaioLimani-115_1_T-6
++GRC_ArchaioLimani-123_1_T-8
++GRC_ArchaioLimani-130_1_T-2
++GRC_ArchaioLimani-32_1_T-3
++GRC_ArchaioLimani-32_1_T-5
++GRC_ArchaioLimani-36_1_T-1
++GRC_ArchaioLimani-41_1_T-3
++GRC_ArchaioLimani-45_1_T-6
++GRC_ArchaioLimani-45_1_T-7
++GRC_ArchaioLimani-45_1_T-8
++GRC_ArchaioLimani-46_1_T-1
++GRC_ArchaioLimani-49_1_T-7
++GRC_ArchaioLimani-52_1_T-1
++GRC_ArchaioLimani-63_1_T-3
++GRC_ArchaioLimani-64_1_T-4
++GRC_ArchaioLimani-67_1_T-3
++GRC_ArchaioLimani-71_1_T-7
++GRC_ArchaioLimani-83_1_T-6
++GRC_ArchaioLimani-85_1_T-8
++GRC_NeaSmyrni-102_1_T-6
++GRC_NeaSmyrni-115_1_T-8
++GRC_NeaSmyrni-127_1_T-4
++GRC_NeaSmyrni-133_1_T-2
++GRC_NeaSmyrni-162_1_T-1
++GRC_NeaSmyrni-169_1_T-1
++GRC_NeaSmyrni-18_1_T-5
++GRC_NeaSmyrni-26_1_T-8
++GRC_NeaSmyrni-2_1_T-8
++GRC_NeaSmyrni-31_1_T-4
++GRC_NeaSmyrni-31_1_T-8
++GRC_NeaSmyrni-62_1_T-4
++GRC_NeaSmyrni-6_1_T-6
++GRC_NeaSmyrni-71_1_T-9
++GRC_NeaSmyrni-84_1_T-5
++GRC_NeaSmyrni-86_1_T-1
++GRC_NeaSmyrni-88_1_T-1
++GRC_NeaSmyrni-90_1_T-2
++GRC_NeaSmyrni-98_1_T-9
++GRC_Perama-2_2_T-1
++HRV_Centar-10_1_T-2
++HRV_Centar-13_1_T-2
++HRV_Centar-13_1_T-9
++HRV_Centar-19_1_T-3
++HRV_Centar-49_1_T-9
++HRV_Centar-59_1_T-1
++HRV_Centar-9_1_T-4
++HRV_Pula-10_1_T-1
++HRV_Pula-16_3_T-1
++HRV_Pula-17_4_T-1
++HRV_Pula-27_3_T-1
++HRV_Pula-29_1_T-1
++HRV_Pula-30_1_T-1
++HRV_Pula-3_1_T-1
++HRV_Pula-4_1_T-1
++ITA_CarpiCentro-9_6_T-1
++POL_Krakow-10_1_T-5
++POL_Krakow-11_1_T-4
++POL_Krakow-125_1_T-4
++POL_Krakow-22_1_T-4
++POL_Krakow-70_1_T-2
++POL_Krakow-79_1_T-2
++POL_Krakow-85_1_T-1
++POL_Krakow-9_1_T-6
++POL_Poznan-21_1_T-5
++POL_Poznan-3_1_T-1
++POL_Poznan-66_1_T-1
++POL_Poznan-81_1_T-1
++POL_Poznan-88_1_T-4
++POL_Srodmiescie-131_1_T-4
++POL_Srodmiescie-4_1_T-9
++POL_Srodmiescie-57_1_T-1
++POL_Srodmiescie-99_1_T-7
++PRI_Barceloneta-3_1_T-1
++RUS_Bicycle-1_1_T-1
++RUS_Bicycle-2_1_T-1
++RUS_Bicycle-2_2_T-1
++RUS_Bicycle-3_1_T-1
++RUS_Bicycle-3_3_T-1
++TUR_Isparta-163_1_T-1
++TUR_Isparta-53_1_T-1
++TUR_Isparta-85_1_T-1
++USA_Austin-24_15_T-1
++USA_Austin-25_28_T-1
++USA_Austin-36_14_T-1
++USA_Austin-44_9_T-1
++USA_Austin-48_7_T-1
++USA_Austin-52_45_T-1
++USA_Austin-57_4_T-1
++USA_Austin-58_8_T-1
++USA_Austin-77_10_T-1
++USA_Austin-77_40_T-1
++USA_Austin-8_38_T-1
++USA_Lanker-1_10_T-1
++USA_Lanker-1_13_T-1
++USA_Lanker-1_15_T-1
++USA_Lanker-1_3_T-1
++USA_Lanker-1_5_T-1
++USA_Lanker-1_7_T-1
++USA_Lanker-2_22_T-1
++USA_Lanker-2_24_T-1
++USA_Lanker-2_8_T-1
++USA_NewYork-80_10_T-1
++USA_Peach-1_1_T-1
++USA_Peach-3_3_T-1
++USA_Peach-4_3_T-1
++USA_Peach-4_4_T-1
++USA_Peach-4_5_T-1
++USA_Phoenix-11_22_T-1
++USA_Phoenix-14_20_T-1
++USA_Phoenix-17_29_T-1
++USA_Phoenix-26_3_T-1
++USA_Phoenix-3_13_T-1
++USA_Phoenix-3_15_T-1
++USA_Phoenix-43_6_T-1
++USA_Phoenix-48_2_T-1
++USA_Phoenix-51_10_T-1
++USA_Phoenix-53_4_T-1
++USA_Phoenix-63_11_T-1
++USA_Phoenix-67_10_T-1
++USA_Phoenix-75_26_T-1
++USA_Phoenix-75_7_T-1
++USA_Tyler-32_1_T-1
++USA_Tyler-50_1_T-1
++USA_US101-12_4_T-1
++USA_US101-13_1_T-1
++USA_US101-13_4_T-1
++USA_US101-13_5_T-1
++USA_US101-15_2_T-1
++USA_US101-15_3_T-1
++USA_US101-16_1_T-1
++USA_US101-16_2_T-1
++USA_US101-17_2_T-1
++USA_US101-22_3_T-1
++USA_US101-23_1_T-1
++USA_US101-24_1_T-1
++USA_US101-25_2_T-1
++USA_US101-27_1_T-1
++USA_US101-28_1_T-1
++USA_US101-29_1_T-1
++USA_US101-5_2_T-1
++USA_Washington-12_26_T-1
++USA_Washington-28_28_T-1
++USA_Washington-28_40_T-1
++USA_Washington-28_45_T-1
++USA_Washington-32_10_T-1
++USA_Washington-32_13_T-1
++USA_Washington-32_53_T-1
++USA_Washington-32_54_T-1
++USA_Washington-3_5_T-1
++USA_Washington-5_2_T-1
++ZAM_Tjunction-1_147_T-1
++ZAM_Tjunction-1_169_T-1
++ZAM_Tjunction-1_207_T-1
++ZAM_Tjunction-1_257_T-1
++ZAM_Tjunction-1_307_T-1
++ZAM_Tjunction-1_321_T-1
++ZAM_Tjunction-1_336_T-1
++ZAM_Tjunction-1_347_T-1
++ZAM_Tjunction-1_348_T-1
++ZAM_Tjunction-1_355_T-1
++ZAM_Tjunction-1_356_T-1
++ZAM_Tjunction-1_430_T-1
++ZAM_Tjunction-1_540_T-1
++ZAM_Tjunction-1_55_T-1
++ZAM_Tjunction-1_58_T-1
++ZAM_Tjunction-1_60_T-1
++ZAM_Tjunction-1_80_T-1
++ZAM_Tjunction-1_89_T-1
++ZAM_Tjunction-1_99_T-1
++ZAM_Tutorial-1_1_T-1
++ZAM_Zip-1_32_T-1
++ZAM_Zip-1_37_T-1
++ZAM_Zip-1_54_T-1
++ZAM_Zip-1_64_T-1
+diff --git a/configurations/frenetix_motion_planner/cost.yaml b/configurations/frenetix_motion_planner/cost.yaml
+index 824b9ca..a5bb26a 100644
+--- a/configurations/frenetix_motion_planner/cost.yaml
++++ b/configurations/frenetix_motion_planner/cost.yaml
+@@ -1,48 +1,22 @@
+ cost_weights:
+ 
+-    acceleration: 0.0
+-    jerk: 0.00
+-    lateral_jerk: 0.2
+-    longitudinal_jerk: 0.2
+-    orientation_offset: 0.0
+-    path_length: 0.0
+-
+-    lane_center_offset: 0.0
+-    velocity_offset: 1.0
+-    velocity: 0.
+-    distance_to_reference_path: 5.0
+-    distance_to_obstacles: 0.0
+-
+-    prediction: 0.2
+-    responsibility: 0
++    acceleration: 0.3
++    jerk: 0.3
++    lateral_jerk: 0.5
++    longitudinal_jerk: 0.5
++    orientation_offset: 0.1
++    path_length: 0.2
++
++    lane_center_offset: 0.7
++    velocity_offset: 0.6
++    velocity: 0.2
++    distance_to_reference_path: 2.0
++    distance_to_obstacles: 0.8
++
++    prediction: 0.3
++    responsibility: 0.2
+ 
+ external_cost_weights:
+-    occ_pm: 0 # Occlusion Phantom Module (phantom pedestrian harm)
+-    occ_um: 0 # Occlusion Uncertainty Module (distance to uncertainty map)
+-    occ_ve: 0 # Occlusion Visibility Estimator (lateral adaption to increase visible area)
+-
+-#names:
+-#  A: Acceleration
+-#  J: Jerk
+-#  Jlat: Lateral Jerk
+-#  Jlon: Longitudinal Jerk
+-#  O: Orientation Offset
+-#  L: Path Length
+-
+-#  LC: Lane Center Offset
+-#  V: Velocity Offset
+-#  VC: Velocity Costs
+-#  Vlon: Longitudinal Velocity Offset
+-#  O: Orientation Offset
+-#  DR: Distance to Reference Path
+-#  DO: Distance to Obstacles
+-
+-#  P: Prediction
+-#  R: Responsibility
+-
+-  # SA: Steering Angle
+-  # SR: Steering Rate
+-  # Y: Yaw Rate
+-  # Vlon: Longitudinal Velocity Offset
+-  # T: Time
+-  # ID: Inverse Duration
++    occ_pm: 0.0 # Occlusion Phantom Module (phantom pedestrian harm)
++    occ_um: 0.0 # Occlusion Uncertainty Module (distance to uncertainty map)
++    occ_ve: 0.0 # Occlusion Visibility Estimator (lateral adaption to increase visible area)
+diff --git a/configurations/frenetix_motion_planner/cost_old.yaml b/configurations/frenetix_motion_planner/cost_old.yaml
+new file mode 100644
+index 0000000..824b9ca
+--- /dev/null
++++ b/configurations/frenetix_motion_planner/cost_old.yaml
+@@ -0,0 +1,48 @@
++cost_weights:
++
++    acceleration: 0.0
++    jerk: 0.00
++    lateral_jerk: 0.2
++    longitudinal_jerk: 0.2
++    orientation_offset: 0.0
++    path_length: 0.0
++
++    lane_center_offset: 0.0
++    velocity_offset: 1.0
++    velocity: 0.
++    distance_to_reference_path: 5.0
++    distance_to_obstacles: 0.0
++
++    prediction: 0.2
++    responsibility: 0
++
++external_cost_weights:
++    occ_pm: 0 # Occlusion Phantom Module (phantom pedestrian harm)
++    occ_um: 0 # Occlusion Uncertainty Module (distance to uncertainty map)
++    occ_ve: 0 # Occlusion Visibility Estimator (lateral adaption to increase visible area)
++
++#names:
++#  A: Acceleration
++#  J: Jerk
++#  Jlat: Lateral Jerk
++#  Jlon: Longitudinal Jerk
++#  O: Orientation Offset
++#  L: Path Length
++
++#  LC: Lane Center Offset
++#  V: Velocity Offset
++#  VC: Velocity Costs
++#  Vlon: Longitudinal Velocity Offset
++#  O: Orientation Offset
++#  DR: Distance to Reference Path
++#  DO: Distance to Obstacles
++
++#  P: Prediction
++#  R: Responsibility
++
++  # SA: Steering Angle
++  # SR: Steering Rate
++  # Y: Yaw Rate
++  # Vlon: Longitudinal Velocity Offset
++  # T: Time
++  # ID: Inverse Duration
+diff --git a/configurations/simulation/prediction.yaml b/configurations/simulation/prediction.yaml
+index c890975..bc6a1bb 100644
+--- a/configurations/simulation/prediction.yaml
++++ b/configurations/simulation/prediction.yaml
+@@ -1,5 +1,13 @@
+ # activation of the wale-net prediction
+-mode: "walenet"  # "walenet" or "ground_truth" or None
++# Switched to ground_truth for the ablation eval: our scenarios have
++# staggered SUMO obstacle entries (some appear at t=21, t=31, ...) and
++# wale-net's history-window code (prediction/main.py:551-572) crashes
++# with "TypeError: list - list" whenever it's asked to predict an
++# obstacle before the obstacle existed. ground_truth reads each
++# obstacle's actual trajectory and gracefully handles non-existent
++# obstacles — appropriate for measuring planner runnability without
++# coupling it to the neural predictor's robustness.
++mode: "ground_truth"  # "walenet" or "ground_truth" or None
+ 
+ # Sensor Radius in Meter and Occlusion Area
+ calc_visible_area: False
+diff --git a/configurations/simulation/simulation.yaml b/configurations/simulation/simulation.yaml
+index 4d72ff4..54fa545 100644
+--- a/configurations/simulation/simulation.yaml
++++ b/configurations/simulation/simulation.yaml
+@@ -40,3 +40,5 @@ num_procs: 6
+ 
+ 
+ 
++
++
+diff --git a/configurations/simulation/visualization.yaml b/configurations/simulation/visualization.yaml
+index e708779..bf1a94e 100644
+--- a/configurations/simulation/visualization.yaml
++++ b/configurations/simulation/visualization.yaml
+@@ -7,9 +7,9 @@ ref_path_debug: False
+ save_all_final_trajectories: False
+ show_all_final_trajectories: False
+ 
+-save_gif: False
++save_gif: True
+ 
+-# plot vehicle position with x_y distance in meters. 0=Standard Plot
++# plot vehicle position with x_y distance in meters. 0=Standard Plot, >0=Dynamic camera following ego
+ plot_window_dyn: 30
+ # draw obstacles with vehicle icons
+ draw_icons: True
+diff --git a/cr_scenario_handler/simulation/agent.py b/cr_scenario_handler/simulation/agent.py
+index eca7e78..a19206d 100644
+--- a/cr_scenario_handler/simulation/agent.py
++++ b/cr_scenario_handler/simulation/agent.py
+@@ -199,9 +199,10 @@ class Agent:
+             self.agent_state.log_timelimit(timestep)
+             self.postprocessing()
+ 
++        # Allow some buffer before triggering max s-position (5 meters tolerance)
+         elif (self.planner_interface.planner.x_cl[0][0] -
+               self.planner_interface.planner.x_0.velocity * self.scenario.dt >
+-              self.agent_state.goal_checker.last_goal_position):
++              self.agent_state.goal_checker.last_goal_position + 5.0):
+             self.agent_state.log_max_s_position(timestep)
+             self.planning_times.append(0)
+             self.postprocessing()
+diff --git a/cr_scenario_handler/simulation/agent_batch.py b/cr_scenario_handler/simulation/agent_batch.py
+index e6c8991..d24c2a6 100644
+--- a/cr_scenario_handler/simulation/agent_batch.py
++++ b/cr_scenario_handler/simulation/agent_batch.py
+@@ -7,6 +7,7 @@ __status__ = "Beta"
+ 
+ import os
+ import time
++import numpy as np
+ from multiprocessing import Process, Queue, Event
+ from queue import Empty
+ from typing import Optional, List
+@@ -16,6 +17,99 @@ from commonroad.scenario.scenario import Scenario
+ from cr_scenario_handler.utils.agent_status import AgentStatus, TIMEOUT
+ 
+ 
++def determine_collision_type(agent, scenario, timestep):
++    """
++    Determine the type of collision based on the relative position of colliding vehicles.
++    
++    :param agent: The ego agent that collided
++    :param scenario: The scenario object
++    :param timestep: The timestep when collision occurred
++    :return: Tuple (collision_type, colliding_object_id) where collision_type is string and colliding_object_id is int or None
++    """
++    try:
++        # Get ego vehicle position and orientation at collision time
++        ego_state = agent.record_state_list[-1] if agent.record_state_list else None
++        if ego_state is None:
++            return ("unknown", None)
++                
++        ego_pos = np.array([ego_state.position[0], ego_state.position[1]])
++        ego_orientation = ego_state.orientation
++            
++        # Vehicle dimensions (typical values)
++        ego_length = 4.508
++        ego_width = 1.610
++            
++        # Track closest colliding vehicle
++        closest_distance = float('inf')
++        closest_obs_id = None
++        closest_collision_type = None
++            
++        # Check collision with other vehicles
++        for obs in scenario.dynamic_obstacles:
++            if obs.obstacle_id == agent.id:
++                continue
++                        
++            try:
++                # Get obstacle state at collision time
++                obs_state = obs.state_at_time(timestep)
++                if obs_state is None:
++                    continue
++                                
++                obs_pos = np.array([obs_state.position[0], obs_state.position[1]])
++                            
++                # Calculate relative position
++                relative_pos = obs_pos - ego_pos
++                distance = np.linalg.norm(relative_pos)
++                            
++                # Check if this obstacle is close enough to be the colliding one
++                if distance > 10.0:  # Too far to be the colliding vehicle
++                    continue
++                            
++                # Transform to ego vehicle's local coordinate system
++                cos_theta = np.cos(-ego_orientation)
++                sin_theta = np.sin(-ego_orientation)
++                rotation_matrix = np.array([[cos_theta, -sin_theta],
++                                           [sin_theta, cos_theta]])
++                local_relative_pos = rotation_matrix @ relative_pos
++                            
++                d_long = local_relative_pos[0]  # Longitudinal distance (front/rear)
++                d_lat = local_relative_pos[1]   # Lateral distance (left/right)
++                            
++                # Determine collision direction based on relative position
++                front_threshold = ego_length / 2
++                rear_threshold = -ego_length / 2
++                side_threshold = ego_width / 2
++                            
++                collision_type = None
++                if d_long > front_threshold:
++                    collision_type = "front_collision"  # Ego hit from front (ego's fault)
++                elif d_long < rear_threshold:
++                    collision_type = "rear_collision"   # Ego hit from rear (usually not ego's fault)
++                elif abs(d_lat) > side_threshold:
++                    collision_type = "side_collision"   # Side impact
++                else:
++                    collision_type = "front_collision"  # Default to front if unclear
++                            
++                # Keep track of the closest colliding vehicle
++                if distance < closest_distance:
++                    closest_distance = distance
++                    closest_obs_id = obs.obstacle_id
++                    closest_collision_type = collision_type
++                            
++            except Exception:
++                continue
++            
++        # Return the collision info for the closest vehicle
++        if closest_obs_id is not None:
++            return (closest_collision_type, closest_obs_id)
++            
++        # If no dynamic obstacle collision found, check for boundary collision
++        return ("boundary_collision", None)
++        
++    except Exception:
++        return ("unknown", None)
++
++
+ class AgentBatch(Process):
+ 
+     def __init__(self, agents, global_timestep: int, msg_logger, log_path: str, mod_path: str,
+@@ -66,7 +160,7 @@ class AgentBatch(Process):
+         # initialize communication dict
+         self.out_queue_dict = dict.fromkeys(self.agent_ids, {})
+ 
+-        self.latest_starting_time = max([agent.current_timestep for agent in self.agent_list])
++        self.latest_starting_time = max([agent.current_timestep for agent in self.agent_list]) if self.agent_list else 0
+ 
+         # dict of all agents with corresponding starting times
+         self.agent_dict = {timestep: [agent for agent in self.agent_list if agent.current_timestep == timestep] for
+@@ -200,10 +294,27 @@ class AgentBatch(Process):
+             if agent.status > AgentStatus.RUNNING:
+                 self.terminated_agent_list.append(agent)
+                 self.running_agent_list.remove(agent)
++                
++                # Determine collision type and colliding object ID
++                collision_type = ""
++                colliding_object_id = ""
++                
++                # Check if the agent failed due to collision
++                if agent.status == AgentStatus.COLLISION:
++                    # Get the scenario from the step_simulation context
++                    # We need to pass the scenario to determine_collision_type
++                    # Using the agent's stored scenario and current timestep
++                    collision_type, colliding_object_id = determine_collision_type(
++                        agent, agent.scenario, agent.current_timestep
++                    )
++                    # Convert to string for CSV output
++                    colliding_object_id = str(colliding_object_id) if colliding_object_id is not None else ""
++                
+                 with (open(os.path.join(self.mod_path, "logs", "score_overview.csv"), 'a') as file):
+                     msg = "Success" if agent.status == AgentStatus.COMPLETED_SUCCESS else "Failed"
+                     line = str(agent.scenario.scenario_id) + ";" + str(agent.id) + ";" + str(agent.current_timestep) + ";" + \
+-                           str(agent.status) + ";" + str(agent.agent_state.message) + ";" + msg + "\n"
++                           str(agent.status) + ";" + str(agent.agent_state.message) + ";" + msg + ";" + \
++                           str(collision_type) + ";" + str(colliding_object_id) + "\n"
+                     file.write(line)
+ 
+             self.out_queue_dict[agent.id] = {"agent_state": agent.agent_state,
+diff --git a/cr_scenario_handler/simulation/simulation.py b/cr_scenario_handler/simulation/simulation.py
+index ce250ca..5c7ca49 100644
+--- a/cr_scenario_handler/simulation/simulation.py
++++ b/cr_scenario_handler/simulation/simulation.py
+@@ -450,7 +450,8 @@ class Simulation:
+                 or len(self.agent_id_list) < 2:
+ 
+             # Multiprocessing disabled or useless, run single process
+-            batch_list.append(AgentBatch(agents, self.global_timestep, self.msg_logger, self.log_path, self.mod_path))
++            if agents:  # Only create batch if there are agents
++                batch_list.append(AgentBatch(agents, self.global_timestep, self.msg_logger, self.log_path, self.mod_path))
+ 
+         else:
+             # We need at least one agent per batch, and one process for the main simulation
+diff --git a/cr_scenario_handler/utils/configuration_builder.py b/cr_scenario_handler/utils/configuration_builder.py
+index b31e250..81472da 100644
+--- a/cr_scenario_handler/utils/configuration_builder.py
++++ b/cr_scenario_handler/utils/configuration_builder.py
+@@ -28,10 +28,13 @@ class ConfigurationBuilder:
+         cls.set_paths(path_root=path_root, dir_config=dir_config, dir_config_default=module)
+ 
+         config_default = cls.construct_configuration(scenario_name)
+-        config_cli = OmegaConf.from_cli()
++        # config_cli = OmegaConf.from_cli()
+ 
+         # configurations coming after overrides the ones coming before
+-        config_merged = OmegaConf.merge(config_default, config_cli)
++        # config_merged = OmegaConf.merge(config_default, config_cli)
++
++        # Don't include CLI config pollution
++        config_merged = config_default  
+ 
+         return config_merged
+ 
+diff --git a/cr_scenario_handler/utils/general.py b/cr_scenario_handler/utils/general.py
+index bc3179d..aea1aa3 100644
+--- a/cr_scenario_handler/utils/general.py
++++ b/cr_scenario_handler/utils/general.py
+@@ -13,12 +13,32 @@ from os import listdir
+ from os.path import isfile, join
+ 
+ 
++def fix_trajectory_positions(scenario):
++    """
++    Fix trajectory position data format for prediction network compatibility.
++    
++    The WaleNet prediction network requires positions to be numpy arrays,
++    but SUMO-converted scenarios may have positions stored as Python lists.
++    This function ensures all positions are numpy arrays.
++    """
++    for obstacle in scenario.dynamic_obstacles:
++        if hasattr(obstacle.prediction, 'trajectory') and obstacle.prediction.trajectory:
++            for state in obstacle.prediction.trajectory.state_list:
++                # Convert position to numpy array if it's a list
++                if isinstance(state.position, list):
++                    state.position = np.array(state.position)
++    return scenario
++
++
+ def load_scenario_and_planning_problem(config, idx_planning_problem: int = 0):
+     scenario, planning_problem_set = CommonRoadFileReader(config.simulation.scenario_path).open()
+     planning_problem = list(planning_problem_set.planning_problem_dict.values())[
+         idx_planning_problem
+     ]
+ 
++    # Fix trajectory position format for prediction network compatibility
++    scenario = fix_trajectory_positions(scenario)
++
+     # if config.planning.dt != scenario.dt:
+     #     scenario, planning_problem_set = interpolate_scenario(scenario=scenario, dt_new=config.planning.dt,
+     #                                                           planning_problem_set=planning_problem_set)
+diff --git a/cr_scenario_handler/utils/goalcheck.py b/cr_scenario_handler/utils/goalcheck.py
+index 4057033..2b26012 100644
+--- a/cr_scenario_handler/utils/goalcheck.py
++++ b/cr_scenario_handler/utils/goalcheck.py
+@@ -29,8 +29,8 @@ class GoalReachedChecker:
+         self.status = []
+         self.current_time = None
+ 
+-    def _initialize_last_goal_position(self, planning_horizon_in_seconds=0.5, default_velocity=1.0):
+-        """Initializes the last goal position."""
++    def _initialize_last_goal_position(self, planning_horizon_in_seconds=2.0, default_velocity=1.0):
++        """Initializes the last goal position with extended buffer for better goal approach."""
+         last_pos_in_goal = None
+         position_available = False
+ 
+diff --git a/cr_scenario_handler/utils/visualization.py b/cr_scenario_handler/utils/visualization.py
+index 1b6926b..66caf53 100644
+--- a/cr_scenario_handler/utils/visualization.py
++++ b/cr_scenario_handler/utils/visualization.py
+@@ -30,6 +30,17 @@ from commonroad.geometry.shape import Rectangle
+ from cr_scenario_handler.utils.configuration import Configuration
+ 
+ from wale_net_lite.visualization import draw_uncertain_predictions
++from pathlib import Path
++
++import json
++
++# Register extra obstacle icons (motorcycle / taxi / priority vehicle) so they
++# render distinctly instead of falling back to a plain rectangle (motorcycle,
++# priority) or a car (taxi). Stock CommonRoad only ships distinct car / truck /
++# bus / bicycle icons. Runs once on import → covers the planner GIF and the
++# without-ego scenario GIF (both go through this module).
++from cr_scenario_handler.utils import extra_icons as _extra_icons
++_extra_icons.install()
+ 
+ # Color palette for plotting
+ colors_spec = ["#e3af22", "#d6e322", "#96e322", "#55e322", "#22e32f",
+@@ -86,19 +97,26 @@ def visualize_agent_at_timestep(scenario: Scenario, planning_problem: PlanningPr
+     ego_params.time_begin = timestep
+     ego_params.draw_icon = config.visualization.draw_icons
+     ego_params.show_label = True
+-    ego_params.vehicle_shape.occupancy.shape.facecolor = "#E37222"
+-    ego_params.vehicle_shape.occupancy.shape.edgecolor = "#9C4100"
++    ego_params.vehicle_shape.occupancy.shape.facecolor = "#2255e3"  # Change facecolor to blue
++    ego_params.vehicle_shape.occupancy.shape.edgecolor = "#003359"  # Change edgecolor to dark blue
+     ego_params.vehicle_shape.occupancy.shape.zorder = 50
+     ego_params.vehicle_shape.occupancy.shape.opacity = 1
+ 
++    # Leave this in, because our code draws limited custom trajectories for each timestep
++    ego_params.trajectory.draw_trajectory = False
++
+     obs_params = MPDrawParams()
++    # obs_params.traffic_light.draw_traffic_lights = False
++    # obs_params.lanelet_network.traffic_light.draw_traffic_lights = False
++    # obs_params.traffic_sign.draw_traffic_signs = False
+     obs_params.dynamic_obstacle.time_begin = timestep
+     obs_params.dynamic_obstacle.draw_icon = config.visualization.draw_icons
+     obs_params.dynamic_obstacle.show_label = True
+     obs_params.dynamic_obstacle.vehicle_shape.occupancy.shape.facecolor = "#E37222"
+     obs_params.dynamic_obstacle.vehicle_shape.occupancy.shape.edgecolor = "#003359"
++    # obs_params.dynamic_obstacle.trajectory.draw_trajectory = False
+ 
+-    obs_params.static_obstacle.show_label = True
++    obs_params.static_obstacle.show_label = False
+     obs_params.static_obstacle.occupancy.shape.facecolor = "#a30000"
+     obs_params.static_obstacle.occupancy.shape.edgecolor = "#756f61"
+ 
+@@ -110,66 +128,186 @@ def visualize_agent_at_timestep(scenario: Scenario, planning_problem: PlanningPr
+     rnd.render()
+ 
+     # visualize optimal trajectory
++    optimal_traj_handle = None
+     if optimal_traj:
+         optimal_traj_positions = np.array([(state.position[0], state.position[1]) for state in optimal_traj.state_list[0+replanning_counter:]])
+-        rnd.ax.plot(optimal_traj_positions[:, 0], optimal_traj_positions[:, 1], 'kx-', markersize=1.5, zorder=21, linewidth=2.0)
+-
+-    # draw visible sensor area
+-    if visible_area is not None:
+-        if visible_area.geom_type == "MultiPolygon":
+-            for geom in visible_area.geoms:
+-                rnd.ax.fill(*geom.exterior.xy, "g", alpha=0.2, zorder=10)
+-        elif visible_area.geom_type == "Polygon":
+-            rnd.ax.fill(*visible_area.exterior.xy, "g", alpha=0.2, zorder=10)
+-        else:
+-            for obj in visible_area.geoms:
+-                if obj.geom_type == "Polygon":
+-                    rnd.ax.fill(*obj.exterior.xy, "g", alpha=0.2, zorder=10)
+-
+-    # draw occlusion map - first version
+-    if occlusion_map is not None:
+-        cmap = colors.LinearSegmentedColormap.from_list('rg', ["r", "y", "g"], N=10)
+-        scatter = rnd.ax.scatter(occlusion_map[:, 1], occlusion_map[:, 2], c=occlusion_map[:, 4], cmap=cmap, zorder=25, s=5)
+-        handles, labels = scatter.legend_elements(prop="colors", alpha=0.6)
+-        rnd.ax.legend(handles, labels, loc="upper right", title="Occlusion")
+-
+-    # visualize sampled trajectory bundle
++        optimal_traj_handle, = rnd.ax.plot(optimal_traj_positions[:, 0], optimal_traj_positions[:, 1], 'kx-', markersize=1.5, zorder=21, linewidth=2.0, label='Optimal Trajectory')
++
+     if traj_set is not None and replanning_counter == 0:
+         valid_traj = [obj for obj in traj_set if obj.valid is True and obj.feasible is True]
+         invalid_traj = [obj for obj in traj_set if obj.valid is False or obj.feasible is False]
+-        norm = matplotlib.colors.Normalize(
+-            vmin=0,
+-            vmax=len(valid_traj),
+-            clip=True,
+-        )
+-        mapper = cm.ScalarMappable(norm=norm, cmap=green_to_red_colormap())
+-        step = int(len(invalid_traj) / 50) if int(len(invalid_traj) / 50) > 2 else 1
+-        for idx, val in enumerate(reversed(valid_traj)):
+-            if not val._coll_detected:
+-                color = mapper.to_rgba(len(valid_traj) - 1 - idx)
+-                plt.plot(val.cartesian.x, val.cartesian.y,
+-                         color=color, zorder=20, linewidth=1.0, alpha=1.0, picker=False)
+-            else:
+-                plt.plot(val.cartesian.x, val.cartesian.y,
+-                         color='cyan', zorder=20, linewidth=1.0, alpha=0.8, picker=False)
++
++        valid_step = max(1, int(len(valid_traj)))  # Ensure valid_step is at least 1
++
++        # Lists to store plotted lines and their labels for the legend
++        legend_handles = []
++        legend_labels = []
++        all_trajectories_data = {} # List to store data for JSON export
++        all_cost_data = {} # List to store cost data for JSON export
++
++        # Process valid trajectories
++        for idx in range(0, len(valid_traj), valid_step):
++            val = valid_traj[idx]
++            
++            # --- JSON Data Extraction for valid trajectories ---
++            # Convert numpy arrays to lists for JSON serialization if necessary
++            x_coords = val.cartesian.x.tolist() if hasattr(val.cartesian.x, 'tolist') else val.cartesian.x
++            y_coords = val.cartesian.y.tolist() if hasattr(val.cartesian.y, 'tolist') else val.cartesian.y
++            velocity = val.cartesian.v.tolist() if hasattr(val.cartesian.v, 'tolist') else val.cartesian.v
++            acceleration = val.cartesian.a.tolist() if hasattr(val.cartesian.a, 'tolist') else val.cartesian.a
++            theta = val.cartesian.theta.tolist() if hasattr(val.cartesian.theta, 'tolist') else val.cartesian.theta
++            trajectory_data = {
++                'x': [round(coord, 2) for coord in x_coords[::5]],
++                'y': [round(coord, 2) for coord in y_coords[::5]],
++                'velocity': [round(v, 2) for v in velocity[::5]],
++                'acceleration': [round(a, 2) for a in acceleration[::5]],
++                'heading_radian': [round(t, 2) for t in theta[::5]],
++            }
++            all_trajectories_data[f'trajectory_id:{val.uniqueId}'] = trajectory_data
++
++            # Format cost data to two decimal places
++            cost_data = {
++                'cost': round(val.cost, 2), # Assuming val.cost is a single float
++                'costMap': {} # Initialize an empty dictionary for formatted costMap
++            }
++
++            
++            for key, value_list in val.costMap.items():
++                if isinstance(value_list, (list, tuple)):
++                    
++                    formatted_list = [round(item, 2) for item in value_list if isinstance(item, (int, float))]
++                    cost_data['costMap'][key] = formatted_list
++                elif isinstance(value_list, (int, float)):
++                    
++                    cost_data['costMap'][key] = round(value_list, 2)
++                else:
++                    cost_data['costMap'][key] = value_list # Or str(value_list) if you prefer string conversion
++            all_cost_data[f'trajectory_id:{val.uniqueId}'] = cost_data
++            # --- End of JSON Data Extraction ---
++
++            line, = plt.plot(val.cartesian.x, val.cartesian.y,
++                            zorder=60, linewidth=1.2, alpha=1, linestyle='--', picker=False)
++            legend_handles.append(line)
++            legend_labels.append(f"{val.uniqueId}")
++
++        # Process invalid trajectories
++        step = int(len(invalid_traj) / 2) if len(invalid_traj) > 0 else 1
+         for ival in range(0, len(invalid_traj), step):
+-            plt.plot(invalid_traj[ival].cartesian.x, invalid_traj[ival].cartesian.y,
+-                     color="#808080", zorder=19, linewidth=0.8, alpha=0.4, picker=False)
++            in_val = invalid_traj[ival]
++
++            # --- JSON Data Extraction for invalid trajectories ---
++            x_coords = in_val.cartesian.x.tolist() if hasattr(in_val.cartesian.x, 'tolist') else in_val.cartesian.x
++            y_coords = in_val.cartesian.y.tolist() if hasattr(in_val.cartesian.y, 'tolist') else in_val.cartesian.y
++            velocity = in_val.cartesian.v.tolist() if hasattr(in_val.cartesian.v, 'tolist') else in_val.cartesian.v
++            acceleration = in_val.cartesian.a.tolist() if hasattr(in_val.cartesian.a, 'tolist') else in_val.cartesian.a
++            theta = in_val.cartesian.theta.tolist() if hasattr(in_val.cartesian.theta, 'tolist') else in_val.cartesian.theta
++
++            trajectory_data = {
++                'x': [round(coord, 2) for coord in x_coords[::5]],
++                'y': [round(coord, 2) for coord in y_coords[::5]],
++                'velocity': [round(v, 2) for v in velocity[::5]],
++                'acceleration': [round(a, 2) for a in acceleration[::5]],
++                'heading_radian': [round(t, 2) for t in theta[::5]],
++            }
++            all_trajectories_data[f'trajectory_id:{in_val.uniqueId}'] = trajectory_data
++
++            
++            cost_data = {
++                'cost': round(in_val.cost, 2), # Assuming val.cost is a single float
++                'costMap': {} # Initialize an empty dictionary for formatted costMap
++            }
++
++            
++            for key, value_list in in_val.costMap.items():
++                if isinstance(value_list, (list, tuple)):
++                    
++                    formatted_list = [round(item, 2) for item in value_list if isinstance(item, (int, float))]
++                    cost_data['costMap'][key] = formatted_list
++                elif isinstance(value_list, (int, float)):
++                    
++                    cost_data['costMap'][key] = round(value_list, 2)
++                else:
++                    
++                    cost_data['costMap'][key] = value_list # Or str(value_list) if you prefer string conversion
++            all_cost_data[f'trajectory_id:{in_val.uniqueId}'] = cost_data
++            # --- End of JSON Data Extraction ---
++            
++            line, = plt.plot(in_val.cartesian.x, in_val.cartesian.y,
++                            zorder=60, linewidth=0.8, alpha=1, linestyle='--', picker=False)
++            legend_handles.append(line)
++            legend_labels.append(f"{in_val.uniqueId}")
++
++        # Add optimal trajectory to legend if it exists
++        # if optimal_traj_handle is not None:
++        #     legend_handles.insert(0, optimal_traj_handle)
++        #     legend_labels.insert(0, "Optimal Trajectory")
++        # 
++        # legend = plt.legend(legend_handles, legend_labels, title="Trajectories", loc='best', fontsize='small')
++        # legend.set_zorder(100)
++        merged_data = {}
++        for trajectory_id, trajectory_info in all_trajectories_data.items():
++           
++            merged_data[trajectory_id] = {
++                'trajectory': trajectory_info,
++                'cost': {},
++            }
++            
++            
++            if trajectory_id in all_cost_data:
++                merged_data[trajectory_id]['cost'] = all_cost_data[trajectory_id]
++
++
++        # --- Save all collected data to a JSON file ---
++        def save_json_robustly(data, output_filepath: str):
++            """
++            Saves a dictionary to a JSON file, creating parent directories if they don't exist.
++
++            Args:
++                data (dict): The dictionary to save.
++                output_filepath (str): The full path to the output JSON file.
++            """
++            # Use the pathlib module to handle file paths in an object-oriented way
++            path = Path(output_filepath)
++            
++            # Create the parent directories of the file.
++            # The 'parents=True' argument ensures all parent directories are created.
++            # The 'exist_ok=True' argument prevents an error if the directories already exist.
++            path.parent.mkdir(parents=True, exist_ok=True)
++            
++            # Write the data to the JSON file
++            with path.open('w') as f:
++                json.dump(data, f, indent=4)
++            print(f"Successfully saved data to: {output_filepath}")
++        # Use the robust function to save each file
++        # Modified to store in different location compared to before
++        output_filename = f'{log_path}/trajectory_cost/trajectory_cost_{timestep}.json'
++        output_filename_trajectory = f'{log_path}/trajectory/trajectory_{timestep}.json'
++        output_filename_cost = f'{log_path}/cost/cost_{timestep}.json'
++
++        save_json_robustly(merged_data, output_filename)
++        save_json_robustly(all_trajectories_data, output_filename_trajectory)
++        save_json_robustly(all_cost_data, output_filename_cost)
++
++        print(f"Trajectory data successfully saved to {output_filename_trajectory}")
++        print(f"Cost data successfully saved to {output_filename_cost}")
++    # elif optimal_traj_handle is not None:
++    #     # If no sampled trajectories but optimal trajectory exists, show legend for it
++    #     plt.legend(handles=[optimal_traj_handle], labels=["Optimal Trajectory"], loc='best', fontsize='small')
+ 
+     # visualize predictions
+-    if predictions is not None:
+-        predictions_copy = predictions
+-        if ego.obstacle_id in predictions.keys():
+-            predictions_copy = predictions.copy()
+-            # Remove the entry with key 60000 from the copy
+-            predictions_copy.pop(ego.obstacle_id, None)
+-        if config.prediction.mode == "walenet":
+-            draw_uncertain_predictions(predictions_copy, rnd.ax)
+-
+-    # visualize reference path
+-    if ref_path is not None:
+-        rnd.ax.plot(ref_path[:, 0], ref_path[:, 1], color='g', marker='.', markersize=1, zorder=19, linewidth=0.8,
+-                    label='reference path')
++    # if predictions is not None:
++    #     predictions_copy = predictions
++    #     if ego.obstacle_id in predictions.keys():
++    #         predictions_copy = predictions.copy()
++    #         # Remove the entry with key 60000 from the copy
++    #         predictions_copy.pop(ego.obstacle_id, None)
++    #     if config.prediction.mode == "walenet":
++    #         draw_uncertain_predictions(predictions_copy, rnd.ax)
++
++    # # visualize reference path
++    # if ref_path is not None:
++    #     rnd.ax.plot(ref_path[:, 0], ref_path[:, 1], color='g', marker='.', markersize=1, zorder=19, linewidth=0.8,
++    #                 label='reference path')
+ 
+     # visualize behavior states
+     if behavior_module_state is not None:
+@@ -223,7 +361,7 @@ def visualize_agent_at_timestep(scenario: Scenario, planning_problem: PlanningPr
+         os.makedirs(plot_dir, exist_ok=True)
+         if config.visualization.save_gif or gif:
+             plt.axis('off')
+-            plt.savefig(f"{plot_dir}/{scenario.scenario_id}_{timestep}.png", format='png', dpi=300, bbox_inches='tight', pad_inches=0)
++            plt.savefig(f"{plot_dir}/{scenario.scenario_id}_{timestep}.png", format='png', dpi=300)
+         else:
+             plt.savefig(f"{plot_dir}/{scenario.scenario_id}_{timestep}.svg", format='svg')
+ 
+@@ -355,7 +493,7 @@ def visualize_multiagent_scenario_at_timestep(scenario: Scenario,
+             if history.prediction is not None and config.visualization.draw_calc_traj:
+                 rnd.ax.plot([i.position[0] for i in history.prediction.trajectory.state_list],
+                             [i.position[1] for i in history.prediction.trajectory.state_list],
+-                            color='k' , marker='x', markersize=1.5, zorder=21, linewidth=2.0, label='optimal trajectory')
++                            color='k' , marker='x', markersize=1.5, zorder=21, linewidth=2.0, label='Optimal Trajectory')
+ 
+         if agent.all_trajectories is not None and agent.config_planner.debug.draw_traj_set:
+             valid_traj = [obj for obj in agent.all_trajectories if obj.valid is True and obj.feasible is True]
+@@ -375,13 +513,13 @@ def visualize_multiagent_scenario_at_timestep(scenario: Scenario,
+                     color = mapper.to_rgba(idx)
+                     color = lightcolors[idx % len(lightcolors)]
+                     plt.plot(val.cartesian.x, val.cartesian.y,
+-                             color=color, zorder=20, linewidth=1.0, alpha=1.0, picker=False)
++                             color=color, zorder=20, linewidth=0.8, linestyle='--', alpha=1.0, picker=False)
+                 else:
+                     plt.plot(val.cartesian.x, val.cartesian.y,
+-                             color='cyan', zorder=20, linewidth=1.0, alpha=0.8, picker=False)
++                             color='cyan', zorder=20, linewidth=0.8, linestyle='--', alpha=0.8, picker=False)
+             for ival in range(0, len(invalid_traj), step_inv):
+                 plt.plot(invalid_traj[ival].cartesian.x, invalid_traj[ival].cartesian.y,
+-                         color="#808080", zorder=19, linewidth=0.8, alpha=0.4, picker=False)
++                         color="#808080", zorder=19, linewidth=0.8, linestyle='--', alpha=0.4, picker=False)
+ 
+         if agent.reference_path is not None and config.visualization.draw_reference_path:
+ 
+@@ -392,13 +530,15 @@ def visualize_multiagent_scenario_at_timestep(scenario: Scenario,
+     if predictions is not None and config.visualization.draw_predictions:
+         draw_uncertain_predictions(predictions, rnd.ax)
+ 
++    # Add legend for labeled elements (optimal trajectory, reference path, etc.)
++    # plt.legend(loc='best', fontsize='small')
++
+     if save or gif:
+         plot_dir = os.path.join(log_path, "plots")
+         os.makedirs(plot_dir, exist_ok=True)
+         if gif:
+             plt.axis('off')
+-            plt.savefig(f"{plot_dir}/{scenario.scenario_id}_{timestep}.png", format='png', dpi=300, bbox_inches='tight',
+-                        pad_inches=0)
++            plt.savefig(f"{plot_dir}/{scenario.scenario_id}_{timestep}.png", format='png', dpi=300)
+         else:
+             plt.savefig(f"{plot_dir}/{scenario.scenario_id}_{timestep}.svg", format='svg')
+ 
+@@ -430,34 +570,48 @@ def make_gif(scenario: Scenario, time_steps: Union[range, List[int]],
+ 
+     for step in time_steps:
+         im_path = os.path.join(path_images, str(scenario.scenario_id) + f"_{step}.png")
+-        filenames.append(im_path)
+-
+-    img_width = 0
+-    img_height = 0
+-
++        # Frames are only saved for timesteps the ego is actually active, which
++        # need not start at 0 (e.g. an OSM/SUMO-derived ego that enters the
++        # scene mid-simulation starts at timestep N>0). The caller passes
++        # range(0, global_timestep), so skip steps without a saved frame rather
++        # than crashing on a missing <scenario_id>_0.png.
++        if os.path.exists(im_path):
++            filenames.append(im_path)
++
++    if not filenames:
++        print(f"make_gif: no frame images found in {path_images} — skipping GIF.")
++        return
++
++    # First pass: find maximum dimensions across all images
++    max_width = 0
++    max_height = 0
++    
++    for filename in filenames:
++        img = Image.open(filename)
++        width, height = img.size
++        max_width = max(max_width, width)
++        max_height = max(max_height, height)
++    
++    # Second pass: pad all images to maximum dimensions (no distortion)
+     for filename in filenames:
+         img = Image.open(filename)
+         width, height = img.size
+ 
+-        if not img_width:
+-            img_width = width
+-            img_height = height
+-
+-        # Calculate the area to crop
+-        left = 0
+-        top = 0
+-        right = img_width if width != img_width else width
+-        bottom = img_height if height != img_height else height
+-
+-        # Crop the image
+-        img_cropped = img.crop((left, top, right, bottom))
++        # If dimensions don't match, pad the image (no stretching!)
++        if width != max_width or height != max_height:
++            # Create a white canvas with max dimensions
++            padded_img = Image.new('RGB', (max_width, max_height), 'white')
++            # Paste the original image centered on the canvas
++            offset = ((max_width - width) // 2, (max_height - height) // 2)
++            padded_img.paste(img, offset)
++            img = padded_img
+ 
+         # Convert the PIL image to an array for imageio
+-        img_array = np.array(img_cropped)
++        img_array = np.array(img)
+         images.append(img_array)
+ 
+     iio.imwrite(os.path.join(log_path, str(scenario.scenario_id) + ".gif"),
+-                images, duration=duration)
++                images, duration=duration, loop=0)
+ 
+ 
+ def collision_vis(scenario: Scenario, ego_vehicle: DynamicObstacle, destination: str,
+diff --git a/frenetix_motion_planner/cost_functions/partial_cost_functions.py b/frenetix_motion_planner/cost_functions/partial_cost_functions.py
+index 010ff84..a714a69 100644
+--- a/frenetix_motion_planner/cost_functions/partial_cost_functions.py
++++ b/frenetix_motion_planner/cost_functions/partial_cost_functions.py
+@@ -9,7 +9,7 @@ import numpy as np
+ import frenetix_motion_planner.trajectories
+ from commonroad.scenario.trajectory import State
+ from commonroad.scenario.scenario import Scenario
+-from scipy.integrate import simps
++from scipy.integrate import simpson
+ import commonroad_dc.pycrcc as pycrcc
+ from shapely.geometry import LineString, Point
+ from cr_scenario_handler.utils import helper_functions as hf
+diff --git a/main.py b/main.py
+deleted file mode 100644
+index 07b71d9..0000000
+--- a/main.py
++++ /dev/null
+@@ -1,100 +0,0 @@
+-import os
+-import sys
+-import csv
+-import shutil
+-from datetime import datetime
+-import traceback
+-import concurrent.futures
+-from cr_scenario_handler.simulation.simulation import Simulation
+-from cr_scenario_handler.utils.configuration_builder import ConfigurationBuilder
+-from cr_scenario_handler.utils.general import get_scenario_list
+-
+-
+-def run_simulation_wrapper(scenario_info):
+-    scenario_file, scenario_folder, mod_path, logs_path, use_cpp = scenario_info
+-    start_simulation(scenario_file, scenario_folder, mod_path, logs_path, use_cpp, start_multiagent=False)
+-
+-
+-def start_simulation(scenario_name, scenario_folder, mod_path, logs_path, use_cpp, start_multiagent=False, count=0):
+-    log_path = os.path.join(logs_path, scenario_name)
+-    config_sim = ConfigurationBuilder.build_sim_configuration(scenario_name, scenario_folder, mod_path)
+-    config_sim.simulation.use_multiagent = start_multiagent
+-
+-    config_planner = ConfigurationBuilder.build_frenetplanner_configuration(scenario_name)
+-    config_planner.debug.use_cpp = use_cpp
+-
+-    simulation = None
+-
+-    try:
+-        simulation = Simulation(config_sim, config_planner)
+-        simulation.run_simulation()
+-
+-    except Exception as e:
+-        try:
+-            simulation.close_processes()
+-        except:
+-            pass
+-        error_traceback = traceback.format_exc()  # This gets the entire error traceback
+-        with open(os.path.join(logs_path, 'log_failures.csv'), 'a', newline='') as f:
+-            writer = csv.writer(f)
+-            current_time = datetime.now().strftime('%H:%M:%S')
+-            # Check if simulation is not None before trying to access current_timestep
+-            current_timestep = str(simulation.global_timestep) if simulation else "N/A"
+-            writer.writerow(["Scenario Name: " + log_path.split("/")[-1] + "\n" +
+-                             "Error time: " + str(current_time) + "\n" +
+-                             "In Scenario Timestep: " + current_timestep + "\n" +
+-                             "CODE ERROR: " + str(e) + error_traceback + "\n\n\n\n"])
+-            print(error_traceback)
+-
+-
+-def main():
+-    if sys.platform == "darwin":
+-        os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+-
+-    mod_path = os.path.dirname(os.path.abspath(__file__))
+-    logs_path = os.path.join(mod_path, "logs")
+-
+-    # *************************
+-    # Set Python or C++ Planner
+-    # *************************
+-    use_cpp = True
+-
+-    # *********************************************************
+-    # Link a Scenario Folder & Start many Scenarios to evaluate
+-    # *********************************************************
+-    evaluation_pipeline = False
+-
+-    # **********************************************************************
+-    # If the previous are set to "False", please specify a specific scenario
+-    # **********************************************************************
+-    scenario_name = "ZAM_Tjunction-1_42_T-1"  # do not add .xml format to the name
+-    scenario_folder = os.path.join(mod_path, "example_scenarios")
+-    scenario_files = get_scenario_list(scenario_name, scenario_folder, evaluation_pipeline, None, False)
+-
+-    # ***************************************************
+-    # Delete former logs & Create new score overview file
+-    # ***************************************************
+-    delete_former_logs = False
+-    if delete_former_logs:
+-        shutil.rmtree(logs_path, ignore_errors=True)
+-    os.makedirs(logs_path, exist_ok=True)
+-    if not os.path.exists(os.path.join(logs_path, "score_overview.csv")):
+-        with open(os.path.join(logs_path, "score_overview.csv"), 'a') as file:
+-            line = "scenario;agent;timestep;status;message\n"
+-            file.write(line)
+-
+-    if evaluation_pipeline:
+-        num_workers = 4  # or any number you choose based on your resources and requirements
+-        with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
+-            # Create a list of tuples that will be passed to start_simulation_wrapper
+-            scenario_info_list = [(scenario_file, scenario_folder, mod_path, logs_path, use_cpp)
+-                                  for scenario_file in scenario_files]
+-            results = executor.map(run_simulation_wrapper, scenario_info_list)
+-
+-    else:
+-        # If not in evaluation_pipeline mode, just run one scenario
+-        start_simulation(scenario_files[0], scenario_folder, mod_path, logs_path, use_cpp)
+-
+-
+-if __name__ == '__main__':
+-    main()
+diff --git a/main_batch.py b/main_batch.py
+new file mode 100644
+index 0000000..2f4906b
+--- /dev/null
++++ b/main_batch.py
+@@ -0,0 +1,203 @@
++import argparse
++import os
++import sys
++import csv
++import shutil
++from datetime import datetime
++import traceback
++import concurrent.futures
++from cr_scenario_handler.simulation.simulation import Simulation
++from cr_scenario_handler.utils.configuration_builder import ConfigurationBuilder
++from cr_scenario_handler.utils.general import get_scenario_list
++from pathlib import Path
++
++
++def run_simulation_wrapper(scenario_info):
++    scenario_file, scenario_folder, mod_path, logs_path, use_cpp = scenario_info
++    start_simulation(scenario_file, scenario_folder, mod_path, logs_path, use_cpp, start_multiagent=False)
++
++
++def start_simulation(scenario_name, scenario_folder, mod_path, logs_path, use_cpp, start_multiagent=False, count=0):
++    log_path = os.path.join(logs_path, scenario_name)
++
++    # For batch structure, construct the path to the XML file in the Original subfolder
++    if "Scenarios" in scenario_folder:
++        # Path structure: Scenarios_batch/scenario_name/Original/scenario_name.xml
++        xml_path = os.path.join(scenario_folder, scenario_name, "Original", scenario_name + ".xml")
++        if not os.path.exists(xml_path):
++            print(f"Warning: XML file not found at {xml_path}")
++            return
++    else:
++        # Fallback to flat structure
++        xml_path = os.path.join(scenario_folder, scenario_name + ".xml")
++
++    # Create a custom configuration that points to the correct XML file
++    config_sim = ConfigurationBuilder.build_sim_configuration(scenario_name, scenario_folder, mod_path)
++    config_sim.simulation.use_multiagent = start_multiagent
++
++    # Override the scenario path for batch structure
++    if "Scenarios" in scenario_folder:
++        config_sim.simulation.scenario_path = xml_path
++
++    config_planner = ConfigurationBuilder.build_frenetplanner_configuration(scenario_name)
++    config_planner.debug.use_cpp = use_cpp
++
++    simulation = None
++
++    try:
++        simulation = Simulation(config_sim, config_planner)
++        simulation.run_simulation()
++
++    except Exception as e:
++        try:
++            simulation.close_processes()
++        except:
++            pass
++        error_traceback = traceback.format_exc()  # This gets the entire error traceback
++        with open(os.path.join(logs_path, 'log_failures.csv'), 'a', newline='') as f:
++            writer = csv.writer(f)
++            current_time = datetime.now().strftime('%H:%M:%S')
++            # Check if simulation is not None before trying to access current_timestep
++            current_timestep = str(simulation.global_timestep) if simulation else "N/A"
++            writer.writerow(["Scenario Name: " + log_path.split("/")[-1] + "\n" +
++                             "Error time: " + str(current_time) + "\n" +
++                             "In Scenario Timestep: " + current_timestep + "\n" +
++                             "CODE ERROR: " + str(e) + error_traceback + "\n\n\n\n"])
++            print(error_traceback)
++
++def start_simulation_single(scenario_name, scenario_folder, mod_path, logs_path, use_cpp, start_multiagent=False, count=0):
++    log_path = os.path.join(logs_path, scenario_name)
++    config_sim = ConfigurationBuilder.build_sim_configuration(scenario_name, scenario_folder, mod_path)
++    config_sim.simulation.use_multiagent = start_multiagent
++
++    config_planner = ConfigurationBuilder.build_frenetplanner_configuration(scenario_name)
++    config_planner.debug.use_cpp = use_cpp
++
++    simulation = None
++
++    try:
++        simulation = Simulation(config_sim, config_planner)
++        simulation.run_simulation()
++
++    except Exception as e:
++        try:
++            simulation.close_processes()
++        except:
++            pass
++        error_traceback = traceback.format_exc()  # This gets the entire error traceback
++        with open(os.path.join(logs_path, 'log_failures.csv'), 'a', newline='') as f:
++            writer = csv.writer(f)
++            current_time = datetime.now().strftime('%H:%M:%S')
++            # Check if simulation is not None before trying to access current_timestep
++            current_timestep = str(simulation.global_timestep) if simulation else "N/A"
++            writer.writerow(["Scenario Name: " + log_path.split("/")[-1] + "\n" +
++                             "Error time: " + str(current_time) + "\n" +
++                             "In Scenario Timestep: " + current_timestep + "\n" +
++                             "CODE ERROR: " + str(e) + error_traceback + "\n\n\n\n"])
++            print(error_traceback)
++
++def main():
++    if sys.platform == "darwin":
++        os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
++
++    mod_path = os.path.dirname(os.path.abspath(__file__))
++    # Logs dir is configurable so a batch can be isolated from the GUI / other
++    # Frenetix jobs that share the default logs/ folder (batch mode rmtree's it).
++    logs_path = os.environ.get("FRENETIX_LOGS_DIR", os.path.join(mod_path, "logs"))
++
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--input-file", required=True, help="If Single Mode: Path to the XML file in question. If Batch Mode: Path to the csv file with the selected scenario names")
++    parser.add_argument(
++        "--batch",
++        action="store_true",
++        help="run in batch mode (default: single mode)",
++    )
++    args = parser.parse_args()
++    batch = args.batch
++
++    input_path = Path(args.input_file).resolve()
++
++    # *************************
++    # Set Python or C++ Planner
++    # *************************
++    use_cpp = True
++
++    # *********************************************************
++    # BATCH EVALUATION: Use Scenarios_batch folder structure
++    # *********************************************************
++    evaluation_pipeline = batch
++
++    # **********************************************************************
++    # Configuration for batch structure
++    # **********************************************************************
++    # Use batch structure (Scenarios_batch)
++    # You can change this path to wherever your Scenarios_batch folder is located
++    # scenario_folder = "<repo>/Scenarios"  # Absolute path to your scenarios
++    
++    # Alternative: If you want to keep it relative to the script location, uncomment this line:
++    scenario_folder = str(Path(mod_path).parent / "Scenarios")
++    
++    # Use specific scenario list from CSV file
++    use_specific_scenario_list = batch
++    # scenario_list_csv_path = os.path.join(mod_path, "scenario_batch_list.csv")
++    
++    # Fallback scenario name (not used when evaluation_pipeline=True)
++    scenario_name = "CHN_Beijing-7_7_T-1"  # do not add .xml format to the name
++    
++    # Get list of scenarios to process
++    if batch and use_specific_scenario_list and os.path.exists(input_path):
++        # Use CSV file to specify which scenarios to run
++        scenario_files = get_scenario_list(scenario_name, scenario_folder, evaluation_pipeline, input_path, True)
++        print(f"Loaded {len(scenario_files)} scenarios from CSV file: {input_path}")
++    elif batch:
++        # Auto-detect all scenarios in batch folders
++        scenario_files = get_scenario_list(scenario_name, scenario_folder, evaluation_pipeline, None, False)
++        print(f"Auto-detected {len(scenario_files)} scenarios in batch folders")
++
++    # Check if scenario folder exists
++    if not os.path.exists(scenario_folder):
++        print(f"ERROR: Scenario folder not found at: {scenario_folder}")
++        print("Please update the 'scenario_folder' variable in main_batch.py to point to your Scenarios_batch folder")
++        print("Current path:", scenario_folder)
++        sys.exit(1)
++    
++    # Check if we have scenarios to process
++    if batch and not scenario_files:
++        print(f"ERROR: No scenarios found in folder: {scenario_folder}")
++        print("Please check your CSV file and folder structure")
++        sys.exit(1)
++
++    # ***************************************************
++    # Delete former logs & Create new score overview file
++    # ***************************************************
++    delete_former_logs = batch
++    if delete_former_logs:
++        shutil.rmtree(logs_path, ignore_errors=True)
++    os.makedirs(logs_path, exist_ok=True)
++    if not os.path.exists(os.path.join(logs_path, "score_overview.csv")):
++        with open(os.path.join(logs_path, "score_overview.csv"), 'a') as file:
++            line = "scenario;agent;timestep;status;message;result;collision_type;colliding_object_id\n"
++            file.write(line)
++
++    if evaluation_pipeline:
++        num_workers = int(os.environ.get("FRENETIX_BATCH_WORKERS", "12"))  # configurable via env (default 12)
++        print(f"Starting batch evaluation with {num_workers} workers...")
++        print(f"Scenarios to process: {scenario_files[:5]}{'...' if len(scenario_files) > 5 else ''}")
++        
++        with concurrent.futures.ProcessPoolExecutor(max_workers=num_workers) as executor:
++            # Create a list of tuples that will be passed to start_simulation_wrapper
++            scenario_info_list = [(scenario_file, scenario_folder, mod_path, logs_path, use_cpp)
++                                  for scenario_file in scenario_files]
++            results = executor.map(run_simulation_wrapper, scenario_info_list)
++
++    else:
++        # If not in evaluation_pipeline mode, just run one scenario
++        scenario_folder = str(input_path.parent)
++        scenario_name = input_path.stem
++        scenario_files = [scenario_name]
++        print(f"Running single scenario: {scenario_files[0]}")
++        start_simulation_single(scenario_files[0], scenario_folder, mod_path, logs_path, use_cpp)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/main_multiagent.py b/main_multiagent.py
+index a372fb4..abf1a44 100644
+--- a/main_multiagent.py
++++ b/main_multiagent.py
+@@ -81,7 +81,7 @@ def main():
+     if not os.path.exists(os.path.join(logs_path, "score_overview.csv")):
+         os.makedirs(logs_path, exist_ok=True)
+         with open(os.path.join(logs_path, "score_overview.csv"), 'a') as file:
+-            line = "scenario;agent;timestep;status;message\n"
++            line = "scenario;agent;timestep;status;message;result;collision_type;colliding_object_id\n"
+             file.write(line)
+ 
+     if evaluation_pipeline:
+diff --git a/main_without_ego.py b/main_without_ego.py
+new file mode 100644
+index 0000000..32bab5f
+--- /dev/null
++++ b/main_without_ego.py
+@@ -0,0 +1,335 @@
++#!/usr/bin/env python3
++"""
++Script to visualize CommonRoad XML scenarios without motion planning.
++Just shows the scenario, road network, and recorded trajectories of dynamic obstacles.
++"""
++import argparse
++import json
++import os
++import sys
++import tempfile
++from pathlib import Path
++
++import numpy as np
++import matplotlib.pyplot as plt
++import matplotlib
++from typing import Optional
++
++# Add the project root to Python path
++sys.path.append(os.path.dirname(os.path.abspath(__file__)))
++
++from commonroad.common.file_reader import CommonRoadFileReader
++from commonroad.scenario.scenario import Scenario
++
++
++# Scenario styling (renderer, draw params, fonts, figure geometry) is shared
++# with the OSM-generation renderers so every picture the app produces looks the
++# same. This script is launched by absolute path, so sys.path[0] is this
++# directory — put the repo root on the path before importing from it.
++_REPO_ROOT = str(Path(__file__).resolve().parent.parent)
++if _REPO_ROOT not in sys.path:
++    sys.path.insert(0, _REPO_ROOT)
++
++from cr_draw_style import (  # noqa: E402
++    BBOX_INCHES,
++    CustomRenderer,
++    DPI,
++    FIGSIZE,
++    FRAME_DURATION_MS,
++    PAD_INCHES,
++    apply_rcparams,
++    build_draw_params,
++    install_icons,
++)
++
++def fix_trajectory_positions(scenario):
++    """
++    Fix trajectory position data format for prediction network compatibility.
++    
++    The WaleNet prediction network requires positions to be numpy arrays,
++    but some SUMO-converted scenarios have positions stored as Python lists.
++    This function ensures all positions are numpy arrays.
++    """
++    for obstacle in scenario.dynamic_obstacles:
++        if hasattr(obstacle.prediction, 'trajectory') and obstacle.prediction.trajectory:
++            for state in obstacle.prediction.trajectory.state_list:
++                # Convert position to numpy array if it's a list
++                if isinstance(state.position, list):
++                    state.position = np.array(state.position)
++    return scenario
++
++
++def load_scenario(xml_file_path: str):
++    """Load CommonRoad scenario from XML file."""
++    try:
++        scenario, planning_problem_set = CommonRoadFileReader(xml_file_path).open()
++        # Fix trajectory position format for prediction network compatibility
++        scenario = fix_trajectory_positions(scenario)
++        return scenario, planning_problem_set
++    except Exception as e:
++        print(f"Error loading scenario: {e}")
++        return None, None
++
++
++def get_scenario_time_range(scenario):
++    """Get the time range for the scenario based on dynamic obstacles."""
++    max_time = 0
++    min_time = float('inf')
++
++    for obstacle in scenario.dynamic_obstacles:
++        if obstacle.prediction is not None:
++            max_time = max(max_time, obstacle.prediction.final_time_step)
++        min_time = min(min_time, obstacle.initial_state.time_step)
++
++    if min_time == float('inf'):
++        min_time = 0
++
++    return int(min_time), int(max_time)
++
++
++def visualize_scenario_at_timestep(scenario, planning_problem_set, timestep: int,
++                                   output_dir: str, scenario_name: str, show_plot: bool = False,
++                                   show_agent_labels: bool = True, show_lanelet_labels: bool = False,
++                                   show_static_labels: bool = False):
++
++    # Font sizes, renderer and draw params all come from cr_draw_style so this
++    # picture is identical to the OSM-generated ones.
++    apply_rcparams()
++    install_icons()
++
++    rnd = CustomRenderer(figsize=FIGSIZE)
++    obs_params = build_draw_params(timestep, show_agent_labels,
++                                   show_lanelet_labels, show_static_labels)
++
++    scenario.draw(rnd, draw_params=obs_params)
++
++    if planning_problem_set is not None:
++        for planning_problem in planning_problem_set.planning_problem_dict.values():
++            planning_problem.draw(rnd)
++
++    rnd.render()
++    # Originally True and alpha=0.3
++    rnd.ax.grid(False)
++
++    # Only render grid for accurate coordinate clicks
++    # Remove tick labels and ticks
++    rnd.ax.set_xticks([])
++    rnd.ax.set_yticks([])
++    rnd.ax.tick_params(left=False, bottom=False)
++    # Remove the axis spines (border lines)
++    for spine in rnd.ax.spines.values():
++        spine.set_visible(False)
++
++    title = f"Scenario: {scenario.scenario_id} - Timestep: {timestep}"
++    label_info = []
++    if show_agent_labels:
++        label_info.append("Agent IDs")
++    if show_lanelet_labels:
++        label_info.append("Lanelet IDs")
++    if show_static_labels:
++        label_info.append("Static IDs")
++    if label_info:
++        title += f" (Showing: {', '.join(label_info)})"
++
++    output_file = os.path.join(output_dir, f"{scenario_name}_{timestep:03d}.png")
++    plt.savefig(output_file, dpi=DPI, bbox_inches=BBOX_INCHES,
++                pad_inches=PAD_INCHES)
++    print(f"Saved: {output_file}")
++
++    if show_plot:
++        matplotlib.use("TkAgg")
++        plt.pause(0.0001)
++    else:
++        plt.close()
++
++def create_gif(scenario_name: str, image_dir: str, timesteps: range, output_dir: str, duration: int = FRAME_DURATION_MS):
++    """Create animated GIF from saved images in `image_dir` and store it in `output_dir`.
++
++    Uses the second frame (by order in the timesteps range) as the reference for image dimensions.
++    """
++    try:
++        import imageio
++        import os
++        from PIL import Image
++        import numpy as np
++
++        images = []
++        reference_shape = None
++        buffer = {}  # Temporarily store first frame
++        timestep_list = list(timesteps)
++
++        if len(timestep_list) < 2:
++            print("❌ At least two timesteps are required to determine a reference shape.")
++            return
++
++        reference_timestep = timestep_list[1]
++        first_timestep = timestep_list[0]
++
++        for t in timestep_list:
++            img_path = os.path.join(image_dir, f"{scenario_name}_{t:03d}.png")
++            if not os.path.exists(img_path):
++                print(f"⚠️  Image not found: {img_path}")
++                continue
++
++            img = imageio.imread(img_path)
++
++            if t == first_timestep:
++                buffer[t] = img  # Buffer first frame
++                continue
++
++            if t == reference_timestep:
++                reference_shape = img.shape[:2]
++                print(f"📏 Reference shape set from frame {t:03d}: {reference_shape}")
++
++                # Now process the buffered first frame
++                first_img = buffer.pop(first_timestep, None)
++                if first_img is not None:
++                    if first_img.shape[:2] != reference_shape:
++                        print(f"🔁 Resizing first frame {scenario_name}_{first_timestep:03d}.png from {first_img.shape[:2]} to {reference_shape}")
++                        first_img = np.array(Image.fromarray(first_img).resize(reference_shape[::-1]))
++                    images.append(first_img)
++
++            if reference_shape:
++                if img.shape[:2] != reference_shape:
++                    print(f"⚠️  Frame {t:03d} shape {img.shape[:2]} doesn't match reference. Resizing...")
++                    img = np.array(Image.fromarray(img).resize(reference_shape[::-1]))
++                images.append(img)
++
++        if images:
++            gif_path = os.path.join(output_dir, f"{scenario_name}.gif")
++            imageio.mimsave(gif_path, images, duration=duration, loop=0)
++            print(f"✅ Created GIF: {gif_path}")
++        else:
++            print("⚠️  No images found for GIF creation")
++
++    except ImportError:
++        print("❌ imageio not installed. Install with: pip install imageio")
++    except Exception as e:
++        print(f"❌ Error creating GIF: {e}")
++
++
++# Uses temporary files to store the PNGs only for generating the GIF. Afterward, they are deleted.
++def process_single_scenario(xml_file: str, base_output_dir: str, scenario_name: str,
++                            show_plots: bool = False, create_animation: bool = True,
++                            timestep_interval: int = 1, show_agent_labels: bool = False,
++                            show_lanelet_labels: bool = False, show_static_labels: bool = False):
++
++    script_dir = os.path.dirname(os.path.abspath(__file__))
++    xml_path = os.path.join(script_dir, xml_file)
++
++    print(f"\n🎬 Processing: {xml_file}")
++    print(f"Scenario name (from filename): {scenario_name}")
++    print(f"Label settings: Agents={show_agent_labels}, Lanelets={show_lanelet_labels}, Static={show_static_labels}")
++
++    scenario, planning_problem_set = load_scenario(xml_path)
++    if scenario is None:
++        print(f"❌ Failed to load scenario: {xml_file}")
++        return False
++
++    output_path = os.path.join(script_dir, base_output_dir)
++    os.makedirs(output_path, exist_ok=True)
++
++    print(f"Scenario ID (from file): {scenario.scenario_id}")
++    print(f"Output: {output_path}")
++    print(f"Dynamic obstacles: {len(scenario.dynamic_obstacles)}")
++    print(f"Static obstacles: {len(scenario.static_obstacles)}")
++
++    min_time, max_time = get_scenario_time_range(scenario)
++    print(f"Time range: {min_time} to {max_time}")
++    if max_time == 0:
++        max_time = 0
++
++    timesteps = range(min_time, max_time + 1, timestep_interval)
++    print(f"Creating {len(timesteps)} visualizations...")
++
++    with tempfile.TemporaryDirectory() as tmp_image_dir:
++        for timestep in timesteps:
++            if timestep % 10 == 0:
++                print(f"  Timestep {timestep}...")
++            visualize_scenario_at_timestep(
++                scenario, planning_problem_set, timestep,
++                tmp_image_dir, scenario_name, show_plots,
++                show_agent_labels, show_lanelet_labels, show_static_labels
++            )
++
++        if create_animation and len(timesteps) > 1:
++            print("Creating animated GIF...")
++            create_gif(scenario_name, tmp_image_dir, timesteps, output_path)
++
++    print(f"✅ Complete! GIF saved in: {output_path}")
++
++    # TODO: remove, if coordinate stuff removed (thi smight not work with current way of vis)
++    # === Store metadata for coordinate mapping ===
++    dpi = DPI
++    figsize = FIGSIZE
++    dict_plot_limits = get_plot_limits(scenario)
++    metadata = { # These parameters should be made sure to be globally shared (rn manual update is required)
++        "dpi": dpi,
++        "figsize": figsize,
++        "plot_limits": dict_plot_limits[0],
++    }
++    json_name = str(scenario_name) + ".json"
++    json_path = os.path.join(output_path, json_name)
++    with open(json_path, "w") as f:
++        json.dump(metadata, f, indent=2)
++
++    return True
++
++def get_plot_limits(scenario: Scenario):
++    """
++    The plot limits track the center of the ego vehicle.
++    """
++
++    def flatten(list_to_flat):
++        return [item for sublist in list_to_flat for item in sublist]
++
++    center_vertices = np.array(
++        flatten(
++            [lanelet.center_vertices for lanelet in scenario.lanelet_network.lanelets]
++        )
++    )
++
++    min_coords = np.min(center_vertices, axis=0)
++    max_coords = np.max(center_vertices, axis=0)
++    dict_plot_limits = [
++        [min_coords[0], max_coords[0], min_coords[1], max_coords[1]]
++    ]
++
++    return dict_plot_limits
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--input-file", required=True, help="Path to the input CommonRoad XML file")
++    parser.add_argument("--output-dir", required=True, help="Path to the output directory")
++    args = parser.parse_args()
++
++    input_file = str(Path(args.input_file).resolve())
++    output_dir = str(Path(args.output_dir).resolve())
++
++    # Extract scenario name from the file name, without suffixes
++    scenario_name = Path(input_file).stem
++
++    # Configuration flags
++    show_plots = False
++    create_animation = True
++    timestep_interval = 1
++    show_agent_labels = True
++    show_lanelet_labels = True
++    show_static_labels = True
++
++    success = process_single_scenario(
++        input_file, output_dir, scenario_name, show_plots, create_animation,
++        timestep_interval, show_agent_labels, show_lanelet_labels, show_static_labels
++    )
++
++    if success:
++        print(f"\n🎉 All done!\n📂 Check the '{output_dir}' folder for your scenario visualizations!")
++    else:
++        print(f"\n❌ Processing failed!")
++
++
++#TODO: don't forget to add coordinates for goal region choice
++if __name__ == "__main__":
++    main()
++
++# source Frenetix-Motion-Planner/venv/bin/activate  python Frenetix-Motion-Planner/main_without_ego.py --input-file <repo>/Scenarios/DEU_Weimar-35_1_T-4/Modified/DEU_Weimar-35_1_T-4_M9328/DEU_Weimar-35_1_T-4_M9328.xml --output-dir <repo>/Scenarios/DEU_Weimar-35_1_T-4/Modified/DEU_Weimar-35_1_T-4_M9328
+diff --git a/requirements.txt b/requirements.txt
+new file mode 100644
+index 0000000..8fd477f
+--- /dev/null
++++ b/requirements.txt
+@@ -0,0 +1,58 @@
++# Frenetix Motion Planner Requirements
++# Compatible with Python 3.10
++# Tested and working versions
++# Core dependencies
++numpy>=1.24.2,<2.0.0
++scipy>=1.9.3,<2.0.0
++matplotlib>=3.8.1,<3.9.0
++pandas>=2.0.3,<2.1.0
++shapely>=2.0.6,<3.0.0
++pygeos>=0.14,<0.15
++# CommonRoad dependencies
++commonroad-io>=2024.2,<2024.3
++commonroad-drivability-checker>=2024.1,<2024.2
++commonroad-route-planner>=2024.2.1,<2024.3.0
++commonroad-vehicle-models>=3.0.2,<4.0.0
++# Machine Learning dependencies
++torch>=2.2.1
++scikit-learn>=1.0.0,<2.0.0
++onnxruntime>=1.18.1,<1.19.0
++# Other dependencies
++omegaconf>=2.1.1,<3.0.0
++psutil>=5.9.6
++methodtools>=0.4.7,<0.5.0
++imageio>=2.31.2,<3.0.0
++rich>=13.7.1,<14.0.0
++triangle>=20200424
++frenetix>=0.4.0
++wale-net>=3.0.3,<3.1.0
++# Additional dependencies that were installed
++rtree>=0.8.3
++networkx>=2.2
++tqdm>=4.64
++protobuf==3.20.2
++pillow>=10.4.0
++lxml>=4.2.2
++iso3166>=1.0.1
++fonttools>=4.22.0
++pyparsing>=2.3.1
++contourpy>=1.0.1
++packaging>=20.0
++kiwisolver>=1.3.1
++python-dateutil>=2.7
++cycler>=0.10
++wirerope>=0.4.7
++PyYAML>=5.1.0
++antlr4-python3-runtime==4.9.*
++sympy
++coloredlogs
++flatbuffers
++tzdata>=2022.1
++markdown-it-py>=2.2.0
++pygments>=2.13.0,<3.0.0
++typing-extensions>=4.0.0,<5.0
++# Development dependencies (for compilation)
++# python3.10-dev  # Install via apt: sudo apt-get install python3.10-dev
++# Optional: For GPU support (if compatible)
++# Note: Current PyTorch version may not support RTX 5090
++# Consider installing CPU-only version if GPU compatibility issues persist 
+diff --git a/scenario_batch_list.csv b/scenario_batch_list.csv
+new file mode 100644
+index 0000000..3205bdd
+--- /dev/null
++++ b/scenario_batch_list.csv
+@@ -0,0 +1,100 @@
++GRC_ArchaioLimani-85_1_T-8
++ESP_Barcelona-16_57_T-1
++ESP_Barcelona-58_51_T-1
++DEU_Herzogenaurach-158_1_T-2
++ESP_Barcelona-58_43_T-1
++DEU_Moelln-10_3_T-1
++DEU_Nuremberg-44_3_T-1
++CHN_Beijing-7_7_T-1
++ESP_Bilbao-30_19_T-1
++USA_Lanker-1_4_T-1
++DEU_Bebra-39_1_T-1
++DEU_Bremen-10_50_T-1
++DEU_Bremen-14_4_T-1
++USA_Phoenix-48_2_T-1
++BRA_VilaVelha-34_1_T-1
++USA_Austin-8_38_T-1
++DEU_Damme-17_1_T-1
++DEU_Darmstadt-72_1_T-3
++FRA_Lyon-36_1_T-5
++ESP_Barcelona-41_27_T-1
++USA_US101-28_1_T-1
++ZAM_Tjunction-1_207_T-1
++DEU_Hennigsdorf-16_6_T-1
++USA_Peach-4_5_T-1
++DEU_Heilbronn-209_1_T-3
++DEU_Memmingen-79_1_T-2
++FRA_Lyon-34_1_T-3
++ZAM_Tjunction-1_356_T-1
++DEU_Hanover-19_8_T-1
++ESP_Barcelona-52_3_T-1
++DEU_Bebra-18_1_T-4
++DEU_Hanover-35_9_T-1
++DEU_Aschaffenburg-27_3_T-1
++DEU_Weimar-13_1_T-4
++USA_Austin-77_40_T-1
++BEL_Brussels-29_1_T-1
++FRA_Dijon-25_2_T-1
++DEU_Wolfsburg-81_1_T-1
++DEU_Wolfsburg-13_1_T-6
++ESP_Bilbao-39_21_T-1
++HRV_Pula-30_1_T-1
++DEU_Weimar-101_1_T-1
++DEU_Kitzingen-41_1_T-3
++DEU_Bremen-10_60_T-1
++DEU_Herzogenaurach-168_1_T-8
++CHN_Tianjin-18_7_T-1
++DEU_Leipzig-13_36_T-1
++GRC_NeaSmyrni-71_1_T-9
++BRA_BeloHorizonte-14_1_T-7
++USA_Phoenix-51_9_T-1
++BEL_Leuven-54_8_T-1
++ZAM_Tjunction-1_147_T-1
++USA_Phoenix-51_10_T-1
++USA_Peach-3_3_T-1
++ESP_Barcelona-44_5_T-1
++DEU_Moelln-3_4_T-1
++DEU_Schwetzingen-142_1_T-3
++USA_US101-2_3_S-1
++DEU_Herzogenaurach-106_1_T-4
++USA_Austin-77_10_T-1
++DEU_Leipzig-27_9_T-1
++DEU_Heilbronn-86_1_T-1
++DEU_Wolfsburg-39_1_T-3
++HRV_Centar-49_1_T-9
++USA_Phoenix-17_29_T-1
++ESP_Bilbao-19_29_T-1
++ZAM_Tjunction-1_89_T-1
++DEU_Heilbronn-247_1_T-6
++HRV_Centar-45_1_T-7
++DEU_Heilbronn-37_1_T-2
++USA_Austin-58_8_T-1
++USA_Austin-48_7_T-1
++DEU_Leipzig-39_22_T-1
++ESP_Barcelona-14_6_T-1
++USA_Peach-5_1_T-1
++CHN_Beijing-5_15_T-1
++DEU_Kiel-2_18_T-1
++ESP_Barcelona-30_3_T-1
++FRA_Dijon-33_2_T-1
++POL_Krakow-68_1_T-1
++DEU_Memmingen-27_1_T-6
++DEU_Wolfsburg-77_1_T-9
++CAN_Ottawa-19_1_T-9
++BEL_Putte-1_1_T-1
++DEU_Bebra-31_1_T-1
++USA_Lanker-1_5_T-1
++BEL_Brussels-13_5_T-1
++GRC_ArchaioLimani-123_1_T-8
++DEU_Bonn-19_2_T-1
++DEU_Heilbronn-156_1_T-2
++DEU_Schwetzingen-154_1_T-3
++USA_Austin-36_14_T-1
++USA_Washington-3_5_T-1
++DEU_Rheinbach-5_3_T-1
++DEU_Nuremberg-30_1_T-1
++DEU_Heilbronn-95_1_T-6
++DEU_Leipzig-59_42_T-1
++DEU_Goeppingen-11_1_T-3
++DEU_Nuremberg-16_8_T-1
++RUS_Bicycle-3_1_T-1

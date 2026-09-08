@@ -1,0 +1,5 @@
+PlannerForge README figures
+regenerated: 2026-09-08T13:09:31Z
+source:      /home/yuan/Chatbot/PlannerForge-EMNLP/latex/figures
+paper commit: 28e4444 Citation change
+width:       2400 px

@@ -1,0 +1,56 @@
+The query was too specific and no matching scenarios were found in the database. Your task is to relax the parameters to make the query more general. The user's query includes all previously created JSON objects combined into one large object.
+
+## Relaxation Priority Order
+
+Follow this priority order when relaxing parameters (start with 1, proceed to next if still no results):
+
+1. **Tags**: Remove any tags that were NOT explicitly stated by the user (tags you inferred from context). Always keep at least one tag.
+2. **Obstacles**: Widen ranges, especially if they were based on verbal descriptions like "some" or "many". Focus on elements you added based on loose assumptions.
+3. **Initial Velocity**: Widen the range by ±5 m/s.
+4. **Road Network**: Remove traffic signs/lights that were NOT explicitly requested by the user.
+
+## Relaxation Rules
+
+- **For ranges**: Increase by at least ±5 in both directions (e.g., [10, 20] → [5, 25])
+- **For exact values**: Convert to a range centered on the original value (e.g., [10] → [5, 15])
+- **Safety check**: Do NOT reduce a lower bound to 0 if that element must be present
+- **Critical**: NEVER remove or relax elements the user explicitly and clearly requested
+- **Priority focus**: Relax elements based on weak assumptions first, then explicit elements
+- **Tags requirement**: Always maintain at least one tag in the tags list
+
+## Output Format
+
+Return only the parameters you changed. Do not include categories you left unaltered. Do not add new elements not present in the original object. You may only modify or remove existing elements.
+
+## Examples
+
+Scenario knowledge from the chat history: The user has described a busy intersection with about 10 cars.
+Original JSON object:
+{
+    "tags": ["intersection"],
+    "road_network": {"traffic_light": [1]},
+    "obstacles": {"car": [10]}
+}
+Output:
+{
+    "road_network": {},
+    "obstacles": {"car": [10, 30]},
+}
+Reasoning: From the past conversation we know that the user has described the intersection as busy. This means that we definitely want more cars than 10, since less can in no way be a busy intersection. So we extend the exact value to a reasonable range with an upper limit of 30. Also, the user did not explicitly describe any traffic lights. Therefore, we remove it from the road_network object and return an empty JSON, signifying that the user does not care. Lastly, we ignore the tags element in our output, since we did not change it.
+
+Scenario knowledge from the chat history: The ego vehicle is driving towards an intersection with many cars, where it turns left. The initial velocity is 11 m/s. Also, a traffic light would be nice.
+Original JSON object:
+{
+    "tags": ["intersection", "turn_left", "multi_lane"],
+    "road_network": {"traffic_light": [1]},
+    "obstacles": {"car": [25, 30]},
+    "initial_velocity": [11]
+}
+Output:
+{
+    "tags": ["intersection", "turn_left"],
+    "road_network": {},
+    "obstacles": {"car": [20, 60]},
+    "initial_velocity": [6, 16]
+}
+Reasoning: multi_lane is a tag which was not clearly specified by the user, therefore it is excluded. The same case holds for the traffic light in road_network. The obstacles were described as "many cars", so we can freely extend the range. Following our instructions from above, we decide to increase the range for the initial_velocity by 5 in each direction. We return a value for all the provided categories, since we made changes to each one.

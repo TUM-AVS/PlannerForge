@@ -1,0 +1,42 @@
+diff --git a/.DS_Store b/.DS_Store
+index ed64a53..1895226 100644
+Binary files a/.DS_Store and b/.DS_Store differ
+diff --git a/id_mapper.py b/id_mapper.py
+index 35f42c1..a819ff6 100644
+--- a/id_mapper.py
++++ b/id_mapper.py
+@@ -89,7 +89,9 @@ class IdMapper:
+     def new_cr_id_from_sumo_id(self, sumo_id: SumoId, domain: IdDomain) -> CommonRoadId:
+         """
+         Create a new CommonRoadId for the sumo_id in the given domain and add it to the internal mapping.
+-        If the given sumo_id, already has a CommonRoadId allocated, this Id will be returned instead, and no new one will be generated.
++        If the given sumo_id already has a CommonRoadId allocated, this ID will be returned instead.
++
++        For OBSTACLE_VEHICLE and PEDESTRIAN domains, the SUMO ID is directly reused as the CommonRoad ID.
+         """
+         if self.has_sumo2cr(sumo_id, domain):
+             cr_id = self._sumo2cr[domain][sumo_id]
+@@ -98,12 +100,22 @@ class IdMapper:
+             )
+             return cr_id
+ 
+-        cr_id = self._generate_cr_id(domain)
++        if domain in {IdDomain.OBSTACLE_VEHICLE, IdDomain.PEDESTRIAN}:
++            try:
++                cr_id = int(sumo_id)
++            except ValueError:
++                raise ValueError(
++                    f"SUMO ID '{sumo_id}' cannot be converted to int for use as CommonRoad ID "
++                    f"in domain '{domain.name}'. Make sure SUMO IDs are numeric strings."
++                )
++        else:
++            cr_id = self._generate_cr_id(domain)
+ 
+         self.insert_mapping(sumo_id, cr_id, domain)
+ 
+         return cr_id
+ 
++
+     def has_sumo2cr(self, sumo_id: SumoId, domain: IdDomain) -> bool:
+         """
+         Check whether the given sumo_id is already mapped to a CommonRoadId in the given domain.

@@ -1,0 +1,67 @@
+[TASK]
+Generate {n} diverse natural-language driving-scenario queries to test the OSM-to-CommonRoad intent extractor. These queries are the SOLE test inputs for the ablation experiment; the extractor's performance under different prompting techniques is measured by sending each query through and observing whether it produces a usable CommonRoad scenario.
+
+Each line of your output is ONE query. No JSON, no numbering, no bullets, no extra commentary. Just plain natural-language text, one query per line, separated by newline characters.
+
+Vary verbosity:
+  - about 30 % terse (≤ 8 words, e.g. "Munich intersection.")
+  - about 50 % medium (one sentence with 1-2 specifics)
+  - about 20 % rich (two sentences with secondary detail)
+
+Return EXACTLY {n} lines and nothing else — no preamble, no closing remark, no markdown fences.
+
+[CP]
+Diversity is the most important property of the output. The {n} queries together must spread across every dimension below:
+
+1. **Cities & continents**: at least 15 distinct cities drawn from at least 3 continents. Suggested pool — feel free to add others if they're real and well-known:
+     Munich, Berlin, Hamburg, Stuttgart, Cologne, Frankfurt,
+     Paris, Lyon, Marseille,
+     Vienna, Zurich, Amsterdam, Brussels,
+     London, Manchester,
+     Rome, Milan, Madrid, Barcelona,
+     Tokyo, Osaka, Seoul, Shanghai, Singapore,
+     New York, San Francisco, Boston, Toronto, Sydney.
+   No more than 8 queries from any one city.
+
+2. **Road category**: roughly even distribution across these scenario types — highway, urban, intersection, roundabout, rural, ramp/interchange. A small share (~5 %) can be intentionally unspecified ("any scenario"). DO NOT request synthetic, artificial, or handcrafted road networks — the system only supports real-world OSM-backed locations.
+
+3. **Vehicle category mentions** (about 25-35 % of queries should explicitly name a non-car vehicle class — truck, bus, motorcycle, bicycle, taxi, trailer, delivery, emergency, coach, moped). Mix in some bare-no-vehicle-mentioned queries too.
+
+4. **Density adjectives** (about 25 % of queries should include phrases like "dense traffic", "heavy congestion", "empty road", "sparse traffic", "moderate flow"). These are intentionally adversarial — the system-fixed density rule means the extractor should IGNORE these phrases at inference, but the test query is allowed to use them.
+
+5. **Simulation-time mentions** (about 20 % of queries should include explicit durations — "simulate 30 seconds", "5-minute run", "run for 60s"). These are also adversarial — duration_s is system-fixed.
+
+6. **Ego selection** — this is THE key adversarial axis for this experiment. The motion planner is car-only, so the extractor's job is to silently downgrade any non-car ego assignment back to "first car". The test queries must therefore include plenty of cases where the user explicitly names a non-car as the ego:
+   - **About 40 %** should leave the ego unspecified ("Munich intersection."). The extractor should emit `ego.strategy="first"` — the easy case.
+   - **About 45 %** should assign the ego to a NON-CAR vehicle category. Vary across truck, bus, motorcycle, bicycle, taxi, trailer, delivery, emergency, coach, moped. Wording like "the ego is the truck", "let the bus be the ego", "use the motorcycle as ego", "the delivery van is the ego vehicle", "make the coach the ego". The extractor MUST downgrade these to `ego.strategy="first"` (the planner can't handle non-cars as ego). DO NOT include queries saying "ego is the car" — that's not adversarial.
+   - **About 15 %** should identify the ego by ordinal position ("the third car", "the second-to-last vehicle", "the fourth dynamic obstacle"). The extractor should emit `ego.strategy="by_index"`.
+
+7. **Goal area**: most queries should leave the goal unspecified (default trajectory offset). A handful (5-10 %) may mention a specific lanelet number ("target lanelet 47") or a relative distance ("goal 100 m ahead").
+
+8. **Adversarial / edge cases** (about 5 % of queries):
+   - "Generate any scenario" (no location, no constraints)
+   - Mention impossible combinations (e.g. "a Munich highway intersection") — these test extractor robustness
+   - Use synonyms or paraphrases ("freeway" for highway, "junction" for intersection, "traffic circle" for roundabout)
+
+Tone — write like a real user asking the system, not like a test fixture writer. Mix imperative ("Generate a Paris highway scene") with descriptive ("A scenario in downtown Tokyo with two trucks").
+
+Do NOT label each query with metadata, expected fields, or category tags. Output is the bare NL text only.
+
+[ICL]
+Example output for a {n}=15 request (one query per line, nothing else; note how nearly half the queries assign the ego to a non-car category, which the extractor should downgrade):
+
+Munich intersection.
+Generate a Paris highway scenario with dense traffic and simulate it for 45 seconds.
+A busy roundabout in Lyon where the ego is the truck approaching from the south.
+Sparse rural road outside Zurich; include cars and motorcycles, and the motorcycle is the ego.
+Tokyo intersection where the taxi is the ego vehicle.
+Generate any driving scenario.
+On the A8 near Stuttgart, an empty motorway segment with the bus as ego.
+Berlin urban scenario where the third vehicle is the ego.
+A ramp interchange in San Francisco with heavy congestion. The ego is the delivery van and the goal is roughly 40 m ahead.
+Sydney intersection during peak hour, ego is the bicycle.
+Quiet residential street in Amsterdam.
+Generate a Singapore highway scene; let the ego be the coach.
+Rome roundabout, run for 60 seconds with moderate traffic, ego is the emergency vehicle.
+Boston downtown junction with two trucks and a bus, let the trailer be the ego.
+Manchester urban corridor.

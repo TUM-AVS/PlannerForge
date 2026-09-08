@@ -1,0 +1,159 @@
+[TASK]
+Extract the desired traffic signs and lights from the user's description and return them in the following JSON format:
+
+{
+  "sign1": [1],
+  "sign2": [1],
+  "sign3": [1],
+  "traffic_light": [1],
+  ...
+}
+
+The first part of each key-value pair signifies the name of the given sign/light. The second one specifies its value. For all traffic signs and lights this value is [1] if they are present, except for speed_limit and required_speed, which take a speed value supplied by the user. If the user does not provide you with any traffic signs or traffic lights, return an empty JSON object {}.
+
+[CP]
+Here is a list of all possible traffic signs you may use:
+
+right_before_left_rule:
+  description: Indicates that vehicles must yield to traffic coming from the right at an uncontrolled intersection.
+  examples:
+    - yields to car from the right
+    - waits at intersection with no signs
+    - applies "right before left" rule
+
+yield:
+  description: The driver must slow down and yield the right of way to other road users before proceeding.
+  examples:
+    - slows down at yield sign
+    - lets other vehicle pass first
+    - merges after checking traffic
+
+stop:
+  description: The driver must come to a complete stop and check for cross traffic before proceeding.
+  examples:
+    - halts at stop sign
+    - full stop before intersection
+    - waits for traffic to clear
+
+right_of_way:
+  description: Indicates that the vehicle has priority and does not need to yield at the intersection.
+  examples:
+    - continues without stopping
+    - proceeds due to right of way
+    - has priority in the intersection
+
+priority_road:
+  description: Marks a road where vehicles have the right of way over intersecting roads until the priority ends.
+  examples:
+    - drives on main road
+    - doesn't yield at side road
+    - continues on priority route
+
+speed_limit:
+  description: Restricts the maximum speed the vehicle is allowed to travel.
+  examples:
+    - reduces speed to limit
+    - obeys 11 m/s zone
+    - drives under posted speed
+
+required_speed:
+  description: Indicates the minimum speed that vehicles must maintain under normal conditions.
+  examples:
+    - maintains at least 60 km/h
+    - accelerates to required speed
+    - avoids going too slow
+
+no_overtaking:
+  description: Prohibits overtaking vehicles, except under specific conditions such as overtaking non-motorized traffic.
+  examples:
+    - stays behind slower vehicle
+    - does not pass on solid line
+    - obeys overtaking restriction
+
+green_arrow_sign:
+  description: Allows turning in the direction of the arrow even when the main light is red, after yielding.
+  examples:
+    - turns right on red with arrow
+    - checks traffic before turning
+    - uses green arrow permission
+
+town_sign:
+  description: Indicates the entrance or exit of a town, affecting applicable speed limits and traffic rules.
+  examples:
+    - slows down upon entering town
+    - exits town, resumes higher speed
+    - adjusts behavior to town limits
+
+ban_on_motorcycles_and_multilane_vehicles:
+  description: Restricts access for motorcycles and vehicles with multiple lanes or axles.
+  examples:
+    - reroutes due to restriction
+    - avoids banned road
+    - respects motorcycle/vehicle ban
+
+no_u_turn:
+  description: Prohibits making a 180-degree turn to reverse direction on the road.
+  examples:
+    - continues without turning back
+    - avoids U-turn at intersection
+    - complies with no U-turn rule
+
+turning_priority_left:
+  description: The car has priority for left turns only
+
+turning_priority_right:
+  description: The car has priority for right turns only
+
+turning_priority_wait:
+  description: The car has no priority at this current intersection and needs to respect the priority road implied by the sign
+
+There are no specific examples of traffic lights, since they are fairly standardized and do not allow for many different options.
+
+Rules for filling in the JSON:
+- For speed_limit and required_speed, use the speed value supplied by the user. If the user specifies a value which is not an integer, return a range of the nearest two integers.
+- If the user does not provide you with a certain traffic sign/light, or indicates that this information is irrelevant for him, do not include that traffic sign/light.
+- If the user explicitly states that he does not want to include a specific traffic light or sign, set the value to [0] instead of [1].
+- If the user explicitly states that he wants no traffic signs or lights at all, set each sign from the given list, as well as the traffic_light, to [0].
+- If the user wants to include a speed limit/required speed sign but does not specify a value, return a range of [1, 30].
+- Never include any traffic signs or lights not requested by the user, except if they are explicitly described as not being present.
+
+[ICL]
+User Input: On the ego lane, there is a speed limit of 13.8888889 m/s and a stop sign at the end.
+Output:
+{
+  "speed_limit": [13, 14],
+  "stop": [1]
+}
+Reasoning: The user specified a speed limit with an exact value, which is not an integer. Therefore, we use the range of the next closest two integers instead. The user also specified a stop sign, so we add it with a value of [1].
+
+User Input: There should be no traffic light and no speed limit.
+Output:
+{
+  "speed_limit": [0],
+  "traffic_light": [0]
+}
+Reasoning: The user actively specified that the specific elements should not be present. So we included them both with a value of 0.
+
+User Input: I do not care about any signs or lights or similar elements like no idea, nothing, none, etc.
+Output:
+{
+}
+Reasoning: The user does not require anything, so we return an empty JSON object.
+
+User Input: Yes, there should be a speed limit sign. Also, multiple traffic lights.
+Output:
+{
+  "speed_limit": [1, 30],
+  "traffic_light": [1]
+}
+Reasoning: The user specified a speed limit sign, but gave no concrete value. We set the range to [1, 30]. Since we only care if a traffic light is present, we set it to [1]. The fact that the user specified "multiple" does not impact our process at this stage.
+
+[COT]
+Before emitting the JSON, work through the following steps explicitly. Write each step on its own line prefixed with "Reasoning:" so a reader can audit the decision, then emit the JSON object on a separate line.
+
+1. Scan the input for traffic-sign / traffic-light / regulatory mentions: signs ("yield", "stop", "priority road"), lights ("traffic light", "green arrow"), or speed rules ("50 km/h limit", "required speed").
+2. For each mention, check whether the sign/light name is in the allowed taxonomy listed in the [CP] section. Reject any name that isn't in the taxonomy — never invent new keys.
+3. For *presence-only* signs/lights, encode the value as [1] (or [0] when the user explicitly states it is absent).
+4. For *speed_limit* and *required_speed*, parse the numeric value. If the user gave a single value, encode it as [value, value]; if a range, encode [low, high]; if they mention the sign without a number, default to a broad sane range like [1, 30].
+5. Convert km/h to internal units only when the [CP] rules require it — otherwise leave the value as supplied.
+6. If no signs/lights/regulations were mentioned at all, emit {}. Do NOT add fields the user didn't reference.

@@ -1,0 +1,226 @@
+[TASK]
+Convert the user's natural-language scenario request into a single strict-JSON intent object that drives an OSM-to-CommonRoad scenario generator. The output JSON must follow exactly this schema:
+
+{
+  "location": {
+    "city": <string or null>,
+    "country_code": <ISO 3166-1 alpha-3 string or null>,
+    "bbox": <[south, west, north, east] floats or null>
+  },
+  "road_classes": <array of strings from {"roads", "link", "all"}>,
+  "scenario_type": <string from {"highway", "urban", "intersection", "roundabout", "rural", "ramp", "any"}>,
+  "sim": {
+    "duration_s": <number, default 20>,
+    "density": <"low" | "medium" | "high", default "low">,
+    "vehicle_types": <array of strings from {"car", "truck", "bus", "motorcycle", "bicycle", "trailer", "delivery", "coach", "taxi", "emergency", "moped"}, default ["car"]>
+  },
+  "ego": {
+    "strategy": <"first" | "by_type" | "by_index">,
+    "vehicle_type": <string from vehicle_types list, only used when strategy = "by_type">,
+    "index": <integer >= 0, only used when strategy = "by_index">
+  },
+  "goal": {
+    "strategy": <"trajectory_offset" | "specific_lanelet">,
+    "offset_steps": <integer, only used when strategy = "trajectory_offset", default 50>,
+    "lanelet_id": <integer, only used when strategy = "specific_lanelet">,
+    "position_keyword": <"start" | "middle" | "end", default "middle">,
+    "rectangle_length_m": <number, default 6.0>,
+    "rectangle_width_m": <number, default 2.0>
+  }
+}
+
+Every top-level key MUST be present. Use null (not missing) for nested fields that the user did not specify. Apply the defaults documented in the schema for unspecified fields (density, duration_s, position_keyword, rectangle dimensions). Return ONLY the JSON object, no commentary, no markdown fences.
+
+[CP]
+Schema field semantics:
+
+- **location.city**: human-readable city name (e.g. "Munich", "San Francisco"). Leave null only if the user gave explicit bbox coordinates and no city.
+- **location.country_code**: ISO 3166-1 alpha-3 (e.g. "DEU", "USA"). Infer from the city if the user did not state a country.
+- **location.bbox**: only fill when the user supplied explicit lat/lon corners. Otherwise leave null — the pipeline geocodes from `city`.
+- **road_classes**: which OSM road categories to fetch.
+    - "roads": main drivable carriageways (motorway, trunk, primary, secondary, tertiary, residential, service, track)
+    - "link": ramps and connectors at junctions / interchanges
+    - "all": everything
+    Default ["roads"]. Include "link" alongside "roads" when the user mentions ramps, slip roads, on/off-ramps, or motorway interchanges.
+- **scenario_type**: a hint that helps downstream filtering/ranking; does NOT change which roads are fetched. Pick the single best match. Use "any" only when truly unspecified.
+- **sim.duration_s**: extract an explicit simulation duration when the user states one — "simulate 30 seconds" → 30, "for 45 s" → 45, "1-minute run" → 60, "two minutes" → 120 (convert minutes to seconds). If the user gives no duration, default to 20.
+- **sim.density**: map an explicit traffic description to a density level — "dense traffic" / "heavy congestion" / "congested" / "gridlock" / "bumper-to-bumper" / "rush hour" / "busy" → "high"; "moderate" / "medium traffic" → "medium"; "sparse" / "light" / "empty" / "quiet" / "calm" → "low". If the user gives no traffic description, default to "low".
+- **sim.vehicle_types**: ["car"] unless the user explicitly names other vehicle classes (e.g. "trucks", "ego is the bus") — in that case, include those classes in addition to "car". Never include vehicle classes the user did not mention.
+- **ego.strategy** — the ego MUST be a car. The downstream motion planner (Frenetix) is implemented only for cars, so the pipeline filters the dynamic-obstacle list down to vehicles of type "car" before any strategy resolves an ID. Three strategies are allowed:
+    - "first" (default): use the first CAR in the simulator's dynamic-obstacle list. Pick this when the user says nothing about which agent is ego, or just says "the ego vehicle" generically.
+    - "by_type": **ego.vehicle_type must always be "car"** in our setup. The schema technically accepts other strings but the pipeline will fall back to the first car. The proper handling when the user names a non-car ("ego is the truck", "the bus is the ego", "the third motorcycle"): emit `ego.strategy="first"` instead — i.e. silently downgrade to picking the first car. Do NOT emit `ego.vehicle_type="truck"` etc.; the user's vehicle preference is informational and goes into sim.vehicle_types (so the named class appears as traffic in the scene), but the ego itself remains a car.
+    - "by_index": pick the CAR at zero-based index `index`. Use when the user gives a numeric position ("the second car", "the third vehicle"). The index counts cars only — so "the third vehicle" means the third car, not the third dynamic obstacle of any type.
+- **goal.strategy**:
+    - "trajectory_offset" (default): goal is placed on the ego's own trajectory `offset_steps` simulation steps after start. Use when the user says "drive forward", "continue along the road", or specifies a relative distance ("100 m ahead" — convert to ~10 steps per meter at typical speeds, default 50 if unsure).
+    - "specific_lanelet": goal lies on a specific lanelet identified by `lanelet_id`. Only emit this when the user supplied a numeric lanelet ID — never invent one.
+- **goal.position_keyword**: where on the goal lanelet the rectangle is centred (start / middle / end). Default "middle". Only meaningful when strategy = "specific_lanelet".
+- **goal.rectangle_length_m / rectangle_width_m**: goal rectangle dimensions in metres. Defaults 6.0 × 2.0 (matches the CommonRoad benchmark convention, e.g. AUT_Haag-12_1_T-4).
+
+General rules:
+- Apply documented defaults for any field the user did not address.
+- Never invent specific numeric IDs (lanelet_id, bbox coordinates) the user did not provide.
+- When the user mentions a road code (A8, I-95), fill `location.city` with the road code AND set `scenario_type` to "highway".
+- The OSM pipeline can ONLY fetch from real-world locations. Even when the user describes a scenario as "synthetic", "artificial", "handcrafted", or "simulated", you MUST still extract whatever real city or road code appears in the query (e.g. "synthetic network near Vienna" → city="Vienna", country_code="AUT"). Do NOT emit `country_code="ZAM"` — that value is forbidden in this experiment because the pipeline has no real coordinates for it. If the query is fully locationless (no city, no road, no bbox), DEFAULT to `city="Munich"`, `country_code="DEU"`, `bbox=[48.1362, 11.5740, 48.1380, 11.5768]` (a verified-good ~200 m central-Munich neighborhood). NEVER leave all three of city/country_code/bbox null — the pipeline cannot fetch from a null location, so the fallback is mandatory.
+
+[ICL]
+User input: Generate me a Munich intersection scenario where the ego is the truck approaching from the south, the goal is about 30 m ahead, and there is heavy traffic.
+Output:
+{
+  "location": {"city": "Munich", "country_code": "DEU", "bbox": null},
+  "road_classes": ["roads"],
+  "scenario_type": "intersection",
+  "sim": {
+    "duration_s": 20,
+    "density": "high",
+    "vehicle_types": ["car", "truck"]
+  },
+  "ego": {"strategy": "first", "vehicle_type": null, "index": null},
+  "goal": {
+    "strategy": "trajectory_offset",
+    "offset_steps": 50,
+    "lanelet_id": null,
+    "position_keyword": "middle",
+    "rectangle_length_m": 6.0,
+    "rectangle_width_m": 2.0
+  }
+}
+Reasoning: "Munich" + "Germany" inferred. "intersection" matches scenario_type. "heavy traffic" → sim.density="high". No explicit duration is given, so sim.duration_s stays at the default 20. The user said "ego is the truck" but the planner is car-only — we DOWNGRADE this to ego.strategy="first" so the pipeline picks the first car. The truck still appears in the scene because we add it to sim.vehicle_types (the user's vehicle interest is honoured in the traffic mix, just not as the ego). "30 m ahead" is descriptive only — goal.offset_steps stays at the default 50.
+
+User input: Just give me something on the A8 near Stuttgart.
+Output:
+{
+  "location": {"city": "A8", "country_code": "DEU", "bbox": null},
+  "road_classes": ["roads"],
+  "scenario_type": "highway",
+  "sim": {
+    "duration_s": 20,
+    "density": "low",
+    "vehicle_types": ["car"]
+  },
+  "ego": {"strategy": "first", "vehicle_type": null, "index": null},
+  "goal": {
+    "strategy": "trajectory_offset",
+    "offset_steps": 50,
+    "lanelet_id": null,
+    "position_keyword": "middle",
+    "rectangle_length_m": 6.0,
+    "rectangle_width_m": 2.0
+  }
+}
+Reasoning: Road code "A8" goes into `city`, scenario_type is "highway". Stuttgart serves as the country hint. All sim/ego/goal fields default.
+
+User input: I want the third car as the ego on an urban roundabout in Paris, target the next exit, simulate for 40 seconds.
+Output:
+{
+  "location": {"city": "Paris", "country_code": "FRA", "bbox": null},
+  "road_classes": ["roads"],
+  "scenario_type": "roundabout",
+  "sim": {
+    "duration_s": 40,
+    "density": "low",
+    "vehicle_types": ["car"]
+  },
+  "ego": {"strategy": "by_index", "vehicle_type": null, "index": 2},
+  "goal": {
+    "strategy": "trajectory_offset",
+    "offset_steps": 50,
+    "lanelet_id": null,
+    "position_keyword": "middle",
+    "rectangle_length_m": 6.0,
+    "rectangle_width_m": 2.0
+  }
+}
+Reasoning: "third car" → index=2 (zero-based). "simulate for 40 seconds" → sim.duration_s=40. "next exit" is too vague to bind to a specific lanelet — fall back on trajectory_offset with the default 50 steps. Roundabout drives scenario_type.
+
+User input: Generate any scenario.
+Output:
+{
+  "location": {"city": "Munich", "country_code": "DEU", "bbox": [48.1362, 11.574, 48.138, 11.5768]},
+  "road_classes": ["roads"],
+  "scenario_type": "any",
+  "sim": {
+    "duration_s": 20,
+    "density": "low",
+    "vehicle_types": ["car"]
+  },
+  "ego": {"strategy": "first", "vehicle_type": null, "index": null},
+  "goal": {
+    "strategy": "trajectory_offset",
+    "offset_steps": 50,
+    "lanelet_id": null,
+    "position_keyword": "middle",
+    "rectangle_length_m": 6.0,
+    "rectangle_width_m": 2.0
+  }
+}
+Reasoning: Locationless query → apply the mandatory Munich fallback (city + country_code + verified-good central-Munich bbox). All other fields default.
+
+User input: Use bbox 48.135, 11.560, 48.145, 11.572 in Germany, roads + link, two trucks and one bus, target lanelet 47 at the end, 10×3 m rectangle.
+Output:
+{
+  "location": {"city": null, "country_code": "DEU", "bbox": [48.135, 11.56, 48.145, 11.572]},
+  "road_classes": ["roads", "link"],
+  "scenario_type": "any",
+  "sim": {
+    "duration_s": 20,
+    "density": "low",
+    "vehicle_types": ["car", "truck", "bus"]
+  },
+  "ego": {"strategy": "first", "vehicle_type": null, "index": null},
+  "goal": {
+    "strategy": "specific_lanelet",
+    "offset_steps": 50,
+    "lanelet_id": 47,
+    "position_keyword": "end",
+    "rectangle_length_m": 10.0,
+    "rectangle_width_m": 3.0
+  }
+}
+Reasoning: Explicit bbox provided so city is null. Both road_classes selected. Vehicle mix expanded to include trucks and buses (cars added by default rule). Explicit lanelet_id 47 + position "end" + custom rectangle dimensions.
+
+User input: Create a synthetic network near Vienna with a single four-way junction. The ego should be the motorcycle approaching from the west.
+Output:
+{
+  "location": {"city": "Vienna", "country_code": "AUT", "bbox": null},
+  "road_classes": ["roads"],
+  "scenario_type": "intersection",
+  "sim": {
+    "duration_s": 20,
+    "density": "low",
+    "vehicle_types": ["car", "motorcycle"]
+  },
+  "ego": {"strategy": "first", "vehicle_type": null, "index": null},
+  "goal": {
+    "strategy": "trajectory_offset",
+    "offset_steps": 50,
+    "lanelet_id": null,
+    "position_keyword": "middle",
+    "rectangle_length_m": 6.0,
+    "rectangle_width_m": 2.0
+  }
+}
+Reasoning: The user said "synthetic" but also "near Vienna" — Vienna is a real city, so we extract it and emit country_code="AUT". We do NOT emit "ZAM" because the OSM pipeline cannot fetch from synthetic codes. The four-way-junction detail → scenario_type="intersection". The user said "ego is the motorcycle" but the planner is car-only, so we DOWNGRADE ego to strategy="first" (the pipeline will pick the first car). We still add "motorcycle" to sim.vehicle_types so the user's vehicle interest appears in the scene's traffic mix.
+
+
+[COT]
+Before producing the JSON, walk through these reasoning steps explicitly. Emit them as plain prose first, then the final JSON object. The downstream parser captures the LAST balanced {...} block, so your reasoning prose does not need to be hidden — but the JSON itself must still be syntactically valid and the only JSON in your response.
+
+Reasoning steps (work through each in order):
+
+  1. **Location**: identify the city or area the user named, if any. Infer the ISO 3166-1 alpha-3 country_code. Decide whether the user supplied explicit lat/lon corners (`bbox`) or only a city.
+  2. **Road classes**: scan the query for ramp / interchange / slip-road mentions; default to ["roads"] otherwise.
+  3. **Scenario type**: pick the single best match from the allowed enum based on the strongest topographic cue in the query.
+  4. **Simulation params**: set sim.duration_s from any explicit duration the user states ("30 seconds" → 30, "2-minute" → 120), else 20. Set sim.density from any explicit traffic description ("dense"/"heavy"/"congested" → "high", "moderate" → "medium", "sparse"/"empty"/"quiet" → "low"), else "low".
+  5. **Vehicle types**: start with ["car"]; add a class only when (a) the user explicitly names that class, or (b) the ego.vehicle_type below requires it to exist.
+  6. **Ego strategy**: decide between "first", "by_type", or "by_index" based on whether the user identifies the ego by vehicle class, by ordinal position, or not at all.
+  7. **Goal strategy**: default to "trajectory_offset" with offset_steps=50; pick "specific_lanelet" only when the user literally names a numeric lanelet ID.
+  8. **Assemble**: write the final strict-JSON object that captures all of the above. No trailing prose after it.
+
+End each reasoning step on its own line in your output, e.g.:
+
+  Step 1 (location): user wrote "Munich" → city="Munich", country_code="DEU", bbox stays null.
+  Step 2 (road classes): no ramp / interchange mention → ["roads"].
+  ...
+  Step 8 (assemble): <emit the final JSON object here>
+
+After your reasoning steps, emit the final JSON object as your last block of output. Do NOT embed placeholder text inside literal `{...}` braces in your reasoning prose (e.g. write `<the final JSON object>` not `{final JSON}`); the downstream parser scans your text for balanced-brace blocks and you don't want a placeholder to be picked up before the real JSON.

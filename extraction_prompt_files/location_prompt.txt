@@ -1,0 +1,63 @@
+[TASK]
+Extract a location from the user's description. Return your answer in the following JSON format:
+
+{
+  "country_code": XXX,
+  "specifier": string
+}
+
+country_code is the three-letter country code and "specifier" is additional information about the specific city or road. If a field cannot be determined from the user input, exclude it from the output. If neither field can be determined, return an empty JSON object {}.
+
+[CP]
+The location includes a three-letter country code AND a "specifier" — the city or road name as stored in our scenario database. Specifiers are full names (PascalCase or single-word), NOT 2-3 letter abbreviations. Examples from our database: "Munich", "Heilbronn", "Tyler", "Barcelona", "Hamburg", "Phoenix" (cities); "A8", "US101", "I95" (road codes). The user may give the country code explicitly, or only a city/road name — in the latter case, infer the country yourself using standard ISO 3166-1 alpha-3 codes and geography knowledge.
+
+ZAM: This is a special country code used for artificial road networks that were designed by hand. If a user requests such a road network, return ZAM as the country code.
+
+EXTRACT the specifier whenever the user mentions ANY city name or road code, even if it's a full name (e.g. "Tyler", "Geneva", "Vila Velha"). Do NOT require the user to provide a 2-3 letter code — full city names ARE valid specifiers and should be returned verbatim. Only EXCLUDE the specifier when the user did not name any city or road at all. Only ever return one country_code value, never more than that.
+
+[ICL]
+User input: The scenario takes place in Munich, Germany.
+Output:
+{
+  "country_code": "DEU",
+  "specifier": "Munich"
+}
+Reasoning: The user named Germany (→ DEU) and Munich (the city name → specifier verbatim). Full city names are valid specifiers — no code abbreviation required.
+
+User input: Tyler, USA.
+Output:
+{
+  "country_code": "USA",
+  "specifier": "Tyler"
+}
+Reasoning: USA is the 3-letter country code; Tyler is the city name — both go in as-is. Even if the city is small or not famous, if the user named it, extract it.
+
+User input: A scenario on the US101 freeway.
+Output:
+{
+  "country_code": "USA",
+  "specifier": "US101"
+}
+Reasoning: US101 is a road code; the country is inferred as USA. Road codes go in the specifier field just like city names.
+
+User input: The location does not matter to me.
+Output:
+{
+}
+Reasoning: The user gave us no information, so we exclude both fields and return an empty JSON object.
+
+User input: The network should be artificial.
+Output:
+{
+  "country_code": "ZAM"
+}
+Reasoning: The user did not specify a city/road code, so we exclude that field. However, he has specified that the network should be artificial, which is why we use "ZAM" as a country code.
+
+[COT]
+Before you emit the JSON, work through the following steps explicitly. Write each step on its own line prefixed with "Reasoning:" so a downstream reader can audit the decision, then emit the final JSON object on a separate line.
+
+1. Scan the input for any country mention — a country name (e.g. "Germany"), an adjective ("German"), or a 3-letter ISO code ("DEU"). If found, map it to the ISO 3166-1 alpha-3 code. If absent, the `country_code` field will be excluded.
+2. Scan for a *specifier*: any city name (e.g. "Tyler", "Munich", "Barcelona", "Geneva"), city code (e.g. "Muc"), or road code ("A9", "I-95", "US101"). Return the name verbatim — do NOT require an abbreviation. Specifier is excluded ONLY when the user named no city or road at all.
+3. Check for the artificial-network signal: words like "artificial", "synthetic", "handcrafted", "designed by hand" trigger the ZAM rule. ZAM overrides any other country mention.
+4. Decide which fields survive: include only fields you successfully extracted in steps 1–3.
+5. Emit the JSON. Use {} only when both fields are excluded.

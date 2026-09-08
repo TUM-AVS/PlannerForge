@@ -1,0 +1,280 @@
+[TASK]
+You are tuning the Frenetix motion-planner cost weights based on a recent
+batch of simulation outcomes. The user message contains a summary of
+those outcomes (success / collision / max_steps / no-feasible-trajectory
+counts and the most common failure mode) followed by the verbatim
+current `cost.yaml` that produced them.
+
+Your job: emit an updated `cost.yaml` that should reduce the dominant
+failure mode on a re-run of the same scenarios. Return ONLY the YAML —
+no surrounding prose, no markdown fences, no commentary.
+
+Format requirements:
+- Two top-level blocks: `cost_weights:` (13 parameters) and
+  `external_cost_weights:` (3 parameters).
+- Parameter names, ordering, indentation, and spacing must match the
+  input verbatim.
+- Adjust only the weights that target the dominant failure mode. Leave
+  every other parameter at its input value.
+
+[CP]
+Failure-mode → suggested-change rules:
+
+1. **High collision rate (collision % > 20%)**
+   - RAISE `distance_to_obstacles` (e.g., +0.3 to +0.5 absolute).
+   - Optionally raise `prediction` and `responsibility` (+0.1 to +0.2)
+     so the planner trusts other-actor forecasts more.
+   - Do NOT touch jerk / acceleration weights here — they aren't the
+     cause of collisions.
+
+2. **High max_steps rate (timeouts > 20%)**
+   - RAISE `velocity_offset` (+0.3 to +0.5) so the planner penalises
+     low-speed trajectories more aggressively.
+   - LOWER `lateral_jerk` and `longitudinal_jerk` (−0.1 each) so the
+     planner is allowed to accelerate harder.
+   - Do NOT raise `distance_to_obstacles` here — that would make the
+     ego more cautious and worsen timeouts.
+
+3. **Frequent "no valid or feasible trajectory found"
+   (infeasibility > 10%)**
+   - LOWER `distance_to_reference_path` (e.g., 5.0 → 2.0) so the
+     planner can deviate further from the reference.
+   - RAISE `path_length` (+0.2 to +0.5) to allow longer alternative
+     paths.
+
+4. **Mixed failures** (no single mode dominates)
+   - Snap to the `Balanced` preset (see below) — well-rounded weights
+     that are a reasonable starting point when no single mode wins.
+
+General constraints:
+- Keep every individual change ≤ 0.5 in absolute delta unless the
+  failure rate exceeds 50%.
+- Values stay non-negative.
+- Do NOT add, remove, or reorder parameters. The 13 + 3 names must be
+  identical between input and output.
+
+5. **When incremental tuning is risky** (e.g., the current cost.yaml is
+   far from any named preset, or several failure modes co-occur near
+   their thresholds), you may **snap to one of the named presets below
+   instead** — copy its 13 cost_weights values verbatim and leave
+   external_cost_weights untouched. Pick the preset whose intent
+   matches the desired post-tune behavior:
+
+   - `Default` — minimal, mostly zeros. Good when you need to reset
+     after an aggressive tune went wrong.
+   - `Comfort` — strong lateral/longitudinal jerk damping. Pick when
+     the batch shows oscillation, harsh manoeuvres, or passenger
+     discomfort proxies.
+   - `Balanced` — well-rounded; the current production-tuned default.
+     Pick when the batch is in the middle ground (no dominant mode).
+   - `Efficiency-Sporty` — high velocity weight, lower jerk damping.
+     Pick when max_steps timeouts dominate AND the road geometry is
+     simple (highway/straight).
+   - `Safety-Conservative` — high distance_to_obstacles + prediction
+     + responsibility. Pick when collisions dominate (>30%) and you
+     want a bigger fix than the +0.4 incremental bump in Rule 1.
+
+The 5 named presets (`cost_weights` only; `external_cost_weights` is
+always preserved from input):
+
+Default:
+    acceleration: 0.0
+    jerk: 0.0
+    lateral_jerk: 0.2
+    longitudinal_jerk: 0.2
+    orientation_offset: 0.0
+    path_length: 0.0
+    lane_center_offset: 0.0
+    velocity_offset: 1.0
+    velocity: 0.0
+    distance_to_reference_path: 5.0
+    distance_to_obstacles: 0.0
+    prediction: 0.2
+    responsibility: 0.0
+
+Comfort:
+    acceleration: 0.2
+    jerk: 0.2
+    lateral_jerk: 0.8
+    longitudinal_jerk: 0.8
+    orientation_offset: 0.0
+    path_length: 0.0
+    lane_center_offset: 0.5
+    velocity_offset: 0.3
+    velocity: 0.0
+    distance_to_reference_path: 1.0
+    distance_to_obstacles: 0.3
+    prediction: 0.2
+    responsibility: 0.1
+
+Balanced:
+    acceleration: 0.3
+    jerk: 0.3
+    lateral_jerk: 0.5
+    longitudinal_jerk: 0.5
+    orientation_offset: 0.1
+    path_length: 0.2
+    lane_center_offset: 0.7
+    velocity_offset: 0.6
+    velocity: 0.2
+    distance_to_reference_path: 2.0
+    distance_to_obstacles: 0.8
+    prediction: 0.3
+    responsibility: 0.2
+
+Efficiency-Sporty:
+    acceleration: 0.2
+    jerk: 0.15
+    lateral_jerk: 0.25
+    longitudinal_jerk: 0.25
+    orientation_offset: 0.2
+    path_length: 0.6
+    lane_center_offset: 0.6
+    velocity_offset: 1.0
+    velocity: 0.4
+    distance_to_reference_path: 2.0
+    distance_to_obstacles: 0.6
+    prediction: 0.2
+    responsibility: 0.1
+
+Safety-Conservative:
+    acceleration: 0.0
+    jerk: 0.0
+    lateral_jerk: 0.2
+    longitudinal_jerk: 0.2
+    orientation_offset: 0.0
+    path_length: 0.0
+    lane_center_offset: 0.0
+    velocity_offset: 1.0
+    velocity: 0.0
+    distance_to_reference_path: 5.0
+    distance_to_obstacles: 1.0
+    prediction: 0.5
+    responsibility: 0.3
+
+[ICL]
+Two worked examples — each shows a batch summary, the input `cost.yaml`,
+and the YAML you should emit. The reasoning lines are for guidance
+only; in production output, emit ONLY the YAML.
+
+────────────────────────────────────────────────────────────
+EXAMPLE 1 — high collision rate, single-parameter fix
+
+Batch summary:
+  total: 100, success: 62, collision: 31 (front=22, side=9),
+  max_steps: 5, infeasible: 2
+  dominant failure: collision (31%)
+
+Input cost.yaml:
+cost_weights:
+    acceleration: 0.0
+    jerk: 0.0
+    lateral_jerk: 0.2
+    longitudinal_jerk: 0.2
+    orientation_offset: 0.0
+    path_length: 0.0
+    lane_center_offset: 0.0
+    velocity_offset: 1.0
+    velocity: 0.0
+    distance_to_reference_path: 5.0
+    distance_to_obstacles: 0.0
+    prediction: 0.2
+    responsibility: 0.0
+external_cost_weights:
+    occ_pm: 0.0
+    occ_um: 0.0
+    occ_ve: 0.0
+
+Reasoning (DO NOT INCLUDE IN OUTPUT):
+  Dominant failure is collision (31% > 20%). Apply rule 1: raise
+  distance_to_obstacles by +0.4, raise prediction by +0.1.
+
+Output:
+cost_weights:
+    acceleration: 0.0
+    jerk: 0.0
+    lateral_jerk: 0.2
+    longitudinal_jerk: 0.2
+    orientation_offset: 0.0
+    path_length: 0.0
+    lane_center_offset: 0.0
+    velocity_offset: 1.0
+    velocity: 0.0
+    distance_to_reference_path: 5.0
+    distance_to_obstacles: 0.4
+    prediction: 0.3
+    responsibility: 0.0
+external_cost_weights:
+    occ_pm: 0.0
+    occ_um: 0.0
+    occ_ve: 0.0
+
+────────────────────────────────────────────────────────────
+EXAMPLE 2 — high max_steps rate, mobility tuning
+
+Batch summary:
+  total: 100, success: 50, collision: 4, max_steps: 38, infeasible: 8
+  dominant failure: max_steps (38%)
+
+Input cost.yaml:
+cost_weights:
+    acceleration: 0.3
+    jerk: 0.3
+    lateral_jerk: 0.5
+    longitudinal_jerk: 0.5
+    orientation_offset: 0.1
+    path_length: 0.2
+    lane_center_offset: 0.7
+    velocity_offset: 0.6
+    velocity: 0.2
+    distance_to_reference_path: 2.0
+    distance_to_obstacles: 0.8
+    prediction: 0.3
+    responsibility: 0.2
+external_cost_weights:
+    occ_pm: 0.0
+    occ_um: 0.0
+    occ_ve: 0.0
+
+Reasoning (DO NOT INCLUDE IN OUTPUT):
+  Dominant failure is max_steps (38% > 20%). Apply rule 2: raise
+  velocity_offset by +0.4 (0.6 → 1.0), lower lateral_jerk and
+  longitudinal_jerk by 0.1 each (0.5 → 0.4).
+
+Output:
+cost_weights:
+    acceleration: 0.3
+    jerk: 0.3
+    lateral_jerk: 0.4
+    longitudinal_jerk: 0.4
+    orientation_offset: 0.1
+    path_length: 0.2
+    lane_center_offset: 0.7
+    velocity_offset: 1.0
+    velocity: 0.2
+    distance_to_reference_path: 2.0
+    distance_to_obstacles: 0.8
+    prediction: 0.3
+    responsibility: 0.2
+external_cost_weights:
+    occ_pm: 0.0
+    occ_um: 0.0
+    occ_ve: 0.0
+
+[COT]
+Before emitting the YAML, walk through these steps explicitly:
+
+  1. (Classify) Identify the dominant failure mode from the batch
+     summary: collision / max_steps / infeasible / mixed. Quote the
+     percentage you used.
+  2. (Pick parameters) Map the failure mode to the cost weights
+     responsible per the rules in [CP].
+  3. (Propose values) Read the current value of each target parameter
+     from the input cost.yaml, then compute the new absolute value
+     respecting the ≤0.5-delta rule.
+  4. (Emit) Return the full updated cost.yaml as the LAST block of
+     output — every other parameter unchanged from the input.
+
+End each step on its own line before emitting the YAML; the downstream
+parser captures the last balanced YAML block so reasoning prose above
+it is safe.

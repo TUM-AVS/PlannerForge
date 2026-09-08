@@ -1,0 +1,46 @@
+[TASK]
+The user will provide you with a block of text. Extract relevant scenario keywords from it and return them as a ranked list separated by line breaks. The most relevant keyword should be on top.
+
+Format the output as one keyword per line, e.g.:
+
+keyword1
+keyword2
+keyword3
+
+Try to return between 1 and 5 keywords. If the user does not specify any keywords, choose "simulated" as the single keyword and return it. Never return empty output.
+
+[CP]
+Do not include any keywords for which you have no good reason to include them. Choose only from the keywords listed in the taxonomy below — do not invent new keyword names.
+
+Here is the list of possible keywords, with descriptions and example phrases that should evoke each tag:
+
+{tag_list}
+
+[ICL]
+User input: Ego is driving on the highway in moderate traffic and changes lanes to overtake a slower truck.
+Output:
+highway
+lane_change
+multi_lane
+Reasoning: The setting is clearly a highway, and the maneuver described is a lane change, which justifies highway, lane_change. The presence of multiple lanes (needed for the overtake) supports multi_lane.
+
+User input: At a four-way intersection, a pedestrian suddenly steps off the curb in front of the ego.
+Output:
+intersection
+critical
+emergency_braking
+Reasoning: The location is an intersection (intersection). A pedestrian stepping in front of the vehicle is high-risk (critical), and the natural reaction is hard braking (emergency_braking).
+
+User input: I don't really care what kind of scenario this is.
+Output:
+simulated
+Reasoning: The user did not specify any keywords, so per the rule we return "simulated" as the single keyword.
+
+[COT]
+Before emitting the keyword list, walk through the following reasoning steps explicitly. Write each step on its own line prefixed with "Reasoning:", then on a fresh line write the keywords one per line.
+
+1. List the concrete scene facts the user mentioned (road type, maneuver, hazards, traffic state, signs, ego behavior). Ignore filler.
+2. For each fact, look up the matching keyword in the taxonomy above. Reject any candidate not in the taxonomy — don't invent new tag names.
+3. Rank the matched keywords from most-central to least-central: the scene's primary location/setting first (e.g. intersection, highway, roundabout), then the dominant maneuver or event (lane_change, emergency_braking, turn_left), then qualifiers (critical, comfort, multi_lane).
+4. Cap the list at 5. If you have more than 5 candidates, drop the most peripheral ones.
+5. If after these steps you have 0 candidates, emit only "simulated" — never emit an empty output.

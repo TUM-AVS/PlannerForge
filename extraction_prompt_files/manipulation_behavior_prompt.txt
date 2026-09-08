@@ -1,0 +1,135 @@
+[TASK]
+You will be given a SUMO `.vehicles.rou.xml` route file and a user request to change the driving behavior of one or more vehicles. Pick one of the six named behavior presets, insert it as a new `<vType>`, and reassign the target vehicles to that vType. Emit the **complete updated route file** as your output — only the XML, no commentary, no markdown fences.
+
+The six behavior presets you may choose from are: `balancedType`, `ecoType`, `emergencyType`, `cautiousType`, `aggressiveLaner`, `fastDriver`. Do not invent new presets.
+
+[CP]
+Rules when changing a vehicle's behavior:
+
+- The vehicle's `vClass` and `guiShape` MUST be preserved from its original `<vType>`. A bus stays `vClass="bus" guiShape="bus"`; a truck stays `vClass="truck" guiShape="truck"`. If the preset's default `vClass` differs from the vehicle's, create a hybrid vType that carries the preset's behavioral attributes but the vehicle's original `vClass`, `guiShape`, `length`, `width`, `minGap`, and `maxSpeed`.
+- Insert the new `<vType>` near the top of `<routes>` with a unique id. Reuse the preset's name (e.g. `balancedType`) or a descriptive variant when carrying preserved vehicle-specific attrs (e.g. `balancedBus`, `fastTruck`).
+- Reassign target vehicle(s) to the new vType id. DO NOT change the vehicle's `id`, `depart`, `departPos`, `departSpeed`, or `<route edges>`.
+- REMOVE `insertionChecks="none"` from any vehicle whose vType you change — that flag disables safety checks for exact trajectory replay, which is incompatible with dynamic behavior.
+- Leave other vehicles and their vTypes byte-equivalent.
+- Return the COMPLETE updated route file.
+
+The six behavior presets and their attribute values:
+
+Balanced Driver (balancedType):
+  <vType id="balancedType" accel="2.5" decel="4.5" sigma="0.5" minGap="2.0" tau="1.2" speedFactor="1.0" impatience="0.3" lcStrategic="0.5" lcCooperative="0.5" lcSpeedGain="0.5" lcKeepRight="0.7"/>
+
+Eco Driver (ecoType):
+  <vType id="ecoType" accel="1.2" decel="2.5" sigma="0.3" minGap="3.0" tau="1.8" speedFactor="0.95" impatience="0.1" lcStrategic="0.3" lcCooperative="0.8" lcSpeedGain="0.1" lcKeepRight="0.9"/>
+
+Emergency Driver (emergencyType):
+  <vType id="emergencyType" accel="4.0" decel="6.0" sigma="0.2" minGap="1.0" tau="0.5" speedFactor="1.3" impatience="0.8" lcStrategic="0.9" lcCooperative="0.0" lcSpeedGain="1.0" lcKeepRight="0.2"/>
+
+Cautious Driver (cautiousType):
+  <vType id="cautiousType" accel="1.5" decel="3.0" sigma="0.4" minGap="4.0" tau="2.0" speedFactor="0.95" impatience="0.1" lcStrategic="0.3" lcCooperative="0.9" lcSpeedGain="0.2" lcKeepRight="0.8"/>
+
+Aggressive Lane-Changer (aggressiveLaner):
+  <vType id="aggressiveLaner" accel="3.0" decel="5.0" sigma="0.6" minGap="1.5" tau="0.8" speedFactor="1.05" impatience="0.7" lcStrategic="1.0" lcCooperative="0.0" lcSpeedGain="1.0" lcKeepRight="0.3"/>
+
+Speeder / Faster (fastDriver):
+  <vType id="fastDriver" accel="2.5" decel="4.5" sigma="0.5" minGap="2.0" tau="1.0" speedFactor="1.1" impatience="0.4" lcStrategic="0.5" lcCooperative="0.5" lcSpeedGain="0.5" lcKeepRight="0.6"/>
+
+User-vocabulary mapping (informal phrasing → preset):
+- "balanced", "default" → balancedType
+- "eco", "ecological", "fuel-efficient", "green" → ecoType
+- "emergency", "ambulance", "fast and urgent" → emergencyType
+- "cautious", "careful", "defensive" → cautiousType
+- "aggressive", "aggressive lane-changer", "pushy" → aggressiveLaner
+- "speeder", "fast", "faster", "speedy" → fastDriver
+
+[ICL]
+User input: Make vehicle 10 a balanced driver.
+Input file:
+<routes>
+    <vType id="defaultCar" accel="2.6" decel="4.5" sigma="0.5" minGap="2.5" tau="1.0"/>
+    <vehicle id="10" type="defaultCar" depart="5"/>
+</routes>
+Output:
+<routes>
+    <vType id="defaultCar" accel="2.6" decel="4.5" sigma="0.5" minGap="2.5" tau="1.0"/>
+    <vType id="balancedType" accel="2.5" decel="4.5" sigma="0.5" minGap="2.0" tau="1.2" speedFactor="1.0" impatience="0.3" lcStrategic="0.5" lcCooperative="0.5" lcSpeedGain="0.5" lcKeepRight="0.7"/>
+    <vehicle id="10" type="balancedType" depart="5"/>
+</routes>
+Reasoning: defaultCar has vClass="passenger" (the default for plain cars), which matches balancedType's implicit vClass. We inject the preset verbatim and reassign vehicle 10. defaultCar is preserved for any other vehicles that may use it.
+
+User input: Make vehicle 20 drive more aggressively.
+Input file:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vehicle id="20" type="passenger" depart="0.00" departLane="0" departPos="45.2" departSpeed="0.00" insertionChecks="none">
+        <route edges="544 577"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vType id="aggressiveLaner" accel="3.0" decel="5.0" sigma="0.6" minGap="1.5" tau="0.8" speedFactor="1.05" impatience="0.7" lcStrategic="1.0" lcCooperative="0.0" lcSpeedGain="1.0" lcKeepRight="0.3"/>
+    <vehicle id="20" type="aggressiveLaner" depart="0.00" departLane="0" departPos="45.2" departSpeed="0.00">
+        <route edges="544 577"/>
+    </vehicle>
+</routes>
+Reasoning: "more aggressively" → aggressiveLaner. We inject the preset, reassign vehicle 20, and REMOVE `insertionChecks="none"` because dynamic aggressive behavior is incompatible with exact-trajectory replay.
+
+User input: Make buses 1 and 2 drive faster.
+Input file:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vType id="bus" accel="0.6" decel="4.0" sigma="0.5" length="15" minGap="3" maxSpeed="20" guiShape="bus" vClass="bus"/>
+    <vehicle id="1" type="bus" depart="0.1" departPos="free" departSpeed="random">
+        <route edges="662 665"/>
+    </vehicle>
+    <vehicle id="2" type="bus" depart="0.2" departPos="free" departSpeed="random">
+        <route edges="662 665"/>
+    </vehicle>
+</routes>
+Output:
+<routes>
+    <vType id="passenger" vClass="passenger" guiShape="passenger"/>
+    <vType id="bus" accel="0.6" decel="4.0" sigma="0.5" length="15" minGap="3" maxSpeed="20" guiShape="bus" vClass="bus"/>
+    <vType id="fastBus" accel="2.5" decel="4.5" sigma="0.5" minGap="3" tau="1.0" speedFactor="1.1" impatience="0.4" lcStrategic="0.5" lcCooperative="0.5" lcSpeedGain="0.5" lcKeepRight="0.6" length="15" maxSpeed="25" guiShape="bus" vClass="bus"/>
+    <vehicle id="1" type="fastBus" depart="0.1" departPos="free" departSpeed="random">
+        <route edges="662 665"/>
+    </vehicle>
+    <vehicle id="2" type="fastBus" depart="0.2" departPos="free" departSpeed="random">
+        <route edges="662 665"/>
+    </vehicle>
+</routes>
+Reasoning: "drive faster" → fastDriver, but the vehicles are BUSES. The preset's implicit vClass is `passenger`, which would silently convert the buses to cars. We create a hybrid `fastBus` carrying fastDriver's behavior + the bus's `vClass="bus" guiShape="bus" length="15"`. `maxSpeed` is bumped slightly (20→25) to honour "faster" while staying realistic for a bus.
+
+User input: Make vehicles 7 and 8 more cautious.
+Input file:
+<routes>
+    <vType id="defaultCar" accel="2.6" decel="4.5" sigma="0.5" minGap="2.5" tau="1.0"/>
+    <vType id="truck" accel="2.8" decel="4.5" sigma="0.1" minGap="0.5" tau="1.0" vClass="truck" guiShape="truck"/>
+    <vehicle id="7" type="defaultCar" depart="5"/>
+    <vehicle id="8" type="truck" depart="6"/>
+    <vehicle id="9" type="defaultCar" depart="7"/>
+</routes>
+Output:
+<routes>
+    <vType id="defaultCar" accel="2.6" decel="4.5" sigma="0.5" minGap="2.5" tau="1.0"/>
+    <vType id="truck" accel="2.8" decel="4.5" sigma="0.1" minGap="0.5" tau="1.0" vClass="truck" guiShape="truck"/>
+    <vType id="cautiousType" accel="1.5" decel="3.0" sigma="0.4" minGap="4.0" tau="2.0" speedFactor="0.95" impatience="0.1" lcStrategic="0.3" lcCooperative="0.9" lcSpeedGain="0.2" lcKeepRight="0.8"/>
+    <vType id="cautiousTruck" accel="1.5" decel="3.0" sigma="0.4" minGap="4.0" tau="2.0" speedFactor="0.95" impatience="0.1" lcStrategic="0.3" lcCooperative="0.9" lcSpeedGain="0.2" lcKeepRight="0.8" vClass="truck" guiShape="truck"/>
+    <vehicle id="7" type="cautiousType" depart="5"/>
+    <vehicle id="8" type="cautiousTruck" depart="6"/>
+    <vehicle id="9" type="defaultCar" depart="7"/>
+</routes>
+Reasoning: Vehicle 7 is a car → assign cautiousType directly. Vehicle 8 is a truck → create cautiousTruck preserving vClass/guiShape. Vehicle 9 is untouched.
+
+[COT]
+Before emitting the updated route file, walk through these reasoning steps explicitly:
+
+  1. (Pick preset) Match the user's behavior word to one of the six presets via the vocabulary table.
+  2. (Identify targets) List the vehicle ids the user named. Resolve "all <type>s" by scanning `<vehicle type="X">` where X has the matching `vClass`/`guiShape`.
+  3. (Check vClass conflict) For each target, read its current vType. If `vClass`/`guiShape` differ from the preset's defaults (passenger), plan a hybrid vType preserving those fields plus `length`, `width`, `minGap`, `maxSpeed`.
+  4. (Inject new vTypes) Add the preset (and any hybrids) as new `<vType>` elements near the top of `<routes>`. Do not delete existing vTypes.
+  5. (Reassign targets) Update each target `<vehicle type="...">` to point to the new vType id. Strip `insertionChecks="none"` from each retargeted vehicle. Keep `id`/`depart`/`departPos`/`departSpeed`/`<route>` unchanged.
+  6. (Leave others alone) Untouched vehicles and vTypes appear byte-equivalent in your output.
+  7. (Emit) Return the COMPLETE updated route file.
+
+End each step on its own line (e.g. `Step 1 (pick preset): "more cautiously" → cautiousType`), then emit the final XML as the last block of output.
