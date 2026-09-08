@@ -6,8 +6,9 @@
 
 **EMNLP 2026 Main Paper**
 
-<!-- TODO before going public: project-page URL, arXiv ID -->
-[![Project Page](https://img.shields.io/badge/Project_Page-online-2ea44f?style=flat&logo=github&logoColor=white)](#)
+<!-- TODO before going public: the arXiv ID. Project Page goes live once GitHub
+     Pages is enabled on the gh-pages branch of this repository. -->
+[![Project Page](https://img.shields.io/badge/Project_Page-online-2ea44f?style=flat&logo=github&logoColor=white)](https://tum-avs.github.io/PlannerForge/)
 [![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b?style=flat&logo=arxiv&logoColor=white)](#)
 [![Dataset](https://img.shields.io/badge/Hugging_Face-582_scenarios-ffd21e?style=flat&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/Yuan-avs/PlannerForge-Scenarios)
 
