@@ -14,6 +14,12 @@ authors:
   - family-names: Kaufeld
     given-names: Marc
     affiliation: "Technical University of Munich"
+  - family-names: Zhang
+    given-names: Yuchen
+    affiliation: "Technical University of Munich"
+  - family-names: "Schäfer"
+    given-names: "Finn Rasmus"
+    affiliation: "Technical University of Munich"
   - family-names: Song
     given-names: Qunying
     affiliation: "University College London"
@@ -22,11 +28,17 @@ authors:
     affiliation: "Technical University of Munich"
 license: MIT
 repository-code: "https://github.com/TUM-AVS/PlannerForge"
+url: "https://tum-avs.github.io/PlannerForge/"
+identifiers:
+  - type: other
+    value: "arXiv:2609.08965"
+    description: "arXiv preprint of the EMNLP 2026 paper"
 preferred-citation:
   type: conference-paper
   title: "PlannerForge: LLM Agents for Scenario-Based Testing of Motion Planners in Autonomous Driving"
   year: 2026
   collection-title: "Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP)"
+  url: "https://arxiv.org/abs/2609.08965"
   authors:
     - family-names: Gao
       given-names: Yuan
@@ -36,6 +48,10 @@ preferred-citation:
       given-names: Mattia
     - family-names: Kaufeld
       given-names: Marc
+    - family-names: Zhang
+      given-names: Yuchen
+    - family-names: "Schäfer"
+      given-names: "Finn Rasmus"
     - family-names: Song
       given-names: Qunying
     - family-names: Betz

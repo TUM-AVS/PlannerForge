@@ -96,7 +96,7 @@ model with `DEFAULT_MODE=ollama`).
 ## 6. Scenario database
 
 The scenario corpus lives in a Hugging Face dataset,
-[`Yuan-avs/PlannerForge-Scenarios`](https://huggingface.co/datasets/Yuan-avs/PlannerForge-Scenarios),
+[`TUM-AVS/PlannerForge-Scenarios`](https://huggingface.co/datasets/TUM-AVS/PlannerForge-Scenarios),
 rather than in this repository. `add_scenarios.py` downloads the 582 CommonRoad
 XMLs into `CollectedScenarios/` and indexes them into ChromaDB in one step:
 

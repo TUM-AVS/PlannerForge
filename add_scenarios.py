@@ -15,7 +15,7 @@ from pathlib import Path
 from db_wrapper import ScenarioDBWrapper
 
 #: Hugging Face dataset holding the CommonRoad scenario corpus.
-HF_DATASET = "Yuan-avs/PlannerForge-Scenarios"
+HF_DATASET = "TUM-AVS/PlannerForge-Scenarios"
 #: Path inside the dataset that holds the scenario XMLs.
 HF_SCENARIO_DIR = "scenarios"
 #: Where the app expects the corpus. Do not change — the planner batch presets,

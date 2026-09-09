@@ -6,11 +6,9 @@
 
 **EMNLP 2026 Main Paper**
 
-<!-- TODO before going public: the arXiv ID. Project Page goes live once GitHub
-     Pages is enabled on the gh-pages branch of this repository. -->
 [![Project Page](https://img.shields.io/badge/Project_Page-online-2ea44f?style=flat&logo=github&logoColor=white)](https://tum-avs.github.io/PlannerForge/)
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b?style=flat&logo=arxiv&logoColor=white)](#)
-[![Dataset](https://img.shields.io/badge/Hugging_Face-582_scenarios-ffd21e?style=flat&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/Yuan-avs/PlannerForge-Scenarios)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.08965-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.08965)
+[![Dataset](https://img.shields.io/badge/Hugging_Face-582_scenarios-ffd21e?style=flat&logo=huggingface&logoColor=black)](https://huggingface.co/datasets/TUM-AVS/PlannerForge-Scenarios)
 
 </div>
 
@@ -21,6 +19,7 @@
 
 ## 📰 News
 
+- 📄 **2026.09** — Preprint online: [arXiv:2609.08965](https://arxiv.org/abs/2609.08965).
 - ✅ **2026.09** — Code and dataset released.
 - 🎉 **2026.08** — Paper accepted to EMNLP 2026 (Main Conference).
 - 📄 **2026.05** — Paper and project website released.
@@ -225,7 +224,7 @@ python interface.py          # launch the chatbot UI
 ```
 
 `add_scenarios.py` pulls the 582 scenario XMLs from the
-[Hugging Face dataset](https://huggingface.co/datasets/Yuan-avs/PlannerForge-Scenarios)
+[Hugging Face dataset](https://huggingface.co/datasets/TUM-AVS/PlannerForge-Scenarios)
 into `CollectedScenarios/` on first run, then indexes them. The corpus is not
 tracked in git, so the clone stays small; re-runs reuse what is already on disk.
 
@@ -330,11 +329,15 @@ and [`environment-cr37.yml`](environment-cr37.yml).
   title     = {PlannerForge: LLM Agents for Scenario-Based Testing of Motion
                Planners in Autonomous Driving},
   author    = {Gao, Yuan and M\"uller, Sebastian and Piccinini, Mattia and
-               Kaufeld, Marc and Song, Qunying and Betz, Johannes},
+               Kaufeld, Marc and Zhang, Yuchen and Sch\"afer, Finn Rasmus and
+               Song, Qunying and Betz, Johannes},
   booktitle = {Proceedings of the 2026 Conference on Empirical Methods in
                Natural Language Processing (EMNLP 2026)},
   publisher = {Association for Computational Linguistics},
-  year      = {2026}
+  year      = {2026},
+  eprint        = {2609.08965},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI}
 }
 ```
 
