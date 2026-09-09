@@ -13,7 +13,8 @@
 
 <p align="center">
   <b>EMNLP 2026</b> &nbsp;|&nbsp;
-  📑 <a href="PlannerForge_EMNLP.pdf">Paper (camera-ready)</a> &nbsp;|&nbsp;
+  📄 <a href="https://arxiv.org/abs/2609.08965">Paper (arXiv:2609.08965)</a> &nbsp;|&nbsp;
+  📑 <a href="PlannerForge_EMNLP.pdf">Camera-ready PDF</a> &nbsp;|&nbsp;
   🌐 Project page: <code>index.html</code> (GitHub Pages pending) &nbsp;|&nbsp;
   📝 <a href="https://openreview.net/forum?id=nXasXrTafl">OpenReview</a> &nbsp;|&nbsp;
   🤗 <a href="https://huggingface.co/datasets/TUM-AVS/PlannerForge-Scenarios">Scenario dataset (582 scenarios)</a>
