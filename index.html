@@ -71,6 +71,8 @@
   .fw-fig figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:var(--radius);
                  padding:16px;box-shadow:var(--shadow)}
   .fw-fig img{width:100%;height:auto;display:block;border-radius:12px;cursor:zoom-in}
+  .fw-fig video{width:100%;height:auto;display:block;border-radius:12px;background:#fff}
+  .fw-fig figcaption a.fw-static{color:var(--accent);font-style:normal;font-weight:600}
   .fw-fig figcaption{font-size:14px;color:#3c4a52;line-height:1.6;margin-top:13px;
                      max-width:1060px;margin-left:auto;margin-right:auto;text-align:center}
   .fw-fig figcaption b{color:var(--fg)}
@@ -420,13 +422,20 @@
 <section class="pipe" id="framework">
   <div class="fw-fig px" data-px="0.05">
     <figure>
-      <img src="assets/framework.png" alt="The PlannerForge framework: six modules driven by a chatbot interface across the eight scenario-based-testing stages.">
+      <video class="fw-video" poster="assets/framework_poster.jpg" muted loop playsinline
+             controls preload="metadata"
+             aria-label="Animated build-up of the PlannerForge framework: six modules driven by a chatbot interface across the eight scenario-based-testing stages.">
+        <source src="assets/framework.webm" type="video/webm">
+        <source src="assets/framework.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
       <figcaption><b>The PlannerForge framework.</b> A chatbot-driven interface routes user intent
         across the full testing pipeline: <b>Router</b> (classifies user intent post-selection),
         <b>Generation</b> (OSM+SUMO synthesis), <b>Selection</b> (dialogue-guided retrieval from the
         CommonRoad database), <b>Modification</b> (LLM-guided SUMO edits), <b>Testing</b>
         (Frenetix / MP-RBFN execution) and <b>Analysis</b> (LLM-powered result interpretation).
-        <i>Click the figure to enlarge.</i></figcaption>
+        The animation builds the diagram module by module; it plays when scrolled into view.
+        <a class="fw-static" href="assets/framework.png">View the static figure</a>.</figcaption>
     </figure>
   </div>
   <div class="wrap">
@@ -969,6 +978,16 @@
       lb.classList.add('open');
     });
   });
+  // caption link to the static framework figure opens in the same lightbox
+  var st = document.querySelector('a.fw-static');
+  if(st){
+    st.addEventListener('click', function(e){
+      e.preventDefault();
+      lbImg.src = st.getAttribute('href');
+      lbImg.alt = 'The PlannerForge framework (static figure from the paper)';
+      lb.classList.add('open');
+    });
+  }
   function close(){ lb.classList.remove('open'); lbImg.src = ''; }
   lb.addEventListener('click', close);
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
@@ -1451,6 +1470,29 @@
 
   /* ---------- parallax ---------- */
   if(reduce || coarse) return;
+
+  /* ---- animated framework figure: play only while it is on screen ----
+     Under reduced motion or on touch devices we never autoplay: the poster
+     already shows the finished diagram and `controls` allows manual play. */
+  var fw = document.querySelector(".fw-video");
+  if(fw && "IntersectionObserver" in window){
+    var autoPause = false, userStopped = false;
+    fw.addEventListener("pause", function(){
+      if(autoPause){ autoPause = false; } else { userStopped = true; }
+    });
+    fw.addEventListener("play", function(){ userStopped = false; });
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          if(userStopped) return;
+          var q = fw.play();
+          if(q && q.catch) q.catch(function(){});      // autoplay refused: poster stays
+        }else if(!fw.paused){
+          autoPause = true; fw.pause();
+        }
+      });
+    }, {threshold: 0.25}).observe(fw);
+  }
   var layers = Array.prototype.slice.call(document.querySelectorAll("[data-px]"));
   if(!layers.length) return;
 
